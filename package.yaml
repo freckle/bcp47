@@ -1,0 +1,26 @@
+name: bcp47
+version: 0.1.0.0
+github:  "frontrow/bcp-47"
+license: MIT
+author: "Evan Rutledge Borden"
+maintainer: "engineering@freckle.com"
+copyright: "2018 Freckle Education"
+
+extra-source-files:
+- README.md
+- ChangeLog.md
+description:
+  https://tools.ietf.org/html/bcp47
+  .
+  Language tags for use in cases where it is desirable to indicate the language
+  used in an information object.
+
+dependencies:
+- base >= 4.7 && < 5
+- iso3166-country-codes
+- iso639
+- megaparsec
+- text
+
+library:
+  source-dirs: src
