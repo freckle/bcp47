@@ -22,10 +22,13 @@ module Data.BCP47
 where
 
 import Control.Applicative ((<|>))
-import Control.Monad (void, when)
+import Control.Monad (MonadPlus, void, when)
 import Data.Bifunctor (first)
-import Data.ISO3166_CountryCodes (CountryCode)
-import Data.LanguageCodes (ISO639_1, fromChars)
+import Data.ISO3166_CountryCodes (CountryCode(GB, US))
+import Data.LanguageCodes (ISO639_1(EN, ES), fromChars)
+import Data.Maybe (isNothing)
+import Data.Set (Set)
+import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, count', eof, hidden, many, optional, parse, try)
@@ -40,35 +43,36 @@ import Text.Read (readEither)
 data BCP47
   = BCP47
   { language :: ISO639_1
-  , extendedLanguageSubtags :: [LanguageExtension]
+  , extendedLanguageSubtags :: Set LanguageExtension
   , script :: Maybe Script
   , region :: Maybe CountryCode
-  , variants :: [Variant]
-  , extensions :: [Extension]
-  , privateUse :: [PrivateUse]
+  , variants :: Set Variant
+  , extensions :: Set Extension
+  , privateUse :: Set PrivateUse
   }
   deriving Show
 
 newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
-  deriving Show
+  deriving (Show, Eq, Ord)
 
 newtype Script = Script { scriptToText :: Text }
-  deriving Show
+  deriving (Show, Eq, Ord)
 
 newtype Variant = Variant { variantToText :: Text }
-  deriving Show
+  deriving (Show, Eq, Ord)
 
 newtype Extension = Extension { extensionToText :: Text }
-  deriving Show
+  deriving (Show, Eq, Ord)
 
 newtype PrivateUse = PrivateUse { privateUseToText :: Text }
-  deriving Show
+  deriving (Show, Eq, Ord)
 
 mkLanguage :: ISO639_1 -> BCP47
-mkLanguage lang = BCP47 lang [] Nothing Nothing [] [] []
+mkLanguage lang = BCP47 lang mempty Nothing Nothing mempty mempty mempty
 
 mkLocalized :: ISO639_1 -> CountryCode -> BCP47
-mkLocalized lang locale = BCP47 lang [] Nothing (Just locale) [] [] []
+mkLocalized lang locale =
+  BCP47 lang mempty Nothing (Just locale) mempty mempty mempty
 
 fromText :: Text -> Either Text BCP47
 fromText = first (pack . parseErrorPretty) . parse parser "fromText"
@@ -77,14 +81,16 @@ parser :: Parsec Void Text BCP47
 parser =
   BCP47
     <$> languageP
-    <*> many (try (char '-' *> languageExtP))
+    <*> manyAsSet (try (char '-' *> languageExtP))
     <*> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
     <*> (try (optional (char '-' *> regionP)) <|> pure Nothing)
-    <*> many (try (char '-' *> variantP))
-    <*> many (try (char '-' *> extensionP))
-    <*> many (try (char '-' *> privateUseP))
+    <*> manyAsSet (try (char '-' *> variantP))
+    <*> manyAsSet (try (char '-' *> extensionP))
+    <*> manyAsSet (try (char '-' *> privateUseP))
     <* hidden eof
 
+manyAsSet :: (Ord a, MonadPlus m) => m a -> m (Set a)
+manyAsSet f = Set.fromList <$> many f
 -- | BCP-47 language parser
 --
 -- This only implements the ISO 639 portion of the ISO.
