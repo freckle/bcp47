@@ -25,3 +25,10 @@ dependencies:
 
 library:
   source-dirs: src
+
+tests:
+  doctest:
+    main: Main.hs
+    source-dirs: doctest
+    dependencies:
+      - doctest

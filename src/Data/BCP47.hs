@@ -5,6 +5,8 @@ module Data.BCP47
   , mkLanguage
   , mkLocalized
   , fromText
+  -- * Predicates
+  , isLessConstrainedThan
   -- * Components
   , ISO639_1
   , LanguageExtension
@@ -18,6 +20,12 @@ module Data.BCP47
   , extensionToText
   , PrivateUse
   , privateUseToText
+  -- * For testing
+  , en
+  , es
+  , enGB
+  , enUS
+  , enTJP
   )
 where
 
@@ -91,6 +99,62 @@ parser =
 
 manyAsSet :: (Ord a, MonadPlus m) => m a -> m (Set a)
 manyAsSet f = Set.fromList <$> many f
+
+es :: BCP47
+es = mkLanguage ES
+
+en :: BCP47
+en = mkLanguage EN
+
+enGB :: BCP47
+enGB = mkLocalized EN GB
+
+enUS :: BCP47
+enUS = mkLocalized EN US
+
+enTJP :: BCP47
+enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
+
+
+-- | Check if a language tag is less constrained than another
+--
+-- >>> en `isLessConstrainedThan` es
+-- False
+--
+-- >>> es `isLessConstrainedThan` en
+-- False
+--
+-- >>> en `isLessConstrainedThan` enGB
+-- True
+--
+-- >>> enGB `isLessConstrainedThan` en
+-- False
+--
+-- >>> enGB `isLessConstrainedThan` enUS
+-- False
+--
+-- >>> en `isLessConstrainedThan` enTJP
+-- True
+--
+-- >>> enTJP `isLessConstrainedThan` en
+-- False
+--
+isLessConstrainedThan :: BCP47 -> BCP47 -> Bool
+isLessConstrainedThan x y =
+  sameLang
+    && isSubsetBy privateUse
+    && isSubsetBy extensions
+    && isSubsetBy variants
+    && isUnConstrainedEqual region
+    && isUnConstrainedEqual script
+    && isSubsetBy extendedLanguageSubtags
+ where
+  sameLang = language x == language y
+  isSubsetBy f = f x `Set.isSubsetOf` f y
+  isUnConstrainedEqual f = isNothing (f x) || f x == f y
+
+
+
 -- | BCP-47 language parser
 --
 -- This only implements the ISO 639 portion of the ISO.
