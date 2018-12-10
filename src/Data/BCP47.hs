@@ -117,6 +117,14 @@ enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
 
 -- | Check if a language tag is less constrained than another
 --
+-- Note: A tag may be less constrained than another tag, but this does not imply
+-- that the other is more constrained. In other words `isMoreConstrainedThan` is
+-- not validly defined as:
+--
+-- @
+-- isMoreConstrainedThan x y = not $ isLessConstrainedThan x y
+-- @
+--
 -- >>> en `isLessConstrainedThan` es
 -- False
 --
