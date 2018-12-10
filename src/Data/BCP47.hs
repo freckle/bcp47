@@ -115,7 +115,6 @@ enUS = mkLocalized EN US
 enTJP :: BCP47
 enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
 
-
 -- | Check if a language tag is less constrained than another
 --
 -- >>> en `isLessConstrainedThan` es
@@ -152,8 +151,6 @@ isLessConstrainedThan x y =
   sameLang = language x == language y
   isSubsetBy f = f x `Set.isSubsetOf` f y
   isUnConstrainedEqual f = isNothing (f x) || f x == f y
-
-
 
 -- | BCP-47 language parser
 --
