@@ -1,4 +1,5 @@
-{-# LANGUAGE NamedFieldPuns #-}
+{-# LANGUAGE OverloadedStrings #-}
+
 
 module Data.BCP47
   ( BCP47(..)
@@ -32,12 +33,14 @@ where
 import Control.Applicative ((<|>))
 import Control.Monad (MonadPlus, void, when)
 import Data.Bifunctor (first)
+import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode(GB, US))
 import Data.LanguageCodes (ISO639_1(EN, ES), fromChars)
 import Data.Maybe (isNothing)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
+import qualified Data.Text as T
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, count', eof, hidden, many, optional, parse, try)
 import Text.Megaparsec.Char (alphaNumChar, char, letterChar, lowerChar, upperChar)
@@ -58,7 +61,23 @@ data BCP47
   , extensions :: Set Extension
   , privateUse :: Set PrivateUse
   }
-  deriving Show
+
+instance Show BCP47 where
+  show b = T.unpack $ T.concat
+    [ T.toLower (tshow (language b))
+    , fromSet languageExtensionToText extendedLanguageSubtags
+    , may scriptToText script
+    , may tshow region
+    , fromSet variantToText variants
+    , fromSet extensionToText extensions
+    , fromSet privateUseToText privateUse
+    ]
+   where
+    tshow :: Show a => a -> Text
+    tshow = pack . show
+    may f g = fromList f . toList $ g b
+    fromSet f g = fromList f . Set.toList $ g b
+    fromList f = T.concat . fmap (("-" <>) . f)
 
 newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
   deriving (Show, Eq, Ord)
@@ -82,6 +101,20 @@ mkLocalized :: ISO639_1 -> CountryCode -> BCP47
 mkLocalized lang locale =
   BCP47 lang mempty Nothing (Just locale) mempty mempty mempty
 
+-- | Parse a language tag from text
+--
+-- >>> fromText $ pack "en"
+-- Right en
+--
+-- >>> fromText $ pack "de-CH"
+-- Right de-CH
+--
+-- >>> fromText $ pack "ru-USSR"
+-- Left "fromText:1:7:\nunexpected 'R'\nexpecting '-'\n"
+--
+-- >>> fromText $ pack "en-a-ccc-v-qqq-a-bbb"
+-- Right en-a-bbb-a-ccc-v-qqq
+--
 fromText :: Text -> Either Text BCP47
 fromText = first (pack . parseErrorPretty) . parse parser "fromText"
 
