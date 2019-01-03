@@ -1,6 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-
 module Data.BCP47
   ( BCP47(..)
   , mkLanguage
@@ -42,8 +41,21 @@ import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import qualified Data.Text as T
 import Data.Void (Void)
-import Text.Megaparsec (Parsec, count, count', eof, hidden, many, optional, parse, try)
-import Text.Megaparsec.Char (alphaNumChar, char, letterChar, lowerChar, upperChar)
+import Text.Megaparsec
+  ( Parsec
+  , count
+  , count'
+  , eof
+  , hidden
+  , many
+  , notFollowedBy
+  , optional
+  , parse
+  , some
+  , try
+  )
+import Text.Megaparsec.Char
+  (alphaNumChar, char, letterChar, lowerChar, upperChar)
 import Text.Megaparsec.Error (parseErrorPretty)
 import Text.Read (readEither)
 
@@ -70,6 +82,7 @@ instance Show BCP47 where
     , may tshow region
     , fromSet variantToText variants
     , fromSet extensionToText extensions
+    , fromSet (const "x") privateUse
     , fromSet privateUseToText privateUse
     ]
    where
@@ -109,11 +122,38 @@ mkLocalized lang locale =
 -- >>> fromText $ pack "de-CH"
 -- Right de-CH
 --
--- >>> fromText $ pack "ru-USSR"
--- Left "fromText:1:7:\nunexpected 'R'\nexpecting '-'\n"
+-- >>> fromText $ pack "ru-USSSR"
+-- Left "fromText:1:8:\nunexpected 'R'\nexpecting '-'\n"
 --
 -- >>> fromText $ pack "en-a-ccc-v-qqq-a-bbb"
 -- Right en-a-bbb-a-ccc-v-qqq
+--
+-- >>> fromText $ pack "de-Latn-DE"
+-- Right de-Latn-DE
+--
+-- >>> fromText $ pack "de-Latf-DE"
+-- Right de-Latf-DE
+--
+-- >>> fromText $ pack "de-CH-1996"
+-- Right de-CH-1996
+--
+-- >>> fromText $ pack "de-Deva"
+-- Right de-Deva
+--
+-- >>> fromText $ pack "zh-Hant-CN-x-private1-private2"
+-- Right zh-Hant-CN-x-private1-private2
+--
+-- >>> fromText $ pack "zh-Hant-CN-x-private1"
+-- Right zh-Hant-CN-x-private1
+--
+-- >>> fromText $ pack "zh-Hant-CN"
+-- Right zh-Hant-CN
+--
+-- >>> fromText $ pack "zh-Hant"
+-- Right zh-Hant
+--
+-- >>> fromText $ pack "zh"
+-- Right zh
 --
 fromText :: Text -> Either Text BCP47
 fromText = first (pack . parseErrorPretty) . parse parser "fromText"
@@ -122,9 +162,9 @@ parser :: Parsec Void Text BCP47
 parser =
   BCP47
     <$> languageP
-    <*> manyAsSet (try (char '-' *> languageExtP))
+    <*> manyAsSet (try (char '-' *> languageExtP <* notFollowedBy letterChar))
     <*> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
-    <*> (try (optional (char '-' *> regionP)) <|> pure Nothing)
+    <*> (try (optional $ char '-' *> regionP) <|> pure Nothing)
     <*> manyAsSet (try (char '-' *> variantP))
     <*> manyAsSet (try (char '-' *> extensionP))
     <*> manyAsSet (try (char '-' *> privateUseP))
@@ -207,8 +247,7 @@ isLessConstrainedThan x y =
 --
 languageP :: Parsec Void Text ISO639_1
 languageP = do
-  x <- lowerChar
-  mCode <- fromChars x <$> lowerChar
+  mCode <- fromChars <$> lowerChar <*> lowerChar
   maybe (fail "unknown ISO-639-1 code") pure mCode
 
 -- | BCP-47 language extension parser
@@ -252,8 +291,10 @@ regionP = either fail pure . readEither =<< count 2 upperChar
 --               / (DIGIT 3alphanum)
 -- @@
 --
+-- NOTE: parsers lists as 5*8, but 4*8 seems to be more accurate
+--
 variantP :: Parsec Void Text Variant
-variantP = Variant . pack <$> count' 5 8 alphaNumChar
+variantP = Variant . pack <$> count' 4 8 alphaNumChar
 
 -- | BCP-47 extension parser
 --
@@ -284,8 +325,7 @@ extensionP = Extension . pack <$> do
 -- @@
 --
 privateUseP :: Parsec Void Text PrivateUse
-privateUseP = PrivateUse . pack <$> do
-  ext <- char 'x'
-  void $ char '-'
-  rest <- count' 1 8 alphaNumChar
-  pure $ ext : '-' : rest
+privateUseP = PrivateUse <$> do
+  void $ char 'x'
+  rest <- some (char '-' *> count' 1 8 alphaNumChar)
+  pure $ T.intercalate "-" (pack <$> rest)
