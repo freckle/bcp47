@@ -19,8 +19,8 @@ newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text 
   deriving (Show, Eq, Ord)
 
 languageExtensionFromText :: Text -> Either Text LanguageExtension
-languageExtensionFromText =
-  first (pack . parseErrorPretty) . parse languageExtP "scriptFromText"
+languageExtensionFromText = first (pack . parseErrorPretty)
+  . parse languageExtP "languageExtensionFromText"
 
 -- | BCP-47 language extension parser
 --

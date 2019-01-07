@@ -2,15 +2,27 @@
 
 module Data.BCP47.Internal.Language
   ( ISO639_1
+  , languageFromText
+  , languageToText
   , languageP
   )
 where
 
+import Data.Bifunctor (first)
 import Data.LanguageCodes (ISO639_1, fromChars)
-import Data.Text (Text)
+import Data.Text (Text, pack)
 import Data.Void (Void)
-import Text.Megaparsec (Parsec)
+import Text.Megaparsec (Parsec, parse)
 import Text.Megaparsec.Char (lowerChar)
+import Text.Megaparsec.Error (parseErrorPretty)
+
+languageToText :: ISO639_1 -> Text
+languageToText = pack . show
+
+
+languageFromText :: Text -> Either Text ISO639_1
+languageFromText =
+  first (pack . parseErrorPretty) . parse languageP "languageFromText"
 
 -- | BCP-47 language parser
 --

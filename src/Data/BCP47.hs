@@ -9,12 +9,26 @@ module Data.BCP47
   , isLessConstrainedThan
   -- * Components
   , ISO639_1
+  , languageToText
+  , languageFromText
   , LanguageExtension
+  , languageExtensionToText
+  , languageExtensionFromText
   , Script
+  , scriptToText
+  , scriptFromText
   , CountryCode
+  , regionToText
+  , regionFromText
   , Variant
+  , variantToText
+  , variantFromText
   , Extension
+  , extensionToText
+  , extensionFromText
   , PrivateUse
+  , privateUseToText
+  , privateUseFromText
   -- * For testing
   , en
   , es

@@ -23,7 +23,7 @@ newtype PrivateUse = PrivateUse { privateUseToText :: Text }
 
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
 privateUseFromText =
-  first (pack . parseErrorPretty) . parse privateUseP "scriptFromText"
+  first (pack . parseErrorPretty) . parse privateUseP "privateUseFromText"
 
 -- | BCP-47 private use parser
 --

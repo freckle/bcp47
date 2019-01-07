@@ -36,5 +36,5 @@ newtype Variant = Variant { variantToText :: Text }
 
 variantFromText :: Text -> Either Text Variant
 variantFromText =
-  first (pack . parseErrorPretty) . parse variantP "scriptFromText"
+  first (pack . parseErrorPretty) . parse variantP "variantFromText"
 

@@ -21,7 +21,7 @@ newtype Extension = Extension { extensionToText :: Text }
 
 extensionFromText :: Text -> Either Text Extension
 extensionFromText =
-  first (pack . parseErrorPretty) . parse extensionP "scriptFromText"
+  first (pack . parseErrorPretty) . parse extensionP "extensionFromText"
 
 -- | BCP-47 extension parser
 --
