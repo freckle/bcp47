@@ -15,7 +15,7 @@ import Text.Read (readEither)
 
 -- | BCP-47 region parser
 --
--- This only implements the ISO portion of the parser.
+-- This only implements the ISO portion of the grammar.
 --
 -- @@
 -- region        = 2ALPHA              ; ISO 3166-1 code

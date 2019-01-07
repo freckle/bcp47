@@ -14,7 +14,7 @@ import Text.Megaparsec.Char (lowerChar)
 
 -- | BCP-47 language parser
 --
--- This only implements the ISO 639 portion of the ISO.
+-- This only implements the ISO 639 portion of the grammar.
 --
 -- @@
 --  language      = 2*3ALPHA            ; shortest ISO 639 code
