@@ -19,7 +19,6 @@ import Text.Megaparsec.Error (parseErrorPretty)
 languageToText :: ISO639_1 -> Text
 languageToText = toLower . pack . show
 
-
 languageFromText :: Text -> Either Text ISO639_1
 languageFromText =
   first (pack . parseErrorPretty) . parse languageP "languageFromText"
