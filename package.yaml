@@ -32,3 +32,9 @@ tests:
     source-dirs: doctest
     dependencies:
       - doctest
+  spec:
+    main: Main.hs
+    source-dirs: tests
+    dependencies:
+      - bcp47
+      - hspec
