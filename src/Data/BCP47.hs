@@ -10,16 +10,11 @@ module Data.BCP47
   -- * Components
   , ISO639_1
   , LanguageExtension
-  , languageExtensionToText
   , Script
-  , scriptToText
   , CountryCode
   , Variant
-  , variantToText
   , Extension
-  , extensionToText
   , PrivateUse
-  , privateUseToText
   -- * For testing
   , en
   , es
@@ -30,11 +25,18 @@ module Data.BCP47
 where
 
 import Control.Applicative ((<|>))
-import Control.Monad (MonadPlus, void, when)
+import Control.Monad (MonadPlus)
+import Data.BCP47.Internal.Extension
+import Data.BCP47.Internal.Language
+import Data.BCP47.Internal.LanguageExtension
+import Data.BCP47.Internal.PrivateUse
+import Data.BCP47.Internal.Region
+import Data.BCP47.Internal.Script
+import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode(GB, US))
-import Data.LanguageCodes (ISO639_1(EN, ES), fromChars)
+import Data.LanguageCodes (ISO639_1(EN, ES))
 import Data.Maybe (isNothing)
 import Data.Set (Set)
 import qualified Data.Set as Set
@@ -42,22 +44,9 @@ import Data.Text (Text, pack)
 import qualified Data.Text as T
 import Data.Void (Void)
 import Text.Megaparsec
-  ( Parsec
-  , count
-  , count'
-  , eof
-  , hidden
-  , many
-  , notFollowedBy
-  , optional
-  , parse
-  , some
-  , try
-  )
-import Text.Megaparsec.Char
-  (alphaNumChar, char, letterChar, lowerChar, upperChar)
+  (Parsec, eof, hidden, many, notFollowedBy, optional, parse, try)
+import Text.Megaparsec.Char (char, letterChar)
 import Text.Megaparsec.Error (parseErrorPretty)
-import Text.Read (readEither)
 
 -- | BCP-47
 --
@@ -73,6 +62,7 @@ data BCP47
   , extensions :: Set Extension
   , privateUse :: Set PrivateUse
   }
+  deriving (Eq)
 
 instance Show BCP47 where
   show b = T.unpack $ T.concat
@@ -82,7 +72,7 @@ instance Show BCP47 where
     , may tshow region
     , fromSet variantToText variants
     , fromSet extensionToText extensions
-    , fromSet (const "x") privateUse
+    , if Set.null (privateUse b) then "" else "-x"
     , fromSet privateUseToText privateUse
     ]
    where
@@ -91,21 +81,6 @@ instance Show BCP47 where
     may f g = fromList f . toList $ g b
     fromSet f g = fromList f . Set.toList $ g b
     fromList f = T.concat . fmap (("-" <>) . f)
-
-newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
-  deriving (Show, Eq, Ord)
-
-newtype Script = Script { scriptToText :: Text }
-  deriving (Show, Eq, Ord)
-
-newtype Variant = Variant { variantToText :: Text }
-  deriving (Show, Eq, Ord)
-
-newtype Extension = Extension { extensionToText :: Text }
-  deriving (Show, Eq, Ord)
-
-newtype PrivateUse = PrivateUse { privateUseToText :: Text }
-  deriving (Show, Eq, Ord)
 
 mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty Nothing Nothing mempty mempty mempty
@@ -167,7 +142,7 @@ parser =
     <*> (try (optional $ char '-' *> regionP) <|> pure Nothing)
     <*> manyAsSet (try (char '-' *> variantP))
     <*> manyAsSet (try (char '-' *> extensionP))
-    <*> manyAsSet (try (char '-' *> privateUseP))
+    <*> (try (char '-' *> privateUseP) <|> mempty)
     <* hidden eof
 
 manyAsSet :: (Ord a, MonadPlus m) => m a -> m (Set a)
@@ -232,100 +207,3 @@ isLessConstrainedThan x y =
   sameLang = language x == language y
   isSubsetBy f = f x `Set.isSubsetOf` f y
   isUnConstrainedEqual f = isNothing (f x) || f x == f y
-
--- | BCP-47 language parser
---
--- This only implements the ISO 639 portion of the ISO.
---
--- @@
---  language      = 2*3ALPHA            ; shortest ISO 639 code
---                  ["-" extlang]       ; sometimes followed by
---                                      ; extended language subtags
---                / 4ALPHA              ; or reserved for future use
---                / 5*8ALPHA            ; or registered language subtag
--- @@
---
-languageP :: Parsec Void Text ISO639_1
-languageP = do
-  mCode <- fromChars <$> lowerChar <*> lowerChar
-  maybe (fail "unknown ISO-639-1 code") pure mCode
-
--- | BCP-47 language extension parser
---
--- This only implements the ISO 639 portion of the ISO.
---
--- @@
---  extlang       = 3ALPHA              ; selected ISO 639 codes
---                 *2("-" 3ALPHA)      ; permanently reserved
--- @@
---
--- FIXME this is wrong
-languageExtP :: Parsec Void Text LanguageExtension
-languageExtP = LanguageExtension . pack <$> count 3 letterChar
-
--- | BCP-47 script parser
---
--- @@
---  script        = 4ALPHA              ; ISO 15924 code
--- @@
---
-scriptP :: Parsec Void Text Script
-scriptP = Script . pack <$> count 4 letterChar
-
--- | BCP-47 region parser
---
--- This only implements the ISO portion of the parser.
---
--- @@
--- region        = 2ALPHA              ; ISO 3166-1 code
---               / 3DIGIT              ; UN M.49 code
--- @@
---
-regionP :: Parsec Void Text CountryCode
-regionP = either fail pure . readEither =<< count 2 upperChar
-
--- | BCP-47 variant parser
---
--- @@
--- variant       = 5*8alphanum         ; registered variants
---               / (DIGIT 3alphanum)
--- @@
---
--- NOTE: parsers lists as 5*8, but 4*8 seems to be more accurate
---
-variantP :: Parsec Void Text Variant
-variantP = Variant . pack <$> count' 4 8 alphaNumChar
-
--- | BCP-47 extension parser
---
--- @@
--- extension     = singleton 1*("-" (2*8alphanum))
---                                     ; Single alphanumerics
---                                     ; "x" reserved for private use
---
--- singleton     = DIGIT               ; 0 - 9
---               / %x41-57             ; A - W
---               / %x59-5A             ; Y - Z
---               / %x61-77             ; a - w
---               / %x79-7A             ; y - z
--- @@
---
-extensionP :: Parsec Void Text Extension
-extensionP = Extension . pack <$> do
-  ext <- alphaNumChar
-  when (ext `elem` ['x', 'X']) $ fail "private use suffix found"
-  void $ char '-'
-  rest <- count' 2 8 alphaNumChar
-  pure $ ext : '-' : rest
-
--- | BCP-47 private use parser
---
--- @@
--- privateuse    = "x" 1*("-" (1*8alphanum))
--- @@
---
-privateUseP :: Parsec Void Text PrivateUse
-privateUseP = PrivateUse <$> do
-  void $ char 'x'
-  rest <- some (char '-' *> count' 1 8 alphaNumChar)
-  pure $ T.intercalate "-" (pack <$> rest)
