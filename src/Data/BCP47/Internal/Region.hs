@@ -1,5 +1,3 @@
-
-
 module Data.BCP47.Internal.Region
   ( CountryCode
   , regionToText
