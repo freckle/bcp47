@@ -80,18 +80,16 @@ data BCP47
 
 instance Show BCP47 where
   show b = T.unpack $ T.concat
-    [ T.toLower (tshow (language b))
+    [ languageToText (language b)
     , fromSet languageExtensionToText extendedLanguageSubtags
     , may scriptToText script
-    , may tshow region
+    , may regionToText region
     , fromSet variantToText variants
     , fromSet extensionToText extensions
     , if Set.null (privateUse b) then "" else "-x"
     , fromSet privateUseToText privateUse
     ]
    where
-    tshow :: Show a => a -> Text
-    tshow = pack . show
     may f g = fromList f . toList $ g b
     fromSet f g = fromList f . Set.toList $ g b
     fromList f = T.concat . fmap (("-" <>) . f)
