@@ -4,7 +4,7 @@ module Data.BCP47.Internal.LanguageExtension
   ( LanguageExtension(LanguageExtension)
   , languageExtensionFromText
   , languageExtensionToText
-  , languageExtP
+  , languageExtensionP
   )
 where
 
@@ -20,7 +20,7 @@ newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text 
 
 languageExtensionFromText :: Text -> Either Text LanguageExtension
 languageExtensionFromText = first (pack . parseErrorPretty)
-  . parse languageExtP "languageExtensionFromText"
+  . parse languageExtensionP "languageExtensionFromText"
 
 -- | BCP-47 language extension parser
 --
@@ -32,5 +32,5 @@ languageExtensionFromText = first (pack . parseErrorPretty)
 -- @@
 --
 -- FIXME this is wrong
-languageExtP :: Parsec Void Text LanguageExtension
-languageExtP = LanguageExtension . pack <$> count 3 letterChar
+languageExtensionP :: Parsec Void Text LanguageExtension
+languageExtensionP = LanguageExtension . pack <$> count 3 letterChar

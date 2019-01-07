@@ -149,7 +149,8 @@ parser :: Parsec Void Text BCP47
 parser =
   BCP47
     <$> languageP
-    <*> manyAsSet (try (char '-' *> languageExtP <* notFollowedBy letterChar))
+    <*> manyAsSet
+          (try (char '-' *> languageExtensionP <* notFollowedBy letterChar))
     <*> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
     <*> (try (optional $ char '-' *> regionP) <|> pure Nothing)
     <*> manyAsSet (try (char '-' *> variantP))
