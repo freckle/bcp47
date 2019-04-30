@@ -12,6 +12,7 @@ import Control.Applicative ((<|>))
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
+import Test.QuickCheck.Arbitrary
 import Text.Megaparsec (Parsec, count, count', parse, try)
 import Text.Megaparsec.Char (alphaNumChar, digitChar)
 import Text.Megaparsec.Error (parseErrorPretty)
@@ -33,6 +34,9 @@ variantP = Variant . pack <$> (try (count' 5 8 alphaNumChar) <|> digitPrefixed)
 
 newtype Variant = Variant { variantToText :: Text }
   deriving (Show, Eq, Ord)
+
+instance Arbitrary Variant where
+  arbitrary = Variant . pack <$> arbitrary
 
 variantFromText :: Text -> Either Text Variant
 variantFromText =

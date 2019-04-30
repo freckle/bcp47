@@ -11,12 +11,16 @@ where
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
+import Test.QuickCheck.Arbitrary
 import Text.Megaparsec (Parsec, count, parse)
 import Text.Megaparsec.Char (letterChar)
 import Text.Megaparsec.Error (parseErrorPretty)
 
 newtype Script = Script { scriptToText :: Text }
   deriving (Show, Eq, Ord)
+
+instance Arbitrary Script where
+  arbitrary = Script . pack <$> arbitrary
 
 scriptFromText :: Text -> Either Text Script
 scriptFromText =

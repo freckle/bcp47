@@ -14,12 +14,16 @@ import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import Data.Void (Void)
+import Test.QuickCheck.Arbitrary
 import Text.Megaparsec (Parsec, count', parse, some)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (parseErrorPretty)
 
 newtype PrivateUse = PrivateUse { privateUseToText :: Text }
   deriving (Show, Eq, Ord)
+
+instance Arbitrary PrivateUse where
+  arbitrary = PrivateUse . pack <$> arbitrary
 
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
 privateUseFromText =

@@ -12,12 +12,16 @@ import Control.Monad (void, when)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
+import Test.QuickCheck.Arbitrary (Arbitrary, arbitrary)
 import Text.Megaparsec (Parsec, count', parse)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (parseErrorPretty)
 
 newtype Extension = Extension { extensionToText :: Text }
   deriving (Show, Eq, Ord)
+
+instance Arbitrary Extension where
+  arbitrary = Extension . pack <$> arbitrary
 
 extensionFromText :: Text -> Either Text Extension
 extensionFromText =

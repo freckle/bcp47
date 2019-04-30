@@ -17,9 +17,10 @@ import Test.Hspec
 spec :: Spec
 spec = describe "fromText" $ it "parses all components" $ do
   lng <- either (ioError . userError . unpack) pure
-    $ fromText "zh-abc-Hant-CN-1967-y-extensi-x-private1-private2"
+    $ fromText "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
   language lng `shouldBe` ZH
-  extendedLanguageSubtags lng `shouldBe` Set.singleton (LanguageExtension "abc")
+  extendedLanguageSubtags lng
+    `shouldBe` Set.singleton (LanguageExtension "abc-def-zxy")
   script lng `shouldBe` Just (Script "Hant")
   region lng `shouldBe` Just CN
   variants lng `shouldBe` Set.singleton (Variant "1967")

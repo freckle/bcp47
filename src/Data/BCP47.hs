@@ -35,6 +35,7 @@ module Data.BCP47
   , enGB
   , enUS
   , enTJP
+  , enGBTJP
   )
 where
 
@@ -57,9 +58,10 @@ import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import qualified Data.Text as T
 import Data.Void (Void)
-import Text.Megaparsec
-  (Parsec, eof, hidden, many, notFollowedBy, optional, parse, try)
-import Text.Megaparsec.Char (char, letterChar)
+import Test.QuickCheck.Arbitrary
+import Test.QuickCheck.Gen (elements)
+import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
+import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (parseErrorPretty)
 
 -- | BCP-47
@@ -77,6 +79,16 @@ data BCP47
   , privateUse :: Set PrivateUse
   }
   deriving (Eq)
+
+instance Arbitrary BCP47 where
+  arbitrary = BCP47
+    <$> elements [EN, ES]
+    <*> arbitrary
+    <*> arbitrary
+    <*> elements [Just GB, Just US, Nothing]
+    <*> arbitrary
+    <*> arbitrary
+    <*> arbitrary
 
 instance Show BCP47 where
   show b = T.unpack $ T.concat
@@ -149,8 +161,7 @@ parser :: Parsec Void Text BCP47
 parser =
   BCP47
     <$> languageP
-    <*> manyAsSet
-          (try (char '-' *> languageExtensionP <* notFollowedBy letterChar))
+    <*> manyAsSet (try (char '-' *> languageExtensionP))
     <*> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
     <*> (try (optional $ char '-' *> regionP) <|> pure Nothing)
     <*> manyAsSet (try (char '-' *> variantP))
@@ -175,6 +186,9 @@ enUS = mkLocalized EN US
 
 enTJP :: BCP47
 enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
+
+enGBTJP :: BCP47
+enGBTJP = enGB { extensions = Set.singleton (Extension (pack "t-jp")) }
 
 -- | Check if a language tag is less constrained than another
 --
