@@ -18,11 +18,12 @@ description:
 dependencies:
 - QuickCheck
 - base >= 4.7 && < 5
+- containers
 - iso3166-country-codes
 - iso639
 - megaparsec
 - text
-- containers
+- generic-arbitrary
 
 library:
   source-dirs: src
@@ -39,3 +40,4 @@ tests:
     dependencies:
       - bcp47
       - hspec
+      - hspec-checkers
