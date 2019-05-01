@@ -8,4 +8,4 @@ import Prelude
 import Test.DocTest
 
 main :: IO ()
-main = doctest ["src"]
+main = doctest ["library"]
