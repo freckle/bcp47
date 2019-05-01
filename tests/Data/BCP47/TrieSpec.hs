@@ -1,14 +1,16 @@
 module Data.BCP47.TrieSpec (spec) where
 
+import Prelude hiding (lookup)
+
 import Data.BCP47
 import Data.BCP47.Trie
 import Test.Hspec
 import Test.QuickCheck
 
 spec :: Spec
-spec = describe "find" $ do
-  it "should always find a path it inserts" $ property $ \tag ->
-    find tag (singleton tag "string") `shouldBe` Just "string"
+spec = describe "lookup" $ do
+  it "should always lookup a path it inserts" $ property $ \tag ->
+    lookup tag (singleton tag "string") `shouldBe` Just "string"
 
   it "has equality" $ property $ \xs ->
     fromList xs `shouldBe` (fromList xs :: Trie Bool)
@@ -18,30 +20,30 @@ spec = describe "find" $ do
     < singleton es "color"
     `shouldBe` True
 
-  it "finds no match" $ do
+  it "lookups no match" $ do
     let trie = fromList [(en, "color"), (enGB, "colour")]
-    find es trie `shouldBe` Nothing
+    lookup es trie `shouldBe` Nothing
 
-  it "finds no match deeply" $ do
+  it "lookups no match deeply" $ do
     let trie = fromList [(enGBTJP, "colour")]
-    find enGB trie `shouldBe` Nothing
+    lookup enGB trie `shouldBe` Nothing
 
-  it "finds an exact match" $ do
+  it "lookups an exact match" $ do
     let trie = fromList [(en, "color"), (enGB, "colour")]
-    find en trie `shouldBe` Just "color"
+    lookup en trie `shouldBe` Just "color"
 
-  it "finds on just language" $ do
+  it "lookups on just language" $ do
     let trie = fromList [(en, "color"), (es, "colour")]
-    find es trie `shouldBe` Just "colour"
+    lookup es trie `shouldBe` Just "colour"
 
-  it "finds a deep exact match" $ do
+  it "lookups a deep exact match" $ do
     let trie = fromList [(enGBTJP, "foo"), (enGB, "colour")]
-    find enGBTJP trie `shouldBe` Just "foo"
+    lookup enGBTJP trie `shouldBe` Just "foo"
 
-  it "finds a relevant match" $ do
+  it "lookups a relevant match" $ do
     let trie = fromList [(en, "color"), (enGB, "colour")]
-    find enTJP trie `shouldBe` Just "color"
+    lookup enTJP trie `shouldBe` Just "color"
 
-  it "finds a deep relevant match" $ do
+  it "lookups a deep relevant match" $ do
     let trie = fromList [(en, "color"), (enGB, "colour")]
-    find enGBTJP trie `shouldBe` Just "colour"
+    lookup enGBTJP trie `shouldBe` Just "colour"
