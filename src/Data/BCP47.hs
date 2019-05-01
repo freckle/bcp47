@@ -5,8 +5,6 @@ module Data.BCP47
   , mkLanguage
   , mkLocalized
   , fromText
-  -- * Predicates
-  , isLessConstrainedThan
   -- * Components
   , ISO639_1
   , languageToText
@@ -52,7 +50,6 @@ import Data.Bifunctor (first)
 import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode(GB, US))
 import Data.LanguageCodes (ISO639_1(EN, ES))
-import Data.Maybe (isNothing)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
@@ -189,48 +186,3 @@ enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
 
 enGBTJP :: BCP47
 enGBTJP = enGB { extensions = Set.singleton (Extension (pack "t-jp")) }
-
--- | Check if a language tag is less constrained than another
---
--- Note: A tag may be less constrained than another tag, but this does not imply
--- that the other is more constrained. In other words `isMoreConstrainedThan` is
--- not validly defined as:
---
--- @
--- isMoreConstrainedThan x y = not $ isLessConstrainedThan x y
--- @
---
--- >>> en `isLessConstrainedThan` es
--- False
---
--- >>> es `isLessConstrainedThan` en
--- False
---
--- >>> en `isLessConstrainedThan` enGB
--- True
---
--- >>> enGB `isLessConstrainedThan` en
--- False
---
--- >>> enGB `isLessConstrainedThan` enUS
--- False
---
--- >>> en `isLessConstrainedThan` enTJP
--- True
---
--- >>> enTJP `isLessConstrainedThan` en
--- False
---
-isLessConstrainedThan :: BCP47 -> BCP47 -> Bool
-isLessConstrainedThan x y =
-  sameLang
-    && isSubsetBy privateUse
-    && isSubsetBy extensions
-    && isSubsetBy variants
-    && isUnConstrainedEqual region
-    && isUnConstrainedEqual script
-    && isSubsetBy extendedLanguageSubtags
- where
-  sameLang = language x == language y
-  isSubsetBy f = f x `Set.isSubsetOf` f y
-  isUnConstrainedEqual f = isNothing (f x) || f x == f y
