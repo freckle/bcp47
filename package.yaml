@@ -40,4 +40,3 @@ tests:
     dependencies:
       - bcp47
       - hspec
-      - hspec-checkers

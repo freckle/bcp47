@@ -3,17 +3,23 @@
 
 module Data.BCP47.Trie.Internal
   ( Trie(..)
+  , fromList
+  , singleton
+  , union
+  , unionWith
+  , unionUsing
   , Trie2(..)
   , Path(..)
   , singleton2
   , lookup2
   , union2
+  , union2Using
   , fromPath
   , toPath
   )
   where
 
-import Control.Applicative ((<|>))
+import Control.Applicative (liftA2, (<|>))
 import Data.BCP47
 import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode)
@@ -34,8 +40,38 @@ newtype Trie a
   = Trie { unLanguage :: Map ISO639_1 (Trie2 a)}
   deriving (Show, Eq, Ord)
 
+instance Semigroup a => Semigroup (Trie a) where
+  x <> y = unionUsing (liftA2 (<>)) x y
+
+instance Monoid a => Monoid (Trie a) where
+  mempty = Trie mempty
+
+instance Arbitrary a => Arbitrary (Trie a) where
+  arbitrary = fromList <$> arbitrary
+
+fromList :: [(BCP47, a)] -> Trie a
+fromList = foldr (union . uncurry singleton) (Trie mempty)
+
+singleton :: BCP47 -> a -> Trie a
+singleton tag@BCP47 {..} = Trie . Map.singleton language . singleton2 tag
+
+union :: Trie a -> Trie a -> Trie a
+union = unionUsing (<|>)
+
+unionWith :: (a -> a -> a) -> Trie a -> Trie a -> Trie a
+unionWith f = unionUsing (liftA2 f)
+
+unionUsing :: (Maybe a -> Maybe a -> Maybe a) -> Trie a -> Trie a -> Trie a
+unionUsing f (Trie x) (Trie y) = Trie $ Map.unionWith (union2Using f) x y
+
 data Trie2 a = Trie2 (Maybe a) (Map Path (Trie2 a))
   deriving (Show, Eq, Ord)
+
+instance Semigroup a => Semigroup (Trie2 a) where
+  x <> y = union2Using (liftA2 (<>)) x y
+
+instance Monoid a => Monoid (Trie2 a) where
+  mempty = Trie2 mempty mempty
 
 data Path
   = TrieExtendedLanguageSubtag LanguageExtension
@@ -84,4 +120,8 @@ lookup2 tag = getLast . go (toPath tag)
     Last mVal <> (go ps =<< (Last $ Map.lookup p children))
 
 union2 :: Trie2 a -> Trie2 a -> Trie2 a
-union2 (Trie2 x xs) (Trie2 y ys) = Trie2 (x <|> y) (Map.unionWith union2 xs ys)
+union2 = union2Using (<|>)
+
+union2Using :: (Maybe a -> Maybe a -> Maybe a) -> Trie2 a -> Trie2 a -> Trie2 a
+union2Using f (Trie2 x xs) (Trie2 y ys) =
+  Trie2 (f x y) (Map.unionWith union2 xs ys)
