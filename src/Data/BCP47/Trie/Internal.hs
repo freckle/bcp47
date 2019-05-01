@@ -65,8 +65,8 @@ toPath BCP47 {..} =
 toVal :: a -> Trie2 a
 toVal x = Trie2 (Just x) mempty
 
-find2 :: BCP47 -> Trie2 a -> Maybe a
-find2 tag = getLast . go (toPath tag)
+lookup2 :: BCP47 -> Trie2 a -> Maybe a
+lookup2 tag = getLast . go (toPath tag)
  where
   go :: [Path] -> Trie2 a -> Last a
   go [] (Trie2 mVal _) = Last mVal
