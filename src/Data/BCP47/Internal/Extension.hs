@@ -9,10 +9,11 @@ module Data.BCP47.Internal.Extension
 where
 
 import Control.Monad (void, when)
+import Data.BCP47.Internal.Arbitrary
+  (Arbitrary, alphaChar, alphaNumString, arbitrary, choose, suchThat)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
-import Test.QuickCheck.Arbitrary (Arbitrary, arbitrary)
 import Text.Megaparsec (Parsec, count', parse)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (parseErrorPretty)
@@ -21,7 +22,11 @@ newtype Extension = Extension { extensionToText :: Text }
   deriving (Show, Eq, Ord)
 
 instance Arbitrary Extension where
-  arbitrary = Extension . pack <$> arbitrary
+  arbitrary = do
+    prefix <- alphaChar `suchThat` (`notElem` ['x', 'X'])
+    len <- choose (2,8)
+    chars <- alphaNumString len
+    pure . Extension . pack $ prefix : '-' : chars
 
 extensionFromText :: Text -> Either Text Extension
 extensionFromText =

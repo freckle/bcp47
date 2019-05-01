@@ -11,19 +11,25 @@ import Data.BCP47.Internal.Variant
 import Data.ISO3166_CountryCodes (CountryCode(CN))
 import Data.LanguageCodes (ISO639_1(ZH))
 import qualified Data.Set as Set
-import Data.Text (unpack)
+import Data.Text (pack, unpack)
 import Test.Hspec
+import Test.QuickCheck (property)
 
 spec :: Spec
-spec = describe "fromText" $ it "parses all components" $ do
-  lng <- either (ioError . userError . unpack) pure
-    $ fromText "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
-  language lng `shouldBe` ZH
-  extendedLanguageSubtags lng
-    `shouldBe` Set.singleton (LanguageExtension "abc-def-zxy")
-  script lng `shouldBe` Just (Script "Hant")
-  region lng `shouldBe` Just CN
-  variants lng `shouldBe` Set.singleton (Variant "1967")
-  extensions lng `shouldBe` Set.singleton (Extension "y-extensi")
-  privateUse lng
-    `shouldBe` Set.fromList [PrivateUse "private1", PrivateUse "private2"]
+spec = do
+  describe "fromText" $ it "parses all components" $ do
+    lng <- either (ioError . userError . unpack) pure
+      $ fromText "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
+    language lng `shouldBe` ZH
+    extendedLanguageSubtags lng
+      `shouldBe` Set.singleton (LanguageExtension "abc-def-zxy")
+    script lng `shouldBe` Just (Script "Hant")
+    region lng `shouldBe` Just CN
+    variants lng `shouldBe` Set.singleton (Variant "1967")
+    extensions lng `shouldBe` Set.singleton (Extension "y-extensi")
+    privateUse lng
+      `shouldBe` Set.fromList [PrivateUse "private1", PrivateUse "private2"]
+  describe "Arbitrary"
+    . it "can parse arbitrary generated tags"
+    . property
+    $ \tag -> fromText (pack (show tag)) `shouldBe` Right tag

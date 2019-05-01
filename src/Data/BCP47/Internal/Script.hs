@@ -8,10 +8,10 @@ module Data.BCP47.Internal.Script
   )
 where
 
+import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
-import Test.QuickCheck.Arbitrary
 import Text.Megaparsec (Parsec, count, parse)
 import Text.Megaparsec.Char (letterChar)
 import Text.Megaparsec.Error (parseErrorPretty)
@@ -20,7 +20,7 @@ newtype Script = Script { scriptToText :: Text }
   deriving (Show, Eq, Ord)
 
 instance Arbitrary Script where
-  arbitrary = Script . pack <$> arbitrary
+  arbitrary = Script . pack <$> alphaString 4
 
 scriptFromText :: Text -> Either Text Script
 scriptFromText =

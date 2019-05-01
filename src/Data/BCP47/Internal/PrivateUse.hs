@@ -9,12 +9,13 @@ module Data.BCP47.Internal.PrivateUse
 where
 
 import Control.Monad (void)
+import Data.BCP47.Internal.Arbitrary
+  (Arbitrary, alphaNumString, arbitrary, choose)
 import Data.Bifunctor (first)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import Data.Void (Void)
-import Test.QuickCheck.Arbitrary
 import Text.Megaparsec (Parsec, count', parse, some)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (parseErrorPretty)
@@ -23,7 +24,10 @@ newtype PrivateUse = PrivateUse { privateUseToText :: Text }
   deriving (Show, Eq, Ord)
 
 instance Arbitrary PrivateUse where
-  arbitrary = PrivateUse . pack <$> arbitrary
+  arbitrary = do
+    len <- choose (1,8)
+    chars <- alphaNumString len
+    pure . PrivateUse $ pack chars
 
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
 privateUseFromText =
