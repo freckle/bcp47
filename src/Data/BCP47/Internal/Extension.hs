@@ -16,7 +16,7 @@ import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count', parse)
 import Text.Megaparsec.Char (alphaNumChar, char)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 newtype Extension = Extension { extensionToText :: Text }
   deriving (Show, Eq, Ord)
@@ -30,7 +30,7 @@ instance Arbitrary Extension where
 
 extensionFromText :: Text -> Either Text Extension
 extensionFromText =
-  first (pack . parseErrorPretty) . parse extensionP "extensionFromText"
+  first (pack . errorBundlePretty) . parse extensionP "extensionFromText"
 
 -- | BCP-47 extension parser
 --

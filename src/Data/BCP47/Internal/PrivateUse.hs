@@ -18,7 +18,7 @@ import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count', parse, some)
 import Text.Megaparsec.Char (alphaNumChar, char)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 newtype PrivateUse = PrivateUse { privateUseToText :: Text }
   deriving (Show, Eq, Ord)
@@ -31,7 +31,7 @@ instance Arbitrary PrivateUse where
 
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
 privateUseFromText =
-  first (pack . parseErrorPretty) . parse privateUseP "privateUseFromText"
+  first (pack . errorBundlePretty) . parse privateUseP "privateUseFromText"
 
 -- | BCP-47 private use parser
 --

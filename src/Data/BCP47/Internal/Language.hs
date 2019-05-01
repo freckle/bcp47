@@ -14,14 +14,14 @@ import Data.Text (Text, pack, toLower)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, parse)
 import Text.Megaparsec.Char (lowerChar)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 languageToText :: ISO639_1 -> Text
 languageToText = toLower . pack . show
 
 languageFromText :: Text -> Either Text ISO639_1
 languageFromText =
-  first (pack . parseErrorPretty) . parse languageP "languageFromText"
+  first (pack . errorBundlePretty) . parse languageP "languageFromText"
 
 -- | BCP-47 language parser
 --

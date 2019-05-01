@@ -16,7 +16,7 @@ import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, count', parse, try)
 import Text.Megaparsec.Char (alphaNumChar, digitChar)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | BCP-47 variant parser
 --
@@ -50,5 +50,5 @@ instance Arbitrary Variant where
 
 variantFromText :: Text -> Either Text Variant
 variantFromText =
-  first (pack . parseErrorPretty) . parse variantP "variantFromText"
+  first (pack . errorBundlePretty) . parse variantP "variantFromText"
 

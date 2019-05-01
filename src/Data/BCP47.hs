@@ -62,7 +62,7 @@ import Test.QuickCheck.Arbitrary
 import Test.QuickCheck.Gen (elements)
 import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
 import Text.Megaparsec.Char (char)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | BCP-47
 --
@@ -122,7 +122,7 @@ mkLocalized lang locale =
 -- Right de-CH
 --
 -- >>> fromText $ pack "ru-USSSR"
--- Left "fromText:1:8:\nunexpected 'R'\nexpecting '-'\n"
+-- Left "fromText:1:8:\n  |\n1 | ru-USSSR\n  |        ^\nunexpected 'R'\nexpecting '-'\n"
 --
 -- >>> fromText $ pack "en-a-ccc-v-qqq-a-bbb"
 -- Right en-a-bbb-a-ccc-v-qqq
@@ -155,7 +155,7 @@ mkLocalized lang locale =
 -- Right zh
 --
 fromText :: Text -> Either Text BCP47
-fromText = first (pack . parseErrorPretty) . parse parser "fromText"
+fromText = first (pack . errorBundlePretty) . parse parser "fromText"
 
 parser :: Parsec Void Text BCP47
 parser =

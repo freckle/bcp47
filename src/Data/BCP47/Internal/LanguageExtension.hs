@@ -16,7 +16,7 @@ import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, parse)
 import Text.Megaparsec.Char (char, letterChar)
-import Text.Megaparsec.Error (parseErrorPretty)
+import Text.Megaparsec.Error (errorBundlePretty)
 
 newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
   deriving (Show, Eq, Ord)
@@ -27,7 +27,7 @@ instance Arbitrary LanguageExtension where
     pure . LanguageExtension $ pack $ intercalate "-" components
 
 languageExtensionFromText :: Text -> Either Text LanguageExtension
-languageExtensionFromText = first (pack . parseErrorPretty)
+languageExtensionFromText = first (pack . errorBundlePretty)
   . parse languageExtensionP "languageExtensionFromText"
 
 -- | BCP-47 language extension parser
