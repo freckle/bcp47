@@ -1,7 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
 {-# LANGUAGE RecordWildCards #-}
 
-module Data.BCP47.Trie.Internal where
+module Data.BCP47.Trie.Internal
+  ( Trie(..)
+  , Trie2(..)
+  , Path(..)
+  , singleton2
+  , lookup2
+  , union2
+  , fromPath
+  , toPath
+  )
+  where
 
 import Control.Applicative ((<|>))
 import Data.BCP47
