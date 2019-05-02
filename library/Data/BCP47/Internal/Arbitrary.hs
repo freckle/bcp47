@@ -5,13 +5,25 @@ module Data.BCP47.Internal.Arbitrary
   , alphaNumString
   , alphaChar
   , numChar
+  , elements
   , choose
   , oneof
   , suchThat
+  , listOf
+  , vectorOf
   ) where
 
 import Test.QuickCheck
-  (Arbitrary, Gen, arbitrary, choose, elements, oneof, suchThat, vectorOf)
+  ( Arbitrary
+  , Gen
+  , arbitrary
+  , choose
+  , elements
+  , listOf
+  , oneof
+  , suchThat
+  , vectorOf
+  )
 
 numChar :: Gen Char
 numChar = elements numChars

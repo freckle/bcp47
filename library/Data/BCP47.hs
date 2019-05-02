@@ -1,7 +1,16 @@
+{-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47
-  ( BCP47(..)
+  ( BCP47
+  , language
+  , extendedLanguageSubtags
+  , script
+  , region
+  , variants
+  , extensions
+  , privateUse
+  , toSpecifiers
   , mkLanguage
   , mkLocalized
   , fromText
@@ -39,24 +48,26 @@ where
 
 import Control.Applicative ((<|>))
 import Control.Monad (MonadPlus)
+import Data.BCP47.Internal.Arbitrary
+  (Arbitrary, arbitrary, choose, elements, listOf, vectorOf)
 import Data.BCP47.Internal.Extension
 import Data.BCP47.Internal.Language
 import Data.BCP47.Internal.LanguageExtension
 import Data.BCP47.Internal.PrivateUse
 import Data.BCP47.Internal.Region
 import Data.BCP47.Internal.Script
+import Data.BCP47.Internal.Specifiers
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode(GB, US))
 import Data.LanguageCodes (ISO639_1(EN, ES))
+import Data.Maybe (mapMaybe)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import qualified Data.Text as T
 import Data.Void (Void)
-import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Gen (elements)
 import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
 import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
@@ -68,47 +79,94 @@ import Text.Megaparsec.Error (errorBundlePretty)
 data BCP47
   = BCP47
   { language :: ISO639_1
-  , extendedLanguageSubtags :: Set LanguageExtension
-  , script :: Maybe Script
-  , region :: Maybe CountryCode
-  , variants :: Set Variant
-  , extensions :: Set Extension
-  , privateUse :: Set PrivateUse
+  , specifiers :: Set Specifiers
   }
   deriving (Eq, Ord)
 
 instance Arbitrary BCP47 where
   arbitrary = BCP47
     <$> elements [EN, ES]
-    <*> arbitrary
-    <*> arbitrary
-    <*> elements [Just GB, Just US, Nothing]
-    <*> arbitrary
-    <*> arbitrary
-    <*> arbitrary
+    <*> specs
+   where
+    oneOrNone f =
+      choose (0,1) >>= (`vectorOf` (f <$> arbitrary))
+    manyOf f = listOf (f <$> arbitrary)
+    specs = Set.fromList . mconcat <$> sequenceA
+      [ manyOf SpecifyLanguageExtension
+      , oneOrNone SpecifyScript
+      , choose (0,1) >>= (`vectorOf` (elements $ SpecifyRegion <$> [US, GB]))
+      , manyOf SpecifyVariant
+      , manyOf SpecifyExtension
+      , oneOrNone SpecifyPrivateUse
+      ]
 
 instance Show BCP47 where
-  show b = T.unpack $ T.concat
-    [ languageToText (language b)
-    , fromSet languageExtensionToText extendedLanguageSubtags
-    , may scriptToText script
-    , may regionToText region
-    , fromSet variantToText variants
-    , fromSet extensionToText extensions
-    , if Set.null (privateUse b) then "" else "-x"
-    , fromSet privateUseToText privateUse
+  show b = T.unpack
+    . T.intercalate "-"
+    $ mconcat
+    [ [languageToText $ language b]
+    , mapMaybe toText . Set.toList $ specifiers b
+    , if Set.null (privateUse b) then [] else ["x"]
+    , map privateUseToText . Set.toList $ privateUse b
     ]
    where
-    may f g = fromList f . toList $ g b
-    fromSet f g = fromList f . Set.toList $ g b
-    fromList f = T.concat . fmap (("-" <>) . f)
+    toText = \case
+      SpecifyLanguageExtension x -> Just $ languageExtensionToText x
+      SpecifyScript x -> Just $ scriptToText x
+      SpecifyRegion x -> Just $ regionToText x
+      SpecifyVariant x -> Just $ variantToText x
+      SpecifyExtension x -> Just $ extensionToText x
+      SpecifyPrivateUse _ -> Nothing
+
+extendedLanguageSubtags :: BCP47 -> Set LanguageExtension
+extendedLanguageSubtags = asSet $ \case
+  SpecifyLanguageExtension x -> Just x
+  _otherwise -> Nothing
+
+script :: BCP47 -> Maybe Script
+script = headMay . mapMaybe f . Set.toList . specifiers
+ where
+  f = \case
+    SpecifyScript x -> Just x
+    _otherwise -> Nothing
+
+region :: BCP47 -> Maybe CountryCode
+region = headMay . mapMaybe f . Set.toList . specifiers
+ where
+  f = \case
+    SpecifyRegion x -> Just x
+    _otherwise -> Nothing
+
+variants :: BCP47 -> Set Variant
+variants = asSet $ \case
+  SpecifyVariant x -> Just x
+  _otherwise -> Nothing
+
+extensions :: BCP47 -> Set Extension
+extensions = asSet $ \case
+  SpecifyExtension x -> Just x
+  _otherwise -> Nothing
+
+privateUse :: BCP47 -> Set PrivateUse
+privateUse = asSet $ \case
+  SpecifyPrivateUse x -> Just x
+  _otherwise -> Nothing
+
+asSet :: Ord a => (Specifiers -> Maybe a) -> BCP47 -> Set a
+asSet f = Set.fromList . mapMaybe f . Set.toList . specifiers
+
+headMay :: [x] -> Maybe x
+headMay [] = Nothing
+headMay (x : _) = Just x
+
+toSpecifiers :: BCP47 -> [Specifiers]
+toSpecifiers tag = toList $ specifiers tag
 
 mkLanguage :: ISO639_1 -> BCP47
-mkLanguage lang = BCP47 lang mempty Nothing Nothing mempty mempty mempty
+mkLanguage lang = BCP47 lang mempty
 
 mkLocalized :: ISO639_1 -> CountryCode -> BCP47
-mkLocalized lang locale =
-  BCP47 lang mempty Nothing (Just locale) mempty mempty mempty
+mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 
 -- | Parse a language tag from text
 --
@@ -155,19 +213,21 @@ fromText :: Text -> Either Text BCP47
 fromText = first (pack . errorBundlePretty) . parse parser "fromText"
 
 parser :: Parsec Void Text BCP47
-parser =
-  BCP47
-    <$> languageP
-    <*> manyAsSet (try (char '-' *> languageExtensionP))
-    <*> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
-    <*> (try (optional $ char '-' *> regionP) <|> pure Nothing)
-    <*> manyAsSet (try (char '-' *> variantP))
-    <*> manyAsSet (try (char '-' *> extensionP))
-    <*> (try (char '-' *> privateUseP) <|> mempty)
-    <* hidden eof
+parser = BCP47 <$> languageP <*> specifiersP <* hidden eof
+ where
+  specifiersP = mconcat <$> sequenceA
+    [ manyAsSet SpecifyLanguageExtension (try (char '-' *> languageExtensionP))
+    , maybe mempty (Set.singleton . SpecifyScript)
+      <$> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
+    , maybe mempty (Set.singleton . SpecifyRegion)
+      <$> (try (optional $ char '-' *> regionP) <|> pure Nothing)
+    , manyAsSet SpecifyVariant (try (char '-' *> variantP))
+    , manyAsSet SpecifyExtension (try (char '-' *> extensionP))
+    , Set.map SpecifyPrivateUse <$> (try (char '-' *> privateUseP) <|> mempty)
+    ]
 
-manyAsSet :: (Ord a, MonadPlus m) => m a -> m (Set a)
-manyAsSet f = Set.fromList <$> many f
+manyAsSet :: (Ord b, MonadPlus m) => (a -> b) -> m a -> m (Set b)
+manyAsSet f p = Set.fromList . map f <$> many p
 
 es :: BCP47
 es = mkLanguage ES
@@ -182,7 +242,13 @@ enUS :: BCP47
 enUS = mkLocalized EN US
 
 enTJP :: BCP47
-enTJP = en { extensions = Set.singleton (Extension (pack "t-jp")) }
+enTJP = en
+  { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+    $ specifiers en
+  }
 
 enGBTJP :: BCP47
-enGBTJP = enGB { extensions = Set.singleton (Extension (pack "t-jp")) }
+enGBTJP = enGB
+  { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+    $ specifiers enGB
+  }
