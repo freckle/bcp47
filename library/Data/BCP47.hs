@@ -75,7 +75,7 @@ data BCP47
   , extensions :: Set Extension
   , privateUse :: Set PrivateUse
   }
-  deriving (Eq)
+  deriving (Eq, Ord)
 
 instance Arbitrary BCP47 where
   arbitrary = BCP47
