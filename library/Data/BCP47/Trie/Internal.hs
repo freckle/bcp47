@@ -12,6 +12,7 @@ module Data.BCP47.Trie.Internal
   , Path(..)
   , singleton2
   , lookup2
+  , match2
   , union2
   , union2Using
   , fromPath
@@ -118,6 +119,13 @@ lookup2 tag = getLast . go (toPath tag)
   go [] (Trie2 mVal _) = Last mVal
   go (p : ps) (Trie2 mVal children) =
     Last mVal <> (go ps =<< (Last $ Map.lookup p children))
+
+match2 :: BCP47 -> Trie2 a -> Maybe a
+match2 tag = go (toPath tag)
+ where
+  go :: [Path] -> Trie2 a -> Maybe a
+  go [] (Trie2 mVal _) = mVal
+  go (p : ps) (Trie2 _ children) = go ps =<< Map.lookup p children
 
 union2 :: Trie2 a -> Trie2 a -> Trie2 a
 union2 = union2Using (<|>)
