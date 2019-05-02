@@ -11,6 +11,8 @@ module Data.BCP47
   , extensions
   , privateUse
   , toSpecifiers
+  , inits
+  -- * Construction
   , mkLanguage
   , mkLocalized
   , fromText
@@ -62,6 +64,7 @@ import Data.Bifunctor (first)
 import Data.Foldable (toList)
 import Data.ISO3166_CountryCodes (CountryCode(GB, US))
 import Data.LanguageCodes (ISO639_1(EN, ES))
+import qualified Data.List as List
 import Data.Maybe (mapMaybe)
 import Data.Set (Set)
 import qualified Data.Set as Set
@@ -161,6 +164,15 @@ headMay (x : _) = Just x
 
 toSpecifiers :: BCP47 -> [Specifiers]
 toSpecifiers tag = toList $ specifiers tag
+
+-- | Produce a list of `(<= priority)` language tags
+--
+-- >>> inits enGBTJP
+-- [en,en-GB,en-GB-t-jp]
+--
+inits :: BCP47 -> [BCP47]
+inits tag =
+  map (BCP47 (language tag) . Set.fromList) . List.inits $ toSpecifiers tag
 
 mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty

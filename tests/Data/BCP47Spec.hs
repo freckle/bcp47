@@ -29,6 +29,7 @@ spec = do
     extensions lng `shouldBe` Set.singleton (Extension "y-extensi")
     privateUse lng
       `shouldBe` Set.fromList [PrivateUse "private1", PrivateUse "private2"]
+
   describe "Arbitrary"
     . it "can parse arbitrary generated tags"
     . property
