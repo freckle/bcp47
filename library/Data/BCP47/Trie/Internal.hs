@@ -1,5 +1,6 @@
-
-
+{-# LANGUAGE DeriveFoldable #-}
+{-# LANGUAGE DeriveFunctor #-}
+{-# LANGUAGE DeriveTraversable #-}
 
 module Data.BCP47.Trie.Internal
   ( Trie(..)
@@ -33,7 +34,7 @@ import Test.QuickCheck.Arbitrary
 --
 newtype Trie a
   = Trie { unLanguage :: Map ISO639_1 (Trie2 a)}
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Functor, Foldable, Traversable)
 
 instance Semigroup a => Semigroup (Trie a) where
   x <> y = unionUsing (liftA2 (<>)) x y
@@ -60,7 +61,7 @@ unionUsing :: (Maybe a -> Maybe a -> Maybe a) -> Trie a -> Trie a -> Trie a
 unionUsing f (Trie x) (Trie y) = Trie $ Map.unionWith (union2Using f) x y
 
 data Trie2 a = Trie2 (Maybe a) (Map Specifiers (Trie2 a))
-  deriving (Show, Eq, Ord)
+  deriving (Show, Eq, Ord, Functor, Foldable, Traversable)
 
 instance Semigroup a => Semigroup (Trie2 a) where
   x <> y = union2Using (liftA2 (<>)) x y
