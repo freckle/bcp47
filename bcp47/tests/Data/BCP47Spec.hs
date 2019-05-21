@@ -33,4 +33,4 @@ spec = do
   describe "Arbitrary"
     . it "can parse arbitrary generated tags"
     . property
-    $ \tag -> fromText (pack (show tag)) `shouldBe` Right tag
+    $ \tag -> fromText (toText tag) `shouldBe` Right tag

@@ -16,6 +16,8 @@ module Data.BCP47
   , mkLanguage
   , mkLocalized
   , fromText
+  -- * Serialization
+  , toText
   -- * Components
   , ISO639_1
   , languageToText
@@ -104,22 +106,23 @@ instance Arbitrary BCP47 where
       ]
 
 instance Show BCP47 where
-  show b = T.unpack
-    . T.intercalate "-"
-    $ mconcat
-    [ [languageToText $ language b]
-    , mapMaybe toText . Set.toList $ specifiers b
-    , if Set.null (privateUse b) then [] else ["x"]
-    , map privateUseToText . Set.toList $ privateUse b
-    ]
-   where
-    toText = \case
-      SpecifyLanguageExtension x -> Just $ languageExtensionToText x
-      SpecifyScript x -> Just $ scriptToText x
-      SpecifyRegion x -> Just $ regionToText x
-      SpecifyVariant x -> Just $ variantToText x
-      SpecifyExtension x -> Just $ extensionToText x
-      SpecifyPrivateUse _ -> Nothing
+  show = T.unpack . toText
+
+toText :: BCP47 -> Text
+toText b = T.intercalate "-" $ mconcat
+  [ [languageToText $ language b]
+  , mapMaybe fromSpecifiers . Set.toList $ specifiers b
+  , if Set.null (privateUse b) then [] else ["x"]
+  , map privateUseToText . Set.toList $ privateUse b
+  ]
+ where
+  fromSpecifiers = \case
+    SpecifyLanguageExtension x -> Just $ languageExtensionToText x
+    SpecifyScript x -> Just $ scriptToText x
+    SpecifyRegion x -> Just $ regionToText x
+    SpecifyVariant x -> Just $ variantToText x
+    SpecifyExtension x -> Just $ extensionToText x
+    SpecifyPrivateUse _ -> Nothing
 
 extendedLanguageSubtags :: BCP47 -> Set LanguageExtension
 extendedLanguageSubtags = asSet $ \case
