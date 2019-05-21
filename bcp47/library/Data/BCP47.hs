@@ -108,6 +108,11 @@ instance Arbitrary BCP47 where
 instance Show BCP47 where
   show = T.unpack . toText
 
+-- | Serialize @'BCP47'@ to @'Text'@
+--
+-- Specifiers are serialized in the order described in the RFC.
+-- Private-use specifiers only appear at the end prefixed with an x.
+--
 toText :: BCP47 -> Text
 toText b = T.intercalate "-" $ mconcat
   [ [languageToText $ language b]
