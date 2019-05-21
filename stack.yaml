@@ -1,5 +1,4 @@
 resolver: lts-13.17
 packages:
 - bcp47
-- bcp47-cassava
-- bcp47-persistent
+- bcp47-orphans
