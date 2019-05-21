@@ -11,6 +11,7 @@ where
 import Control.Monad (void)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose)
+import Data.BCP47.Internal.Parser (complete)
 import Data.Bifunctor (first)
 import Data.Set (Set)
 import qualified Data.Set as Set
@@ -40,7 +41,7 @@ privateUseFromText =
 -- @@
 --
 privateUseP :: Parsec Void Text (Set PrivateUse)
-privateUseP = do
+privateUseP = complete $ do
   void $ char 'x'
   rest <- some (char '-' *> count' 1 8 alphaNumChar)
   pure $ Set.fromList $ PrivateUse . pack <$> rest

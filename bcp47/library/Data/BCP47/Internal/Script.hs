@@ -9,6 +9,7 @@ module Data.BCP47.Internal.Script
 where
 
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
+import Data.BCP47.Internal.Parser (complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
@@ -33,4 +34,4 @@ scriptFromText =
 -- @@
 --
 scriptP :: Parsec Void Text Script
-scriptP = Script . pack <$> count 4 letterChar
+scriptP = complete $ Script . pack <$> count 4 letterChar
