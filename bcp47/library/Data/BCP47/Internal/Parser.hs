@@ -17,5 +17,6 @@ import Text.Megaparsec.Char (char)
 --
 -- The alternative would be to use @'notFollowedBy'@ with knowledge of
 -- the legal characters in the next valid specifier.
+--
 complete :: Parsec Void Text a -> Parsec Void Text a
 complete parser = parser <* lookAhead (void (char '-') <|> eof)
