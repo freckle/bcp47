@@ -16,6 +16,7 @@ dependencies:
 - base >= 4.7 && < 5
 - bcp47
 - cassava
+- esqueleto
 - persistent
 - text
 
