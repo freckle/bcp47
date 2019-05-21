@@ -11,6 +11,7 @@ where
 import Control.Monad (void, when)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaChar, alphaNumString, arbitrary, choose, suchThat)
+import Data.BCP47.Internal.Parser (complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
@@ -47,9 +48,9 @@ extensionFromText =
 -- @@
 --
 extensionP :: Parsec Void Text Extension
-extensionP = Extension . pack <$> do
+extensionP = complete $ do
   ext <- alphaNumChar
   when (ext `elem` ['x', 'X']) $ fail "private use suffix found"
   void $ char '-'
   rest <- count' 2 8 alphaNumChar
-  pure $ ext : '-' : rest
+  pure . Extension . pack $ ext : '-' : rest

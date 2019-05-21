@@ -191,8 +191,8 @@ mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 -- >>> fromText $ pack "de-CH"
 -- Right de-CH
 --
--- >>> fromText $ pack "ru-USSSR"
--- Left "fromText:1:8:\n  |\n1 | ru-USSSR\n  |        ^\nunexpected 'R'\nexpecting '-'\n"
+-- >>> fromText $ pack "ru-USR"
+-- Left "fromText:1:3:\n  |\n1 | ru-USR\n  |   ^\nunexpected '-'\n"
 --
 -- >>> fromText $ pack "en-a-ccc-v-qqq-a-bbb"
 -- Right en-a-bbb-a-ccc-v-qqq

@@ -6,6 +6,7 @@ module Data.BCP47.Internal.Region
   )
 where
 
+import Data.BCP47.Internal.Parser (complete)
 import Data.Bifunctor (first)
 import Data.ISO3166_CountryCodes (CountryCode)
 import Data.Text (Text, pack)
@@ -33,4 +34,4 @@ regionFromText =
 -- @@
 --
 regionP :: Parsec Void Text CountryCode
-regionP = either fail pure . readEither =<< count 2 upperChar
+regionP = complete $ either fail pure . readEither =<< count 2 upperChar

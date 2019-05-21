@@ -11,6 +11,7 @@ module Data.BCP47.Internal.Variant
 import Control.Applicative ((<|>))
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose, numChar, oneof)
+import Data.BCP47.Internal.Parser (complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
@@ -26,7 +27,11 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- @@
 --
 variantP :: Parsec Void Text Variant
-variantP = Variant . pack <$> (try (count' 5 8 alphaNumChar) <|> digitPrefixed)
+variantP =
+  complete
+    $ Variant
+    . pack
+    <$> (try (count' 5 8 alphaNumChar) <|> digitPrefixed)
  where
   digitPrefixed = do
     x <- digitChar
