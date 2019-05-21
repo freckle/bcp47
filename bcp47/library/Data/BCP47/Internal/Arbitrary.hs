@@ -44,8 +44,7 @@ alphaNumChars :: String
 alphaNumChars = alphaChars ++ numChars
 
 alphaChars :: String
-alphaChars = filter (`notElem` "xX") allAlphaChars
-  where allAlphaChars = ['a' .. 'z'] ++ ['A' .. 'Z']
+alphaChars = ['a' .. 'z'] ++ ['A' .. 'Z']
 
 numChars :: String
 numChars = ['0' .. '9']
