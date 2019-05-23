@@ -108,6 +108,11 @@ instance Arbitrary BCP47 where
 instance Show BCP47 where
   show = T.unpack . toText
 
+instance Read BCP47 where
+  readsPrec _ s = case fromText $ T.pack s of
+    Left _ -> []
+    Right b -> [(b, "")]
+
 -- | Serialize @'BCP47'@ to @'Text'@
 --
 -- Specifiers are serialized in the order described in the RFC.
