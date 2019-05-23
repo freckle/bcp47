@@ -17,6 +17,7 @@ dependencies:
 - base >= 4.7 && < 5
 - bcp47
 - cassava
+- errors
 - esqueleto
 - hashable
 - path-pieces

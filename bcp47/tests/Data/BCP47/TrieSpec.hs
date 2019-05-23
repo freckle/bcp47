@@ -1,4 +1,6 @@
-module Data.BCP47.TrieSpec (spec) where
+module Data.BCP47.TrieSpec
+  ( spec
+  ) where
 
 import Prelude hiding (lookup)
 

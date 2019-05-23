@@ -1,7 +1,9 @@
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
 
-module Data.BCP47Spec (spec) where
+module Data.BCP47Spec
+  ( spec
+  ) where
 
 import Data.BCP47
 import Data.BCP47.Internal.Extension
