@@ -1,4 +1,3 @@
-{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Data.BCP47.Hashable () where

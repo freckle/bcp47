@@ -1,5 +1,5 @@
-{-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Data.BCP47.Persist () where
 
