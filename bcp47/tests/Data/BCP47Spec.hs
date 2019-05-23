@@ -1,4 +1,5 @@
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE TypeApplications #-}
 
 module Data.BCP47Spec (spec) where
 
@@ -14,6 +15,7 @@ import qualified Data.Set as Set
 import Data.Text (unpack)
 import Test.Hspec
 import Test.QuickCheck (property)
+import Text.Read (readMaybe)
 
 spec :: Spec
 spec = do
@@ -45,3 +47,6 @@ spec = do
     . it "can parse arbitrary generated tags"
     . property
     $ \tag -> fromText (toText tag) `shouldBe` Right tag
+
+  describe "Read/Show" . it "can roundtrip" . property $ \tag ->
+    readMaybe (show @BCP47 tag) `shouldBe` Just tag
