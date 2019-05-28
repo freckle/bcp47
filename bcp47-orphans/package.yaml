@@ -12,25 +12,31 @@ extra-source-files:
 description: Orphan instances for the BCP47 type
 
 dependencies:
-- QuickCheck
-- aeson
 - base >= 4.7 && < 5
-- bcp47
-- cassava
-- errors
-- esqueleto
-- hashable
-- path-pieces
-- persistent
-- text
 
 library:
   source-dirs: library
+  dependencies:
+  - aeson
+  - bcp47
+  - cassava
+  - errors
+  - esqueleto
+  - hashable
+  - path-pieces
+  - persistent
+  - text
 
 tests:
   spec:
     main: Main.hs
     source-dirs: tests
     dependencies:
-      - bcp47-orphans
-      - hspec
+    - QuickCheck
+    - aeson
+    - bcp47
+    - bcp47-orphans
+    - cassava
+    - hspec
+    - path-pieces
+    - persistent

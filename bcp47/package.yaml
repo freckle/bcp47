@@ -16,17 +16,18 @@ description:
   used in an information object.
 
 dependencies:
-- QuickCheck
 - base >= 4.7 && < 5
-- containers
-- iso3166-country-codes
-- iso639
-- megaparsec
-- text
-- generic-arbitrary
 
 library:
   source-dirs: library
+  dependencies:
+  - QuickCheck
+  - containers
+  - generic-arbitrary
+  - iso3166-country-codes
+  - iso639
+  - megaparsec
+  - text
 
 tests:
   doctest:
@@ -38,5 +39,10 @@ tests:
     main: Main.hs
     source-dirs: tests
     dependencies:
-      - bcp47
-      - hspec
+    - QuickCheck
+    - bcp47
+    - containers
+    - hspec
+    - iso3166-country-codes
+    - iso639
+    - text
