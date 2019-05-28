@@ -1,0 +1,5 @@
+# Indicates last update, must be overridden by --resolver
+resolver: nightly-2018-12-05
+packages:
+- bcp47
+- bcp47-orphans

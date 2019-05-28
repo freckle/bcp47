@@ -1,4 +1,4 @@
-resolver: lts-13.23
+resolver: lts-13.1
 packages:
 - bcp47
 - bcp47-orphans
