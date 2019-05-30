@@ -1,10 +1,10 @@
 name: bcp47
 version: 0.1.0.0
-github:  "frontrow/bcp-47"
+github:  "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
 maintainer: "engineering@freckle.com"
-copyright: "2018 Freckle Education"
+copyright: "2019 Freckle Education"
 
 extra-source-files:
 - README.md

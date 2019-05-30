@@ -1,6 +1,6 @@
 name: bcp47-orphans
 version: 0.1.0.0
-github: "frontrow/bcp-47"
+github: "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
 maintainer: "engineering@freckle.com"
