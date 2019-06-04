@@ -19,7 +19,7 @@ import Text.Read (readEither)
 regionToText :: CountryCode -> Text
 regionToText = pack . show
 
-
+-- | Parse a region subtag from 'Text'
 regionFromText :: Text -> Either Text CountryCode
 regionFromText =
   first (pack . errorBundlePretty) . parse regionP "regionFromText"

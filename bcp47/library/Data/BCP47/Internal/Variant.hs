@@ -38,6 +38,12 @@ variantP =
     xs <- count 3 alphaNumChar
     pure $ x : xs
 
+-- | Variant subtags
+--
+-- Variant subtags are used to indicate additional, well-recognized
+-- variations that define a language or its dialects that are not
+-- covered by other available subtags.
+--
 newtype Variant = Variant { variantToText :: Text }
   deriving (Show, Eq, Ord)
 
@@ -53,7 +59,7 @@ instance Arbitrary Variant where
         chars <- alphaNumString 3
         pure . Variant $ pack $ prefix : chars
 
+-- | Parse a 'Variant' subtag from 'Text'
 variantFromText :: Text -> Either Text Variant
 variantFromText =
   first (pack . errorBundlePretty) . parse variantP "variantFromText"
-

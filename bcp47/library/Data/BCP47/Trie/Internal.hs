@@ -28,10 +28,7 @@ import qualified Data.Map as Map
 import Data.Monoid (Last(Last, getLast))
 import Test.QuickCheck.Arbitrary
 
--- | Trie
---
--- A BCP47 Trie that allows compact mapping and searching between values and tags.
---
+-- | A trie mapping 'BCP47' tags to values
 newtype Trie a
   = Trie { unLanguage :: Map ISO639_1 (Trie2 a)}
   deriving (Show, Eq, Ord, Functor, Foldable, Traversable)
@@ -39,21 +36,26 @@ newtype Trie a
 instance Semigroup a => Semigroup (Trie a) where
   x <> y = unionUsing (liftA2 (<>)) x y
 
-instance Monoid a => Monoid (Trie a) where
+instance Semigroup a => Monoid (Trie a) where
   mempty = Trie mempty
 
 instance Arbitrary a => Arbitrary (Trie a) where
   arbitrary = fromList <$> arbitrary
 
+-- | Construct a 'Trie' from a list of tag/value pairs.
 fromList :: [(BCP47, a)] -> Trie a
 fromList = foldr (union . uncurry singleton) (Trie mempty)
 
+-- | Construct a 'Trie' from a single tag/value pair.
 singleton :: BCP47 -> a -> Trie a
 singleton tag = Trie . Map.singleton (language tag) . singleton2 tag
 
+-- | A left-biased union of two 'Trie' structures. The left value is prefered
+-- when duplicate tags are found.
 union :: Trie a -> Trie a -> Trie a
 union = unionUsing (<|>)
 
+-- | 'union' with a combining function.
 unionWith :: (a -> a -> a) -> Trie a -> Trie a -> Trie a
 unionWith f = unionUsing (liftA2 f)
 

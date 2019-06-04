@@ -18,7 +18,12 @@ module Data.BCP47
   , fromText
   -- * Serialization
   , toText
-  -- * Components
+  -- * Subtags
+  -- | A language tag is composed from a sequence of one or more "subtags",
+  -- each of which refines or narrows the range of language identified by
+  -- the overall tag.  Subtags, in turn, are a sequence of alphanumeric characters
+  -- (letters and digits), distinguished and separated from other subtags in a tag
+  -- by a hyphen ("-", [Unicode] U+002D).
   , ISO639_1
   , languageToText
   , languageFromText
@@ -77,13 +82,16 @@ import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
 import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
--- | BCP-47
+-- | A language tag
 --
--- https://tools.ietf.org/html/bcp47
+-- Language tags are used to help identify languages, whether spoken, written,
+-- signed, or otherwise signaled, for the purpose of communication. This
+-- includes constructed and artificial languages but excludes languages not
+-- intended primarily for human communication, such as programming languages.
 --
 data BCP47
   = BCP47
-  { language :: ISO639_1
+  { language :: ISO639_1 -- ^ The language subtag
   , specifiers :: Set Specifiers
   }
   deriving (Eq, Ord)
@@ -134,11 +142,13 @@ toText b = T.intercalate "-" $ mconcat
     SpecifyExtension x -> Just $ extensionToText x
     SpecifyPrivateUse _ -> Nothing
 
+-- | Lookup all language extension subtags
 extendedLanguageSubtags :: BCP47 -> Set LanguageExtension
 extendedLanguageSubtags = asSet $ \case
   SpecifyLanguageExtension x -> Just x
   _otherwise -> Nothing
 
+-- | Lookup the script subtag
 script :: BCP47 -> Maybe Script
 script = headMay . mapMaybe f . Set.toList . specifiers
  where
@@ -146,6 +156,7 @@ script = headMay . mapMaybe f . Set.toList . specifiers
     SpecifyScript x -> Just x
     _otherwise -> Nothing
 
+-- | Lookup the region subtag
 region :: BCP47 -> Maybe CountryCode
 region = headMay . mapMaybe f . Set.toList . specifiers
  where
@@ -153,16 +164,19 @@ region = headMay . mapMaybe f . Set.toList . specifiers
     SpecifyRegion x -> Just x
     _otherwise -> Nothing
 
+-- | Lookup all variant subtags
 variants :: BCP47 -> Set Variant
 variants = asSet $ \case
   SpecifyVariant x -> Just x
   _otherwise -> Nothing
 
+-- | Lookup all extension subtags
 extensions :: BCP47 -> Set Extension
 extensions = asSet $ \case
   SpecifyExtension x -> Just x
   _otherwise -> Nothing
 
+-- | Lookup all private use subtags
 privateUse :: BCP47 -> Set PrivateUse
 privateUse = asSet $ \case
   SpecifyPrivateUse x -> Just x
@@ -187,9 +201,11 @@ inits :: BCP47 -> [BCP47]
 inits tag =
   map (BCP47 (language tag) . Set.fromList) . List.inits $ toSpecifiers tag
 
+-- Construct a simple lanugage tag
 mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty
 
+-- Construct a localized tag
 mkLocalized :: ISO639_1 -> CountryCode -> BCP47
 mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 
@@ -254,24 +270,30 @@ parser = BCP47 <$> languageP <*> specifiersP <* hidden eof
 manyAsSet :: (Ord b, MonadPlus m) => (a -> b) -> m a -> m (Set b)
 manyAsSet f p = Set.fromList . map f <$> many p
 
+-- | Spanish
 es :: BCP47
 es = mkLanguage ES
 
+-- | English
 en :: BCP47
 en = mkLanguage EN
 
+-- | British English
 enGB :: BCP47
 enGB = mkLocalized EN GB
 
+-- | American English
 enUS :: BCP47
 enUS = mkLocalized EN US
 
+-- | A none-sense tag @en-t-jp@
 enTJP :: BCP47
 enTJP = en
   { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
     $ specifiers en
   }
 
+-- | A none-sense tag @en-GB-t-jp@
 enGBTJP :: BCP47
 enGBTJP = enGB
   { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))

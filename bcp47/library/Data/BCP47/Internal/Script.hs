@@ -17,12 +17,19 @@ import Text.Megaparsec (Parsec, count, parse)
 import Text.Megaparsec.Char (letterChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
+-- | Script subtags
+--
+-- Script subtags are used to indicate the script or writing system
+-- variations that distinguish the written forms of a language or its
+-- dialects.
+--
 newtype Script = Script { scriptToText :: Text }
   deriving (Show, Eq, Ord)
 
 instance Arbitrary Script where
   arbitrary = Script . pack <$> alphaString 4
 
+-- | Parse a 'Script' subtag from 'Text'
 scriptFromText :: Text -> Either Text Script
 scriptFromText =
   first (pack . errorBundlePretty) . parse scriptP "scriptFromText"

@@ -19,6 +19,13 @@ import Text.Megaparsec (Parsec, count', parse)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
+-- | Extension subtags
+--
+-- Extensions provide a mechanism for extending language tags for use in
+-- various applications.  They are intended to identify information that
+-- is commonly used in association with languages or language tags but
+-- that is not part of language identification.
+--
 newtype Extension = Extension { extensionToText :: Text }
   deriving (Show, Eq, Ord)
 
@@ -29,6 +36,7 @@ instance Arbitrary Extension where
     chars <- alphaNumString len
     pure . Extension . pack $ prefix : '-' : chars
 
+-- | Parse an 'Extension' subtag from 'Text'
 extensionFromText :: Text -> Either Text Extension
 extensionFromText =
   first (pack . errorBundlePretty) . parse extensionP "extensionFromText"
