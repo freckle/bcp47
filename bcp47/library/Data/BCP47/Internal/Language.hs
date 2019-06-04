@@ -17,10 +17,10 @@ import Text.Megaparsec (Parsec, parse)
 import Text.Megaparsec.Char (lowerChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
--- | Parse a language subtag from 'Text'
 languageToText :: ISO639_1 -> Text
 languageToText = toLower . pack . show
 
+-- | Parse a language subtag from 'Text'
 languageFromText :: Text -> Either Text ISO639_1
 languageFromText =
   first (pack . errorBundlePretty) . parse languageP "languageFromText"
