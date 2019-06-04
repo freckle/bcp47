@@ -215,7 +215,7 @@ headMay (x : _) = Just x
 toSubtags :: BCP47 -> [Subtags]
 toSubtags tag = toList $ subtags tag
 
--- | Produce a list of `(<= priority)` language tags
+-- | Produce a list of @(<= priority)@ language tags
 --
 -- >>> inits enGBTJP
 -- [en,en-GB,en-GB-t-jp]
