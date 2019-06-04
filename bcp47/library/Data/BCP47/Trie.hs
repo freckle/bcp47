@@ -1,3 +1,8 @@
+-- | A trie like data structure for defining maps from 'BCP47' tags to values.
+--
+-- This structure supports collection and lookup of language tagged values. Its
+-- semantics are based on those defined in the BCP 47 specification.
+--
 module Data.BCP47.Trie
   ( Trie
   , fromList
@@ -26,10 +31,10 @@ lookup tag trie = lookup2 tag =<< Map.lookup (language tag) (unLanguage trie)
 match :: BCP47 -> Trie a -> Maybe a
 match tag trie = match2 tag =<< Map.lookup (language tag) (unLanguage trie)
 
--- | Check if a tag exists in the Trie
+-- | Check if a tag exists in the 'Trie'
 elem :: BCP47 -> Trie a -> Bool
 elem tag = isJust . match tag
 
--- | Check if a Trie is empty
+-- | Check if a 'Trie' is empty
 null :: Trie a -> Bool
 null = Map.null . unLanguage

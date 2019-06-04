@@ -21,6 +21,11 @@ import Text.Megaparsec (Parsec, count', parse, some)
 import Text.Megaparsec.Char (alphaNumChar, char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
+-- | Private Use subtags
+--
+-- Private use subtags are used to indicate distinctions in language
+-- that are important in a given context by private agreement.
+--
 newtype PrivateUse = PrivateUse { privateUseToText :: Text }
   deriving (Show, Eq, Ord)
 
@@ -30,6 +35,7 @@ instance Arbitrary PrivateUse where
     chars <- alphaNumString len
     pure . PrivateUse $ pack chars
 
+-- | Parse a 'PrivateUse' subtag from 'Text'
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
 privateUseFromText =
   first (pack . errorBundlePretty) . parse privateUseP "privateUseFromText"

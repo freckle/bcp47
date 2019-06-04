@@ -19,6 +19,12 @@ import Text.Megaparsec (Parsec, count, parse)
 import Text.Megaparsec.Char (char, letterChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
+-- | Extended language subtags
+--
+-- These are used to identify certain specially selected languages that, for
+-- various historical and compatibility reasons, are closely identified with or
+-- tagged using an existing primary language subtag.
+--
 newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
   deriving (Show, Eq, Ord)
 
@@ -27,6 +33,7 @@ instance Arbitrary LanguageExtension where
     components <- replicateM 3 $ alphaString 3
     pure . LanguageExtension $ pack $ intercalate "-" components
 
+-- | Parse a 'LanguageExtension' subtag from 'Text'
 languageExtensionFromText :: Text -> Either Text LanguageExtension
 languageExtensionFromText = first (pack . errorBundlePretty)
   . parse languageExtensionP "languageExtensionFromText"
