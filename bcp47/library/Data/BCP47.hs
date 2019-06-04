@@ -10,7 +10,7 @@ module Data.BCP47
   , variants
   , extensions
   , privateUse
-  , toSpecifiers
+  , toSubtags
   , inits
   -- * Construction
   , mkLanguage
@@ -65,7 +65,7 @@ import Data.BCP47.Internal.LanguageExtension
 import Data.BCP47.Internal.PrivateUse
 import Data.BCP47.Internal.Region
 import Data.BCP47.Internal.Script
-import Data.BCP47.Internal.Specifiers
+import Data.BCP47.Internal.Subtags
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
@@ -92,7 +92,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 data BCP47
   = BCP47
   { language :: ISO639_1 -- ^ The language subtag
-  , specifiers :: Set Specifiers
+  , subtags :: Set Subtags
   }
   deriving (Eq, Ord)
 
@@ -123,18 +123,18 @@ instance Read BCP47 where
 
 -- | Serialize @'BCP47'@ to @'Text'@
 --
--- Specifiers are serialized in the order described in the RFC.
--- Private-use specifiers only appear at the end prefixed with an x.
+-- Subtags are serialized in the order described in the RFC.
+-- Private-use subtags only appear at the end prefixed with an x.
 --
 toText :: BCP47 -> Text
 toText b = T.intercalate "-" $ mconcat
   [ [languageToText $ language b]
-  , mapMaybe fromSpecifiers . Set.toList $ specifiers b
+  , mapMaybe fromSubtags . Set.toList $ subtags b
   , if Set.null (privateUse b) then [] else ["x"]
   , map privateUseToText . Set.toList $ privateUse b
   ]
  where
-  fromSpecifiers = \case
+  fromSubtags = \case
     SpecifyLanguageExtension x -> Just $ languageExtensionToText x
     SpecifyScript x -> Just $ scriptToText x
     SpecifyRegion x -> Just $ regionToText x
@@ -150,7 +150,7 @@ extendedLanguageSubtags = asSet $ \case
 
 -- | Lookup the script subtag
 script :: BCP47 -> Maybe Script
-script = headMay . mapMaybe f . Set.toList . specifiers
+script = headMay . mapMaybe f . Set.toList . subtags
  where
   f = \case
     SpecifyScript x -> Just x
@@ -158,7 +158,7 @@ script = headMay . mapMaybe f . Set.toList . specifiers
 
 -- | Lookup the region subtag
 region :: BCP47 -> Maybe CountryCode
-region = headMay . mapMaybe f . Set.toList . specifiers
+region = headMay . mapMaybe f . Set.toList . subtags
  where
   f = \case
     SpecifyRegion x -> Just x
@@ -182,15 +182,15 @@ privateUse = asSet $ \case
   SpecifyPrivateUse x -> Just x
   _otherwise -> Nothing
 
-asSet :: Ord a => (Specifiers -> Maybe a) -> BCP47 -> Set a
-asSet f = Set.fromList . mapMaybe f . Set.toList . specifiers
+asSet :: Ord a => (Subtags -> Maybe a) -> BCP47 -> Set a
+asSet f = Set.fromList . mapMaybe f . Set.toList . subtags
 
 headMay :: [x] -> Maybe x
 headMay [] = Nothing
 headMay (x : _) = Just x
 
-toSpecifiers :: BCP47 -> [Specifiers]
-toSpecifiers tag = toList $ specifiers tag
+toSubtags :: BCP47 -> [Subtags]
+toSubtags tag = toList $ subtags tag
 
 -- | Produce a list of `(<= priority)` language tags
 --
@@ -199,7 +199,7 @@ toSpecifiers tag = toList $ specifiers tag
 --
 inits :: BCP47 -> [BCP47]
 inits tag =
-  map (BCP47 (language tag) . Set.fromList) . List.inits $ toSpecifiers tag
+  map (BCP47 (language tag) . Set.fromList) . List.inits $ toSubtags tag
 
 -- Construct a simple lanugage tag
 mkLanguage :: ISO639_1 -> BCP47
@@ -254,9 +254,9 @@ fromText :: Text -> Either Text BCP47
 fromText = first (pack . errorBundlePretty) . parse parser "fromText"
 
 parser :: Parsec Void Text BCP47
-parser = BCP47 <$> languageP <*> specifiersP <* hidden eof
+parser = BCP47 <$> languageP <*> subtagsP <* hidden eof
  where
-  specifiersP = mconcat <$> sequenceA
+  subtagsP = mconcat <$> sequenceA
     [ manyAsSet SpecifyLanguageExtension (try (char '-' *> languageExtensionP))
     , maybe mempty (Set.singleton . SpecifyScript)
       <$> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
@@ -289,13 +289,13 @@ enUS = mkLocalized EN US
 -- | A none-sense tag @en-t-jp@
 enTJP :: BCP47
 enTJP = en
-  { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
-    $ specifiers en
+  { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+    $ subtags en
   }
 
 -- | A none-sense tag @en-GB-t-jp@
 enGBTJP :: BCP47
 enGBTJP = enGB
-  { specifiers = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
-    $ specifiers enGB
+  { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+    $ subtags enGB
   }

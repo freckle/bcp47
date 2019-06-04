@@ -35,7 +35,7 @@ spec = do
       privateUse lng
         `shouldBe` Set.fromList [PrivateUse "private1", PrivateUse "private2"]
 
-    it "only parses complete specifiers" $ do
+    it "only parses complete subtags" $ do
       -- Specifically, the region CN should not be parsed out of the variant CNUVWXYX
       lng <- either (ioError . userError . unpack) pure $ fromText "zh-CNUVWXYX"
       language lng `shouldBe` ZH

@@ -10,19 +10,19 @@ module Data.BCP47.Trie.Internal
   , unionWith
   , unionUsing
   , Trie2(..)
-  , Specifiers(..)
+  , Subtags(..)
   , singleton2
   , lookup2
   , match2
   , union2
   , union2Using
-  , fromSpecifiers
+  , fromSubtags
   )
   where
 
 import Control.Applicative (liftA2, (<|>))
 import Data.BCP47
-import Data.BCP47.Internal.Specifiers
+import Data.BCP47.Internal.Subtags
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Monoid (Last(Last, getLast))
@@ -62,7 +62,7 @@ unionWith f = unionUsing (liftA2 f)
 unionUsing :: (Maybe a -> Maybe a -> Maybe a) -> Trie a -> Trie a -> Trie a
 unionUsing f (Trie x) (Trie y) = Trie $ Map.unionWith (union2Using f) x y
 
-data Trie2 a = Trie2 (Maybe a) (Map Specifiers (Trie2 a))
+data Trie2 a = Trie2 (Maybe a) (Map Subtags (Trie2 a))
   deriving (Show, Eq, Ord, Functor, Foldable, Traversable)
 
 instance Semigroup a => Semigroup (Trie2 a) where
@@ -72,27 +72,27 @@ instance Monoid a => Monoid (Trie2 a) where
   mempty = Trie2 mempty mempty
 
 singleton2 :: BCP47 -> a -> Trie2 a
-singleton2 tag = fromSpecifiers (toSpecifiers tag)
+singleton2 tag = fromSubtags (toSubtags tag)
 
-fromSpecifiers :: [Specifiers] -> a -> Trie2 a
-fromSpecifiers =
+fromSubtags :: [Subtags] -> a -> Trie2 a
+fromSubtags =
   foldr (\path leaf -> Trie2 Nothing . Map.singleton path . leaf) toVal
 
 toVal :: a -> Trie2 a
 toVal x = Trie2 (Just x) mempty
 
 lookup2 :: BCP47 -> Trie2 a -> Maybe a
-lookup2 tag = getLast . go (toSpecifiers tag)
+lookup2 tag = getLast . go (toSubtags tag)
  where
-  go :: [Specifiers] -> Trie2 a -> Last a
+  go :: [Subtags] -> Trie2 a -> Last a
   go [] (Trie2 mVal _) = Last mVal
   go (p : ps) (Trie2 mVal children) =
     Last mVal <> (go ps =<< (Last $ Map.lookup p children))
 
 match2 :: BCP47 -> Trie2 a -> Maybe a
-match2 tag = go (toSpecifiers tag)
+match2 tag = go (toSubtags tag)
  where
-  go :: [Specifiers] -> Trie2 a -> Maybe a
+  go :: [Subtags] -> Trie2 a -> Maybe a
   go [] (Trie2 mVal _) = mVal
   go (p : ps) (Trie2 _ children) = go ps =<< Map.lookup p children
 

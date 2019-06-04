@@ -1,7 +1,7 @@
 {-# LANGUAGE DeriveGeneric #-}
 
-module Data.BCP47.Internal.Specifiers
-  ( Specifiers(..)
+module Data.BCP47.Internal.Subtags
+  ( Subtags(..)
   ) where
 
 import Data.BCP47.Internal.Extension
@@ -15,7 +15,7 @@ import Test.QuickCheck.Arbitrary
 import Test.QuickCheck.Arbitrary.Generic
 import Test.QuickCheck.Gen (oneof)
 
-data Specifiers
+data Subtags
   = SpecifyLanguageExtension LanguageExtension
   | SpecifyScript Script
   | SpecifyRegion CountryCode
@@ -24,7 +24,7 @@ data Specifiers
   | SpecifyPrivateUse PrivateUse
   deriving (Show, Eq, Ord, Generic)
 
-instance Arbitrary Specifiers where
+instance Arbitrary Subtags where
   arbitrary = oneof
     [ SpecifyLanguageExtension <$> arbitrary
     , SpecifyScript <$> arbitrary
