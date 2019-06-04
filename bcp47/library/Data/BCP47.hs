@@ -145,7 +145,7 @@ instance Read BCP47 where
 
 -- | Serialize @'BCP47'@ to @'Text'@
 --
--- Subtags are serialized in the order described in the RFC.
+-- Subtags are serialized in the order described in the BCP 47 specification.
 -- Private-use subtags only appear at the end prefixed with an x.
 --
 toText :: BCP47 -> Text
