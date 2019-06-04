@@ -164,13 +164,13 @@ toText b = T.intercalate "-" $ mconcat
     SpecifyExtension x -> Just $ extensionToText x
     SpecifyPrivateUse _ -> Nothing
 
--- | Lookup all language extension subtags
+-- | Look up all language extension subtags
 extendedLanguageSubtags :: BCP47 -> Set LanguageExtension
 extendedLanguageSubtags = asSet $ \case
   SpecifyLanguageExtension x -> Just x
   _otherwise -> Nothing
 
--- | Lookup the script subtag
+-- | Look up the script subtag
 script :: BCP47 -> Maybe Script
 script = headMay . mapMaybe f . Set.toList . subtags
  where
@@ -178,7 +178,7 @@ script = headMay . mapMaybe f . Set.toList . subtags
     SpecifyScript x -> Just x
     _otherwise -> Nothing
 
--- | Lookup the region subtag
+-- | Look up the region subtag
 region :: BCP47 -> Maybe CountryCode
 region = headMay . mapMaybe f . Set.toList . subtags
  where
@@ -186,19 +186,19 @@ region = headMay . mapMaybe f . Set.toList . subtags
     SpecifyRegion x -> Just x
     _otherwise -> Nothing
 
--- | Lookup all variant subtags
+-- | Look up all variant subtags
 variants :: BCP47 -> Set Variant
 variants = asSet $ \case
   SpecifyVariant x -> Just x
   _otherwise -> Nothing
 
--- | Lookup all extension subtags
+-- | Look up all extension subtags
 extensions :: BCP47 -> Set Extension
 extensions = asSet $ \case
   SpecifyExtension x -> Just x
   _otherwise -> Nothing
 
--- | Lookup all private use subtags
+-- | Look up all private use subtags
 privateUse :: BCP47 -> Set PrivateUse
 privateUse = asSet $ \case
   SpecifyPrivateUse x -> Just x
@@ -224,7 +224,7 @@ inits :: BCP47 -> [BCP47]
 inits tag =
   map (BCP47 (language tag) . Set.fromList) . List.inits $ toSubtags tag
 
--- | Construct a simple lanugage tag
+-- | Construct a simple language tag
 mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty
 
@@ -309,14 +309,14 @@ enGB = mkLocalized EN GB
 enUS :: BCP47
 enUS = mkLocalized EN US
 
--- | A none-sense tag @en-t-jp@
+-- | A nonsense tag @en-t-jp@
 enTJP :: BCP47
 enTJP = en
   { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
     $ subtags en
   }
 
--- | A none-sense tag @en-GB-t-jp@
+-- | A nonsense tag @en-GB-t-jp@
 enGBTJP :: BCP47
 enGBTJP = enGB
   { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
