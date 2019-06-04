@@ -9,14 +9,14 @@ import Data.Void (Void)
 import Text.Megaparsec (Parsec, eof, lookAhead)
 import Text.Megaparsec.Char (char)
 
--- | Ensure a specifier extends to the next '-' or end of input
+-- | Ensure a subtag extends to the next '-' or end of input
 --
--- Used for specifiers that can match some prefix of another specifier.
+-- Used for subtags that can match some prefix of another subtag.
 -- For example, a @'Script'@ or @'Region'@ can accidentally be parsed
 -- from the prefix of a @'Variant'@
 --
 -- The alternative would be to use @'notFollowedBy'@ with knowledge of
--- the legal characters in the next valid specifier.
+-- the legal characters in the next valid subtag.
 --
 complete :: Parsec Void Text a -> Parsec Void Text a
 complete parser = parser <* lookAhead (void (char '-') <|> eof)
