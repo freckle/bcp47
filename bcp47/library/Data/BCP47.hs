@@ -2,18 +2,18 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 -- | Human beings on our planet have, past and present, used a number of
--- languages.  There are many reasons why one would want to identify the
+-- languages. There are many reasons why one would want to identify the
 -- language used when presenting or requesting information.
 --
 -- The language of an information item or a user's language preferences often
--- need to be identified so that appropriate processing can be applied.  For
+-- need to be identified so that appropriate processing can be applied. For
 -- example, the user's language preferences in a Web browser can be used to
--- select Web pages appropriately.  Language information can also be used to
+-- select Web pages appropriately. Language information can also be used to
 -- select among tools (such as dictionaries) to assist in the processing or
 -- understanding of content in different languages.  Knowledge about the
 -- particular language used by some piece of information content might be useful
 -- or even required by some types of processing, for example, spell-checking,
--- computer- synthesized speech, Braille transcription, or high-quality print
+-- computer-synthesized speech, Braille transcription, or high-quality print
 -- renderings.
 --
 module Data.BCP47
@@ -28,7 +28,7 @@ module Data.BCP47
   -- * Subtags
   -- | A language tag is composed from a sequence of one or more "subtags",
   -- each of which refines or narrows the range of language identified by
-  -- the overall tag.  Subtags, in turn, are a sequence of alphanumeric characters
+  -- the overall tag. Subtags, in turn, are a sequence of alphanumeric characters
   -- (letters and digits), distinguished and separated from other subtags in a tag
   -- by a hyphen ("-", [Unicode] U+002D).
   , toSubtags
