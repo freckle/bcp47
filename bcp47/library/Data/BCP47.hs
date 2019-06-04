@@ -3,14 +3,6 @@
 
 module Data.BCP47
   ( BCP47
-  , language
-  , extendedLanguageSubtags
-  , script
-  , region
-  , variants
-  , extensions
-  , privateUse
-  , toSubtags
   , inits
   -- * Construction
   , mkLanguage
@@ -24,25 +16,40 @@ module Data.BCP47
   -- the overall tag.  Subtags, in turn, are a sequence of alphanumeric characters
   -- (letters and digits), distinguished and separated from other subtags in a tag
   -- by a hyphen ("-", [Unicode] U+002D).
+  , toSubtags
+  -- ** Language
   , ISO639_1
+  , language
   , languageToText
   , languageFromText
+  -- ** Language Extension
   , LanguageExtension
+  , extendedLanguageSubtags
   , languageExtensionToText
   , languageExtensionFromText
+  -- ** Language Script
   , Script
+  , script
   , scriptToText
   , scriptFromText
+  -- ** Region
   , CountryCode
+  , region
   , regionToText
   , regionFromText
+  -- ** Variant
   , Variant
+  , variants
   , variantToText
   , variantFromText
+  -- ** Extension
   , Extension
+  , extensions
   , extensionToText
   , extensionFromText
+  -- ** Private Use
   , PrivateUse
+  , privateUse
   , privateUseToText
   , privateUseFromText
   -- * For testing
@@ -189,6 +196,7 @@ headMay :: [x] -> Maybe x
 headMay [] = Nothing
 headMay (x : _) = Just x
 
+-- | Convert tag to list of subtags
 toSubtags :: BCP47 -> [Subtags]
 toSubtags tag = toList $ subtags tag
 
@@ -201,11 +209,11 @@ inits :: BCP47 -> [BCP47]
 inits tag =
   map (BCP47 (language tag) . Set.fromList) . List.inits $ toSubtags tag
 
--- Construct a simple lanugage tag
+-- | Construct a simple lanugage tag
 mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty
 
--- Construct a localized tag
+-- | Construct a localized tag
 mkLocalized :: ISO639_1 -> CountryCode -> BCP47
 mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 
