@@ -2,3 +2,7 @@ resolver: lts-14.2
 packages:
 - bcp47
 - bcp47-orphans
+ghc-options:
+  "$locals":
+    -ddump-to-file
+    -ddump-hi
