@@ -5,11 +5,13 @@ license: MIT
 author: "Evan Rutledge Borden"
 maintainer: "engineering@freckle.com"
 copyright: "2019 Freckle Education"
+category: Orphan Instances
 
 extra-source-files:
 - README.md
 - ChangeLog.md
 description: Orphan instances for the BCP47 type
+synopsis: BCP47 orphan instances
 
 dependencies:
 - base >= 4.7 && < 5
