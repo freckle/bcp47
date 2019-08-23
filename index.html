@@ -1,11 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8" /><title>bcp47-0.1.0.0: Language tags as specified by BCP 47</title><link href="ocean.css" rel="stylesheet" type="text/css" title="Ocean" /><link rel="stylesheet" type="text/css" href="quick-jump.css" /><script src="haddock-bundle.min.js" async="async" type="text/javascript"></script><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript"></script></head><body><div id="package-header"><ul class="links" id="page-menu"><li><a href="index.html">Contents</a></li><li><a href="doc-index.html">Index</a></li></ul><p class="caption">bcp47-0.1.0.0: Language tags as specified by BCP 47</p></div><div id="content"><div id="description"><h1>bcp47-0.1.0.0: Language tags as specified by BCP 47</h1><div class="doc"><p><em>Language tags for use in cases where it is desirable to indicate the</em>
 <em>language used in an information object.</em></p><p><em> - </em><a href="https://tools.ietf.org/html/bcp47">https://tools.ietf.org/html/bcp47</a></p><p>This package exposes a language tag data type <code>BCP47</code> and a <code>Trie</code> data
 structure for collecting and querying information that varies based on
-language tag.</p><pre>import Data.BCP47 (en, enGB, es)
+language tag.</p><pre>import Data.BCP47 (en, enGB, sw)
 import Data.BCP47.Trie (Trie, fromList, lookup)
 
 color :: Trie Text
-color = fromList [(en, &quot;color&quot;), (es, &quot;colour&quot;)]
+color = fromList [(en, &quot;color&quot;), (sw, &quot;rangi&quot;)]
 
 main = do
   print $ match en color -- Just &quot;color&quot;

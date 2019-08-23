@@ -14,11 +14,11 @@
 --   that varies based on language tag.
 --   
 --   <pre>
---   import Data.BCP47 (en, enGB, es)
+--   import Data.BCP47 (en, enGB, sw)
 --   import Data.BCP47.Trie (Trie, fromList, lookup)
 --   
 --   color :: Trie Text
---   color = fromList [(en, "color"), (es, "colour")]
+--   color = fromList [(en, "color"), (sw, "rangi")]
 --   
 --   main = do
 --     print $ match en color -- Just "color"
@@ -506,6 +506,9 @@ en :: BCP47
 -- | Spanish
 es :: BCP47
 
+-- | Swahili
+sw :: BCP47
+
 -- | British English
 enGB :: BCP47
 
@@ -522,6 +525,8 @@ instance GHC.Classes.Eq Data.BCP47.BCP47
 instance Test.QuickCheck.Arbitrary.Arbitrary Data.BCP47.BCP47
 instance GHC.Show.Show Data.BCP47.BCP47
 instance GHC.Read.Read Data.BCP47.BCP47
+instance Data.Aeson.Types.ToJSON.ToJSON Data.BCP47.BCP47
+instance Data.Aeson.Types.FromJSON.FromJSON Data.BCP47.BCP47
 
 module Data.BCP47.Trie.Internal
 
