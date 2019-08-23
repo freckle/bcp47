@@ -39,6 +39,7 @@ library:
   source-dirs: library
   dependencies:
   - QuickCheck
+  - aeson
   - containers
   - generic-arbitrary
   - country
