@@ -72,6 +72,7 @@ module Data.BCP47
   -- * For testing
   , en
   , es
+  , sw
   , enGB
   , enUS
   , enTJP
@@ -97,7 +98,7 @@ import Data.BCP47.Internal.Subtags
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
-import Data.LanguageCodes (ISO639_1(EN, ES))
+import Data.LanguageCodes (ISO639_1(EN, ES, SW))
 import qualified Data.List as List
 import Data.Maybe (mapMaybe)
 import Data.Set (Set)
@@ -310,6 +311,10 @@ es = mkLanguage ES
 -- | English
 en :: BCP47
 en = mkLanguage EN
+
+-- | Swahili
+sw :: BCP47
+sw = mkLanguage SW
 
 -- | British English
 enGB :: BCP47

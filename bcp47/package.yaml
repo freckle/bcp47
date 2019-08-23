@@ -21,11 +21,11 @@ description: |
   structure for collecting and querying information that varies based on
   language tag.
   .
-  > import Data.BCP47 (en, enGB, es)
+  > import Data.BCP47 (en, enGB, sw)
   > import Data.BCP47.Trie (Trie, fromList, lookup)
   >
   > color :: Trie Text
-  > color = fromList [(en, "color"), (es, "colour")]
+  > color = fromList [(en, "color"), (sw, "rangi")]
   >
   > main = do
   >   print $ match en color -- Just "color"
