@@ -48,7 +48,7 @@ module Data.BCP47
   , scriptToText
   , scriptFromText
   -- ** Region
-  , CountryCode
+  , Country
   , region
   , regionToText
   , regionFromText
@@ -79,6 +79,9 @@ where
 
 import Control.Applicative ((<|>))
 import Control.Monad (MonadPlus)
+import Country (Country)
+import Country.Identifier
+  (unitedKingdomOfGreatBritainAndNorthernIreland, unitedStatesOfAmerica)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, arbitrary, choose, elements, listOf, vectorOf)
 import Data.BCP47.Internal.Extension
@@ -91,7 +94,6 @@ import Data.BCP47.Internal.Subtags
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
-import Data.ISO3166_CountryCodes (CountryCode(GB, US))
 import Data.LanguageCodes (ISO639_1(EN, ES))
 import qualified Data.List as List
 import Data.Maybe (mapMaybe)
@@ -119,17 +121,15 @@ data BCP47
   deriving (Eq, Ord)
 
 instance Arbitrary BCP47 where
-  arbitrary = BCP47
-    <$> elements [EN, ES]
-    <*> specs
+  arbitrary = BCP47 <$> elements [EN, ES] <*> specs
    where
-    oneOrNone f =
-      choose (0,1) >>= (`vectorOf` (f <$> arbitrary))
+    oneOrNone f = choose (0, 1) >>= (`vectorOf` (f <$> arbitrary))
     manyOf f = listOf (f <$> arbitrary)
+    regions = [minBound .. maxBound]
     specs = Set.fromList . mconcat <$> sequenceA
       [ manyOf SpecifyLanguageExtension
       , oneOrNone SpecifyScript
-      , choose (0,1) >>= (`vectorOf` (elements $ SpecifyRegion <$> [US, GB]))
+      , choose (0, 1) >>= (`vectorOf` (elements $ SpecifyRegion <$> regions))
       , manyOf SpecifyVariant
       , manyOf SpecifyExtension
       , oneOrNone SpecifyPrivateUse
@@ -179,7 +179,7 @@ script = headMay . mapMaybe f . Set.toList . subtags
     _otherwise -> Nothing
 
 -- | Look up the region subtag
-region :: BCP47 -> Maybe CountryCode
+region :: BCP47 -> Maybe Country
 region = headMay . mapMaybe f . Set.toList . subtags
  where
   f = \case
@@ -229,7 +229,7 @@ mkLanguage :: ISO639_1 -> BCP47
 mkLanguage lang = BCP47 lang mempty
 
 -- | Construct a localized tag
-mkLocalized :: ISO639_1 -> CountryCode -> BCP47
+mkLocalized :: ISO639_1 -> Country -> BCP47
 mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 
 -- | Parse a language tag from text
@@ -303,11 +303,11 @@ en = mkLanguage EN
 
 -- | British English
 enGB :: BCP47
-enGB = mkLocalized EN GB
+enGB = mkLocalized EN unitedKingdomOfGreatBritainAndNorthernIreland
 
 -- | American English
 enUS :: BCP47
-enUS = mkLocalized EN US
+enUS = mkLocalized EN unitedStatesOfAmerica
 
 -- | A nonsense tag @en-t-jp@
 enTJP :: BCP47

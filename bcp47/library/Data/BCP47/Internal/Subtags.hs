@@ -18,7 +18,7 @@ import Test.QuickCheck.Gen (oneof)
 data Subtags
   = SpecifyLanguageExtension LanguageExtension
   | SpecifyScript Script
-  | SpecifyRegion CountryCode
+  | SpecifyRegion Country
   | SpecifyVariant Variant
   | SpecifyExtension Extension
   | SpecifyPrivateUse PrivateUse

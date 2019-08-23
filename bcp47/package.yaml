@@ -43,7 +43,7 @@ library:
   - QuickCheck
   - containers
   - generic-arbitrary
-  - iso3166-country-codes
+  - country
   - iso639
   - megaparsec
   - text
@@ -62,6 +62,6 @@ tests:
     - bcp47
     - containers
     - hspec
-    - iso3166-country-codes
+    - country
     - iso639
     - text
