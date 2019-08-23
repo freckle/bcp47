@@ -6,6 +6,7 @@ module Data.BCP47Spec
   ) where
 
 import Country.Identifier (china)
+import Data.Aeson (decode, encode)
 import Data.BCP47
 import Data.BCP47.Internal.Extension
 import Data.BCP47.Internal.LanguageExtension
@@ -52,3 +53,6 @@ spec = do
 
   describe "Read/Show" . it "can roundtrip" . property $ \tag ->
     readMaybe (show @BCP47 tag) `shouldBe` Just tag
+
+  describe "ToJSON/FromJSON" . it "roundtrips" . property $ \x ->
+    decode (encode @BCP47 x) `shouldBe` Just x

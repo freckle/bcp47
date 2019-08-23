@@ -58,6 +58,7 @@ tests:
     source-dirs: tests
     dependencies:
     - QuickCheck
+    - aeson
     - bcp47
     - containers
     - hspec
