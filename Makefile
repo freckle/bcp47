@@ -17,7 +17,7 @@ test:
 .PHONY: lint
 lint:
 	stack exec $(STACK_ARGUMENTS) hlint bcp47/library bcp47/tests bcp47-orphans/library bcp47-orphans/tests
-	stack exec $(STACK_ARGUMENTS) weeder .
+	# stack exec $(STACK_ARGUMENTS) weeder .
 
 .PHONY: clean
 clean:
