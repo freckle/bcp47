@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.PrivateUse
@@ -27,7 +28,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- that are important in a given context by private agreement.
 --
 newtype PrivateUse = PrivateUse { privateUseToText :: Text }
-  deriving (Show, Eq, Ord)
+  deriving stock (Show, Eq, Ord)
 
 instance Arbitrary PrivateUse where
   arbitrary = do

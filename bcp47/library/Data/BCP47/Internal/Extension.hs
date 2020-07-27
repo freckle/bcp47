@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Extension
@@ -27,7 +28,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- that is not part of language identification.
 --
 newtype Extension = Extension { extensionToText :: Text }
-  deriving (Show, Eq, Ord)
+  deriving stock (Show, Eq, Ord)
 
 instance Arbitrary Extension where
   arbitrary = do

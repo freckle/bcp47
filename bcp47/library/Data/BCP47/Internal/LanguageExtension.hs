@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.LanguageExtension
@@ -26,7 +27,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- tagged using an existing primary language subtag.
 --
 newtype LanguageExtension = LanguageExtension { languageExtensionToText :: Text }
-  deriving (Show, Eq, Ord)
+  deriving stock (Show, Eq, Ord)
 
 instance Arbitrary LanguageExtension where
   arbitrary = do
