@@ -26,6 +26,7 @@ module Data.BCP47
   , mkLanguage
   , mkLocalized
   , fromText
+  , parser
   -- * Serialization
   , toText
   -- * Subtags
