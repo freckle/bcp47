@@ -33,7 +33,7 @@ newtype Extension = Extension { extensionToText :: Text }
 instance Arbitrary Extension where
   arbitrary = do
     prefix <- alphaChar `suchThat` (`notElem` ['x', 'X'])
-    len <- choose (2,8)
+    len <- choose (2, 8)
     chars <- alphaNumString len
     pure . Extension . pack $ prefix : '-' : chars
 

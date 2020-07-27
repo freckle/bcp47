@@ -50,15 +50,15 @@ newtype Variant = Variant { variantToText :: Text }
 
 instance Arbitrary Variant where
   arbitrary = oneof [alphaNum, digitPrefixed]
-    where
-      alphaNum = do
-        len <- choose (5,8)
-        chars <- alphaNumString len
-        pure . Variant $ pack chars
-      digitPrefixed = do
-        prefix <- numChar
-        chars <- alphaNumString 3
-        pure . Variant $ pack $ prefix : chars
+   where
+    alphaNum = do
+      len <- choose (5, 8)
+      chars <- alphaNumString len
+      pure . Variant $ pack chars
+    digitPrefixed = do
+      prefix <- numChar
+      chars <- alphaNumString 3
+      pure . Variant $ pack $ prefix : chars
 
 -- | Parse a 'Variant' subtag from 'Text'
 variantFromText :: Text -> Either Text Variant

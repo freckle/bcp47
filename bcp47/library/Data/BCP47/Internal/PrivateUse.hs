@@ -32,7 +32,7 @@ newtype PrivateUse = PrivateUse { privateUseToText :: Text }
 
 instance Arbitrary PrivateUse where
   arbitrary = do
-    len <- choose (1,8)
+    len <- choose (1, 8)
     chars <- alphaNumString len
     pure . PrivateUse $ pack chars
 
