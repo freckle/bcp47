@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric #-}
+{-# LANGUAGE DerivingStrategies #-}
 
 module Data.BCP47.Internal.Subtags
   ( Subtags(..)
@@ -22,7 +23,7 @@ data Subtags
   | SpecifyVariant Variant
   | SpecifyExtension Extension
   | SpecifyPrivateUse PrivateUse
-  deriving (Show, Eq, Ord, Generic)
+  deriving stock (Show, Eq, Ord, Generic)
 
 instance Arbitrary Subtags where
   arbitrary = oneof

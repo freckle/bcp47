@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Script
@@ -24,7 +25,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- dialects.
 --
 newtype Script = Script { scriptToText :: Text }
-  deriving (Show, Eq, Ord)
+  deriving stock (Show, Eq, Ord)
 
 instance Arbitrary Script where
   arbitrary = Script . pack <$> alphaString 4

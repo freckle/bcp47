@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Variant
@@ -45,7 +46,7 @@ variantP =
 -- covered by other available subtags.
 --
 newtype Variant = Variant { variantToText :: Text }
-  deriving (Show, Eq, Ord)
+  deriving stock (Show, Eq, Ord)
 
 instance Arbitrary Variant where
   arbitrary = oneof [alphaNum, digitPrefixed]

@@ -1,3 +1,4 @@
+{-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
 
@@ -82,7 +83,6 @@ where
 
 import Control.Applicative ((<|>))
 import Control.Monad (MonadPlus)
-import Country (Country)
 import Country.Identifier
   (unitedKingdomOfGreatBritainAndNorthernIreland, unitedStatesOfAmerica)
 import Data.Aeson
@@ -122,7 +122,7 @@ data BCP47
   { language :: ISO639_1 -- ^ The language subtag
   , subtags :: Set Subtags
   }
-  deriving (Eq, Ord)
+  deriving stock (Eq, Ord)
 
 instance Arbitrary BCP47 where
   arbitrary = BCP47 <$> elements [EN, ES] <*> specs
