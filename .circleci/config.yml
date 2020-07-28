@@ -46,6 +46,8 @@ references:
 jobs:
   build:
     <<: *stack_build
+    environment:
+      STACK_ARGUMENTS: --no-terminal
   build_8.4.4:
     <<: *stack_build
     environment:
