@@ -12,7 +12,8 @@ build:
 
 .PHONY: test
 test:
-	stack build $(STACK_ARGUMENTS) --fast --pedantic --test
+	stack build $(STACK_ARGUMENTS) bcp47 --fast --pedantic --test
+	stack build $(STACK_ARGUMENTS) bcp47-orphans --fast --pedantic --test
 
 .PHONY: lint
 lint:
