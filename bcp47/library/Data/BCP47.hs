@@ -286,10 +286,20 @@ mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 -- Right zh
 --
 fromText :: Text -> Either Text BCP47
-fromText = first (pack . errorBundlePretty) . parse parser "fromText"
+fromText =
+  first (pack . errorBundlePretty) . parse (parser <* hidden eof) "fromText"
+
+-- |
+--
+-- >>> _example $ pack "en;"
+-- Right (en,';')
+--
+_example :: Text -> Either Text (BCP47, Char)
+_example = first (pack . errorBundlePretty) . parse p "example"
+  where p = (,) <$> parser <*> char ';'
 
 parser :: Parsec Void Text BCP47
-parser = BCP47 <$> languageP <*> subtagsP <* hidden eof
+parser = BCP47 <$> languageP <*> subtagsP
  where
   subtagsP = mconcat <$> sequenceA
     [ manyAsSet SpecifyLanguageExtension (try (char '-' *> languageExtensionP))

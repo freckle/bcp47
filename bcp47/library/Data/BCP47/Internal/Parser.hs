@@ -6,7 +6,7 @@ import Control.Applicative ((<|>))
 import Control.Monad (void)
 import Data.Text (Text)
 import Data.Void (Void)
-import Text.Megaparsec (Parsec, eof, lookAhead)
+import Text.Megaparsec (Parsec, eof, lookAhead, noneOf)
 import Text.Megaparsec.Char (char)
 
 -- | Ensure a subtag extends to the next '-' or end of input
@@ -19,4 +19,8 @@ import Text.Megaparsec.Char (char)
 -- the legal characters in the next valid subtag.
 --
 complete :: Parsec Void Text a -> Parsec Void Text a
-complete parser = parser <* lookAhead (void (char '-') <|> eof)
+complete parser =
+  parser <* lookAhead (void (char '-') <|> eof <|> void (noneOf tagChars))
+
+tagChars :: String
+tagChars = '-' : ['a' .. 'z'] <> ['A' .. 'Z'] <> ['0' .. '9']
