@@ -6,6 +6,7 @@
 module Data.BCP47.Trie
   ( Trie
   , fromList
+  , fromNonEmpty
   , singleton
   , lookup
   , match

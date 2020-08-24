@@ -6,6 +6,7 @@
 module Data.BCP47.Trie.Internal
   ( Trie(..)
   , fromList
+  , fromNonEmpty
   , singleton
   , union
   , unionWith
@@ -41,11 +42,15 @@ instance Semigroup a => Semigroup (Trie a) where
   x <> y = unionUsing (liftA2 (<>)) x y
 
 instance Arbitrary a => Arbitrary (Trie a) where
-  arbitrary = fromList . NE.fromList . getNonEmpty <$> arbitrary
+  arbitrary = fromNonEmpty . NE.fromList . getNonEmpty <$> arbitrary
 
 -- | Construct a 'Trie' from a list of tag/value pairs.
-fromList :: NonEmpty (BCP47, a) -> Trie a
-fromList = foldr (union . uncurry singleton) (Trie mempty)
+fromList :: [(BCP47, a)] -> Maybe (Trie a)
+fromList = fmap fromNonEmpty . NE.nonEmpty
+
+-- | Construct a 'Trie' from a list of tag/value pairs.
+fromNonEmpty :: NonEmpty (BCP47, a) -> Trie a
+fromNonEmpty = foldr (union . uncurry singleton) (Trie mempty)
 
 -- | Construct a 'Trie' from a single tag/value pair.
 singleton :: BCP47 -> a -> Trie a
