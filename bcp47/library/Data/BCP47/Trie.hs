@@ -12,7 +12,6 @@ module Data.BCP47.Trie
   , elem
   , union
   , unionWith
-  , null
   )
 where
 
@@ -34,7 +33,3 @@ match tag trie = match2 tag =<< Map.lookup (language tag) (unLanguage trie)
 -- | Check if a tag exists in the 'Trie'
 elem :: BCP47 -> Trie a -> Bool
 elem tag = isJust . match tag
-
--- | Check if a 'Trie' is empty
-null :: Trie a -> Bool
-null = Map.null . unLanguage

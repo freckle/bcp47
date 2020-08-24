@@ -24,10 +24,13 @@ module Data.BCP47.Trie.Internal
 import Control.Applicative (liftA2, (<|>))
 import Data.BCP47
 import Data.BCP47.Internal.Subtags
+import Data.List.NonEmpty (NonEmpty)
+import qualified Data.List.NonEmpty as NE
 import Data.Map (Map)
 import qualified Data.Map as Map
 import Data.Monoid (Last(Last, getLast))
 import Test.QuickCheck.Arbitrary
+import Test.QuickCheck.Modifiers (NonEmptyList(getNonEmpty))
 
 -- | A trie mapping 'BCP47' tags to values
 newtype Trie a
@@ -37,14 +40,11 @@ newtype Trie a
 instance Semigroup a => Semigroup (Trie a) where
   x <> y = unionUsing (liftA2 (<>)) x y
 
-instance Semigroup a => Monoid (Trie a) where
-  mempty = Trie mempty
-
 instance Arbitrary a => Arbitrary (Trie a) where
-  arbitrary = fromList <$> arbitrary
+  arbitrary = fromList . NE.fromList . getNonEmpty <$> arbitrary
 
 -- | Construct a 'Trie' from a list of tag/value pairs.
-fromList :: [(BCP47, a)] -> Trie a
+fromList :: NonEmpty (BCP47, a) -> Trie a
 fromList = foldr (union . uncurry singleton) (Trie mempty)
 
 -- | Construct a 'Trie' from a single tag/value pair.

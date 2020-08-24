@@ -1,3 +1,5 @@
+{-# LANGUAGE OverloadedLists #-}
+
 module Data.BCP47.TrieSpec
   ( spec
   ) where
@@ -6,14 +8,17 @@ import Prelude hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
+import qualified Data.List.NonEmpty as NE
 import Test.Hspec
 import Test.QuickCheck
+import Test.QuickCheck.Modifiers (NonEmptyList(NonEmpty))
 
 spec :: Spec
 spec = do
   describe "Trie" $ do
-    it "has equality" $ property $ \xs ->
-      fromList xs `shouldBe` (fromList xs :: Trie Bool)
+    it "has equality" $ property $ \(NonEmpty xs) ->
+      fromList (NE.fromList xs)
+        `shouldBe` (fromList (NE.fromList xs) :: Trie Bool)
 
     it "can be ordered"
       $ singleton en "color"
