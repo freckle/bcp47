@@ -48,7 +48,7 @@ instance Arbitrary a => Arbitrary (Trie a) where
 fromList :: [(BCP47, a)] -> Maybe (Trie a)
 fromList = fmap fromNonEmpty . NE.nonEmpty
 
--- | Construct a 'Trie' from a list of tag/value pairs.
+-- | Construct a 'Trie' from a non empty list of tag/value pairs.
 fromNonEmpty :: NonEmpty (BCP47, a) -> Trie a
 fromNonEmpty = foldr (union . uncurry singleton) (Trie mempty)
 
