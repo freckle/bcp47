@@ -1,5 +1,3 @@
-{-# LANGUAGE DeriveFoldable #-}
-{-# LANGUAGE DeriveFunctor #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE DerivingStrategies #-}
 
@@ -93,7 +91,7 @@ lookup2 tag = getLast . go (toSubtags tag)
   go :: [Subtags] -> Trie2 a -> Last a
   go [] (Trie2 mVal _) = Last mVal
   go (p : ps) (Trie2 mVal children) =
-    Last mVal <> (go ps =<< (Last $ Map.lookup p children))
+    Last mVal <> (go ps =<< Last (Map.lookup p children))
 
 match2 :: BCP47 -> Trie2 a -> Maybe a
 match2 tag = go (toSubtags tag)

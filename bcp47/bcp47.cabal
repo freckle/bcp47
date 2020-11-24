@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 7ce0af13e684c6f99cbf6a190a99eff76e6c20c4b7f777cdeb5ddd50df646ad0
+-- hash: 5a0930e4bb3721dd07dce8e694cc60acbb17fa74e1498a4c970407af7466327e
 
 name:           bcp47
 version:        0.1.0.0
@@ -86,7 +86,6 @@ test-suite doctest
   build-depends:
       base >=4.7 && <5
     , doctest
-    , megaparsec
   default-language: Haskell2010
 
 test-suite spec
