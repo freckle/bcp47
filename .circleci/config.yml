@@ -1,68 +1,30 @@
----
-version: 2
+version: 2.1
 
-references:
-  stack_build: &stack_build
-    docker:
-      # https://github.com/haskell-works/stack-build/blob/master/minimal/Dockerfile
-      - image: quay.io/haskell_works/stack-build-minimal
-    steps:
-      - checkout
-      - run:
-          name: Digest
-          command: |
-            {
-              stack --version
-              echo -- "$STACK_YAML/$STACK_ARGUMENTS"
-            } > rdigest
-            git ls-files | xargs md5sum > digest
-      - restore_cache:
-          keys:
-            - v3-{{ .Branch }}-{{ checksum "rdigest" }}-{{ checksum "digest" }}
-            - v3-{{ .Branch }}-
-            - v3-master-
-      - run:
-          name: Upgrade Stack
-          command: stack upgrade
-      - run:
-          name: Dependencies
-          command: make setup
-      - run:
-          name: Build
-          command: make build
-      - save_cache:
-          # yamllint disable-line rule:line-length
-          key: v3-{{ .Branch }}-{{ checksum "rdigest" }}-{{ checksum "digest" }}
-          paths:
-            - ~/.stack
-            - ./.stack-work
-      - run:
-          name: Lint
-          command: make lint
-      - run:
-          name: Test
-          command: make test
-
-jobs:
-  build:
-    <<: *stack_build
-    environment:
-      STACK_ARGUMENTS: --no-terminal
-  build_8.4.4:
-    <<: *stack_build
-    environment:
-      STACK_ARGUMENTS: --no-terminal
-      STACK_YAML: stack-lts-12.21.yaml
-  build_8.6.3:
-    <<: *stack_build
-    environment:
-      STACK_ARGUMENTS: --no-terminal
-      STACK_YAML: stack-lts-13.1.yaml
+orbs:
+  stack-build: pbrisbin/stack-build@4.0.0
 
 workflows:
-  version: 2
   commit:
     jobs:
-      - build
-      - build_8.4.4
-      - build_8.6.3
+      # See https://github.com/commercialhaskell/stack/issues/5159. To avoid
+      # this bug, we'll skip doctests generally and run them ourselves, only in
+      # the default job.
+      - stack-build/build-test-lint:
+          name: "default"
+          stack-arguments: --skip doctest
+          after-test:
+            - run: stack build bcp47:doctest --fast --pedantic --test
+      - stack-build/build-test-lint:
+          name: "ghc-8.8.4 / lts-16.23"
+          stack-yaml: stack-lts-16.23.yaml
+          stack-arguments: --skip doctest
+      - stack-build/build-test-lint:
+          name: "ghc-8.6.5 / lts-14.27"
+          stack-yaml: stack-lts-14.27.yaml
+          stack-arguments: --skip doctest
+          weeder: false
+      - stack-build/build-test-lint:
+          name: "ghc-8.4.4 / lts-12.26"
+          stack-yaml: stack-lts-12.26.yaml
+          stack-arguments: --skip doctest
+          weeder: false
