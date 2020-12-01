@@ -8,10 +8,10 @@ import Prelude hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
-import Test.Hspec
-import Test.QuickCheck
 import Data.Foldable
 import qualified Data.Maybe as M
+import Test.Hspec
+import Test.QuickCheck
 
 catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
 catMaybes = mapMaybe id
