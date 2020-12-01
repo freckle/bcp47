@@ -10,7 +10,8 @@ import Data.BCP47
 import Data.BCP47.Trie
 import Test.Hspec
 import Test.QuickCheck
-
+import Data.Foldable
+import qualified Data.Maybe as M
 
 catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
 catMaybes = mapMaybe id
@@ -27,6 +28,15 @@ spec = do
       `shouldBe` True
 
     describe "mapMaybe" $ do
+      it "count of Justs is constant" $ property $ \xs ->
+        let
+          trie = fromList xs :: Maybe (Trie (Maybe Bool))
+          expected = do
+            l <- length . M.catMaybes . toList <$> trie
+            if l == 0 then Nothing else Just l
+          actual = length <$> (catMaybes =<< trie)
+        in expected `shouldBe` actual
+
       it "returns Nothing if empty resulting Trie" $ do
         let
           (Just given) = fromList [(en, Nothing), (enGB, Nothing)]
