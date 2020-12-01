@@ -9,7 +9,8 @@ import Prelude hiding (lookup)
 import Data.BCP47
 import Data.BCP47.Trie
 import Data.Foldable
-import qualified Data.Maybe as M
+import qualified Data.List as List
+import qualified Data.Maybe as Maybe
 import Test.Hspec
 import Test.QuickCheck
 
@@ -28,14 +29,14 @@ spec = do
       `shouldBe` True
 
     describe "mapMaybe" $ do
-      it "count of Justs is constant" $ property $ \xs ->
+      it "Justs are constant" $ property $ \xs ->
         let
           trie = fromList xs :: Maybe (Trie (Maybe Bool))
-          expected = do
-            l <- length . M.catMaybes . toList <$> trie
-            if l == 0 then Nothing else Just l
-          actual = length <$> (catMaybes =<< trie)
-        in expected `shouldBe` actual
+          expected = List.sort <$> do
+            m <- Maybe.catMaybes . toList <$> trie
+            if null m then Nothing else Just m
+          actual = List.sort . toList <$> (catMaybes =<< trie)
+        in expected == actual
 
       it "returns Nothing if empty resulting Trie" $ do
         let
