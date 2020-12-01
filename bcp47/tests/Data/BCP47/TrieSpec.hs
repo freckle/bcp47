@@ -8,7 +8,6 @@ import Prelude hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
-import Data.BCP47.Trie.Internal (mapMaybe)
 import Test.Hspec
 import Test.QuickCheck
 
