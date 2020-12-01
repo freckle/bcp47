@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeApplications #-}
+
 module Data.BCP47.TrieSpec
   ( spec
   ) where
@@ -6,6 +8,7 @@ import Prelude hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
+import Data.BCP47.Trie.Internal (mapMaybe)
 import Test.Hspec
 import Test.QuickCheck
 
@@ -19,6 +22,31 @@ spec = do
       $ singleton en "color"
       < singleton es "color"
       `shouldBe` True
+
+    describe "mapMaybe" $ do
+      it "returns Nothing if empty resulting Trie" $ do
+        let
+          (Just given) = fromList [(en, Nothing), (enGB, Nothing)]
+          expected = fromList @String []
+        mapMaybe id given `shouldBe` expected
+
+      it "returns top-level Just" $ do
+        let
+          (Just given) = fromList [(en, Just "color"), (enGB, Nothing)]
+          expected = fromList [(en, "color")]
+        mapMaybe id given `shouldBe` expected
+
+      it "returns leaf Just" $ do
+        let
+          (Just given) = fromList [(en, Nothing), (enGB, Just "colour")]
+          expected = fromList [(enGB, "colour")]
+        mapMaybe id given `shouldBe` expected
+
+      it "returns both leaf and top-level Justs" $ do
+        let
+          (Just given) = fromList [(en, Just "color"), (enGB, Just "colour")]
+          expected = fromList [(en, "color"), (enGB, "colour")]
+        mapMaybe id given `shouldBe` expected
 
   describe "lookup" $ do
     it "should always lookup a path it inserts" $ property $ \tag ->
