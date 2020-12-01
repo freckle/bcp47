@@ -1,3 +1,5 @@
+{-# LANGUAGE TypeApplications #-}
+
 module Data.BCP47.TrieSpec
   ( spec
   ) where
@@ -6,8 +8,14 @@ import Prelude hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
+import Data.Foldable
+import qualified Data.List as List
+import qualified Data.Maybe as Maybe
 import Test.Hspec
 import Test.QuickCheck
+
+catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
+catMaybes = mapMaybe id
 
 spec :: Spec
 spec = do
@@ -19,6 +27,40 @@ spec = do
       $ singleton en "color"
       < singleton es "color"
       `shouldBe` True
+
+    describe "mapMaybe" $ do
+      it "Justs are constant" $ property $ \xs ->
+        let
+          trie = fromList xs :: Maybe (Trie (Maybe Bool))
+          expected = List.sort <$> do
+            m <- Maybe.catMaybes . toList <$> trie
+            if null m then Nothing else Just m
+          actual = List.sort . toList <$> (catMaybes =<< trie)
+        in expected == actual
+
+      it "returns Nothing if empty resulting Trie" $ do
+        let
+          (Just given) = fromList [(en, Nothing), (enGB, Nothing)]
+          expected = fromList @String []
+        catMaybes given `shouldBe` expected
+
+      it "returns top-level Just" $ do
+        let
+          (Just given) = fromList [(en, Just "color"), (enGB, Nothing)]
+          expected = fromList [(en, "color")]
+        catMaybes given `shouldBe` expected
+
+      it "returns leaf Just" $ do
+        let
+          (Just given) = fromList [(en, Nothing), (enGB, Just "colour")]
+          expected = fromList [(enGB, "colour")]
+        catMaybes given `shouldBe` expected
+
+      it "returns both leaf and top-level Justs" $ do
+        let
+          (Just given) = fromList [(en, Just "color"), (enGB, Just "colour")]
+          expected = fromList [(en, "color"), (enGB, "colour")]
+        catMaybes given `shouldBe` expected
 
   describe "lookup" $ do
     it "should always lookup a path it inserts" $ property $ \tag ->

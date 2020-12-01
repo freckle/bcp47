@@ -9,6 +9,7 @@ module Data.BCP47.Trie.Internal
   , union
   , unionWith
   , unionUsing
+  , mapMaybe
   , Trie2(..)
   , Subtags(..)
   , singleton2
@@ -17,6 +18,7 @@ module Data.BCP47.Trie.Internal
   , union2
   , union2Using
   , fromSubtags
+  , mapMaybe2
   )
   where
 
@@ -66,6 +68,13 @@ unionWith f = unionUsing (liftA2 f)
 unionUsing :: (Maybe a -> Maybe a -> Maybe a) -> Trie a -> Trie a -> Trie a
 unionUsing f (Trie x) (Trie y) = Trie $ Map.unionWith (union2Using f) x y
 
+nullToMaybe :: Map k a -> Maybe (Map k a)
+nullToMaybe m = if Map.null m then Nothing else Just m
+
+-- Like `Map.mapMaybe` but returns a `Maybe` because `Trie` should be non-empty
+mapMaybe :: (a -> Maybe b) -> Trie a -> Maybe (Trie b)
+mapMaybe f (Trie x) = Trie <$> nullToMaybe (Map.mapMaybe (mapMaybe2 f) x)
+
 data Trie2 a = Trie2 (Maybe a) (Map Subtags (Trie2 a))
   deriving stock (Show, Eq, Ord, Functor, Foldable, Traversable)
 
@@ -74,6 +83,14 @@ instance Semigroup a => Semigroup (Trie2 a) where
 
 instance Monoid a => Monoid (Trie2 a) where
   mempty = Trie2 mempty mempty
+
+mapMaybe2 :: (a -> Maybe b) -> Trie2 a -> Maybe (Trie2 b)
+mapMaybe2 f = go
+ where
+  go (Trie2 x xs) = case (f =<< x, nullToMaybe $ Map.mapMaybe go xs) of
+    (Nothing, Nothing) -> Nothing
+    (Just x', Nothing) -> Just $ Trie2 (Just x') mempty
+    (x', Just xs') -> Just $ Trie2 x' xs'
 
 singleton2 :: BCP47 -> a -> Trie2 a
 singleton2 tag = fromSubtags (toSubtags tag)

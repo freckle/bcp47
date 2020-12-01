@@ -13,6 +13,7 @@ module Data.BCP47.Trie
   , elem
   , union
   , unionWith
+  , mapMaybe
   )
 where
 
