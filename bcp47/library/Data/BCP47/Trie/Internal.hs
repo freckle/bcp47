@@ -71,7 +71,7 @@ unionUsing f (Trie x) (Trie y) = Trie $ Map.unionWith (union2Using f) x y
 nullToMaybe :: Map k a -> Maybe (Map k a)
 nullToMaybe m = if Map.null m then Nothing else Just m
 
--- Like `Map.mapMaybe` but returns a `Maybe` because `Trie` should be non-empty 
+-- Like `Map.mapMaybe` but returns a `Maybe` because `Trie` should be non-empty
 mapMaybe :: (a -> Maybe b) -> Trie a -> Maybe (Trie b)
 mapMaybe f (Trie x) = Trie <$> nullToMaybe (Map.mapMaybe (mapMaybe2 f) x)
 
