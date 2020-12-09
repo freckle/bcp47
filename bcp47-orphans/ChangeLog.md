@@ -2,7 +2,7 @@
 
 None
 
-## [v0.1.0.1](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.0...bcp47-orphans-v0.1.0.1)
+## [v0.1.0.1](https://github.com/freckle/bcp47/compare/v0.1.0.0...bcp47-orphans-v0.1.0.1)
 
 - Instances for `HttpApiData` [#10](https://github.com/freckle/bcp47/pull/10)
 
