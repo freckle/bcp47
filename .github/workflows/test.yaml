@@ -1,0 +1,41 @@
+on:
+  pull_request:
+  push:
+    branches: main
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        stack-yaml:
+          - stack.yaml
+          - stack-lts-17.1.yaml
+          - stack-lts-16.23.yaml
+          - stack-lts-14.27.yaml
+          - stack-lts-12.26.yaml
+          - stack-nightly.yaml
+
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.stack
+            ./.stack-work
+          key: ${{ runner.os }}-${{ hashFiles(matrix.stack-yaml) }}-${{ hashFiles('**.cabal') }}
+          restore-keys: |
+            ${{ runner.os }}-${{ hashFiles(matrix.stack-yaml) }}-
+            ${{ runner.os }}-
+
+      # See https://github.com/commercialhaskell/stack/issues/5159. To avoid
+      # this bug, we'll skip doctests generally and run them ourselves, only in
+      # the default job.
+      - uses: freckle/stack-action@main
+        with:
+          stack-yaml: ${{ matrix.stack-yaml }}
+          stack-arguments: ${{ matrix.target }} --skip doctest
+      - if: matrix.stack-yaml == 'stack.yaml'
+        run: |
+          stack build bcp47:doctest --fast --pedantic --test

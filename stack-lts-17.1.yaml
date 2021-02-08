@@ -2,5 +2,3 @@ resolver: lts-17.1
 packages:
   - bcp47
   - bcp47-orphans
-ghc-options:
-  "$locals": -fwrite-ide-info

@@ -1,5 +1,5 @@
 name: bcp47-orphans
-version: 0.1.0.1
+version: 0.1.0.2
 github: "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -22,11 +22,11 @@ library:
   - bcp47
   - cassava
   - errors
-  - esqueleto
+  - esqueleto < 3.5
   - hashable
   - http-api-data
   - path-pieces
-  - persistent
+  - persistent < 2.12
   - text
 
 tests:
@@ -34,10 +34,10 @@ tests:
     main: Main.hs
     source-dirs: tests
     dependencies:
-    - QuickCheck
+    - QuickCheck < 2.15
     - bcp47
     - bcp47-orphans
     - cassava
     - hspec
     - path-pieces
-    - persistent
+    - persistent < 2.12

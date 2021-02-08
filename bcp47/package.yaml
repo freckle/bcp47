@@ -1,5 +1,5 @@
 name: bcp47
-version: 0.2.0.0
+version: 0.2.0.1
 github:  "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -38,13 +38,13 @@ dependencies:
 library:
   source-dirs: library
   dependencies:
-  - QuickCheck
-  - aeson
+  - QuickCheck < 2.15
+  - aeson < 1.6
   - containers
   - generic-arbitrary
   - country
   - iso639
-  - megaparsec
+  - megaparsec < 10.0
   - text
 
 tests:
@@ -52,13 +52,13 @@ tests:
     main: Main.hs
     source-dirs: doctest
     dependencies:
-      - doctest
+      - doctest < 0.17
   spec:
     main: Main.hs
     source-dirs: tests
     dependencies:
-    - QuickCheck
-    - aeson
+    - QuickCheck < 2.15
+    - aeson < 1.6
     - bcp47
     - containers
     - hspec
