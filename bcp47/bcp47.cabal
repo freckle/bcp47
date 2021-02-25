@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: f07372be0117df7262d2e97b8026ef4dcbe7db35697901d3d9b847ad8ad94587
+-- hash: 25bba01822ae2c7ef5214c750812cd6520eefea0db0e47aabd8b6c66733a396d
 
 name:           bcp47
-version:        0.2.0.1
+version:        0.2.0.3
 synopsis:       Language tags as specified by BCP 47
 description:    /Language tags for use in cases where it is desirable to indicate the/
                 /language used in an information object./
@@ -85,7 +85,7 @@ test-suite doctest
       doctest
   build-depends:
       base >=4.7 && <5
-    , doctest <0.17
+    , doctest <0.19
   default-language: Haskell2010
 
 test-suite spec

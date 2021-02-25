@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.2...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.3...main)
 
 None
+
+## [v0.2.0.3](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.1...bcp47-v0.2.0.3)
+
+- Fix packaging mistake
 
 ## [v0.2.0.2](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.1...bcp47-v0.2.0.2)
 
