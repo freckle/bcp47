@@ -1,5 +1,5 @@
 name: bcp47
-version: 0.2.0.1
+version: 0.2.0.2
 github:  "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -52,7 +52,7 @@ tests:
     main: Main.hs
     source-dirs: doctest
     dependencies:
-      - doctest < 0.17
+      - doctest < 0.19
   spec:
     main: Main.hs
     source-dirs: tests
