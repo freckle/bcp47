@@ -1,0 +1,25 @@
+name: Release to Hackage
+
+on:
+  push:
+    tags:
+      - 'bcp47-v*'
+      - 'bcp47-orphans-v*'
+
+jobs:
+  release:
+    strategy:
+      matrix:
+        package:
+          - bcp47
+          - bcp47-orphans
+    runs-on: ubuntu-latest
+    env:
+      HACKAGE_API_KEY: ${{ secrets.HACKAGE_API_KEY }}
+    steps:
+      - uses: actions/checkout@v2
+      - uses: freckle/stack-upload-action@main
+        if: ${{ startsWith(github.ref, `${matrix.package}-v`) }}
+        with:
+          working-directory: ${{ matrix.package }}
+          pvp-bounds: both
