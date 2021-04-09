@@ -53,7 +53,6 @@ RELEASE_VERSION ?=
 release:
 	[ -n "$(RELEASE_PACKAGE)" ]
 	[ -n "$(RELEASE_VERSION)" ]
-	stack upload --pvp-bounds both "$(RELEASE_PACKAGE)"
 	git tag --sign --message \
 	  "$(RELEASE_PACKAGE)-$(RELEASE_VERSION)" \
 	  "$(RELEASE_PACKAGE)-$(RELEASE_VERSION)"
