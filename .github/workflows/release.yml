@@ -6,6 +6,12 @@ on:
       - 'bcp47-v*'
       - 'bcp47-orphans-v*'
 
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Tag to release
+        required: true
+
 jobs:
   release:
     strategy:
@@ -18,8 +24,22 @@ jobs:
       HACKAGE_API_KEY: ${{ secrets.HACKAGE_API_KEY }}
     steps:
       - uses: actions/checkout@v2
+      - id: gate
+        name: "Gate by package"
+        run: |
+          # Read tag from push event or manual trigger
+          event_tag=${{ github.event.inputs.tag }}
+          event_tag=${event_tag:-${{ github.ref }}}
+          job_package=${{ matrix.package }}
+
+          if [[ "$event_tag" == "$job_package-v"* ]]; then
+            echo "::set-output name=proceed::true"
+          else
+            echo "::set-output name=proceed::false"
+          if
+
       - uses: freckle/stack-upload-action@main
-        if: ${{ startsWith(github.ref, `${matrix.package}-v`) }}
+        if: ${{ steps.gate.outputs.proceed }}
         with:
           working-directory: ${{ matrix.package }}
           pvp-bounds: both
