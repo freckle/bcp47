@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.2...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.3...main)
 
 None
+
+## [v0.1.0.3](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.2...bcp47-orphans-v0.1.0.3)
+
+- Relax bounds
 
 ## [v0.1.0.2](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.1...bcp47-orphans-v0.1.0.2)
 
