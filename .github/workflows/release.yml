@@ -34,6 +34,8 @@ jobs:
 
           if [[ "$event_tag" == "$job_package-v"* ]]; then
             echo "::set-output name=proceed::true"
+          else
+            echo "$event_tag does not match $job_package-v*"
           fi
 
       - uses: freckle/stack-upload-action@main
