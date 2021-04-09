@@ -36,7 +36,7 @@ jobs:
             echo "::set-output name=proceed::true"
           else
             echo "::set-output name=proceed::false"
-          if
+          fi
 
       - uses: freckle/stack-upload-action@main
         if: ${{ steps.gate.outputs.proceed }}
