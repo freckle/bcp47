@@ -26,7 +26,7 @@ library:
   - hashable
   - http-api-data
   - path-pieces
-  - persistent < 2.13
+  - persistent < 2.14
   - text
 
 tests:
@@ -40,4 +40,4 @@ tests:
     - cassava
     - hspec
     - path-pieces
-    - persistent < 2.13
+    - persistent < 2.14
