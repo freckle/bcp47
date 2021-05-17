@@ -29,6 +29,6 @@ jobs:
         uses: freckle/stack-upload-action@main
         with:
           working-directory: ${{ matrix.package }}
-          pvp-bounds: both
+          pvp-bounds: lower
         env:
           HACKAGE_API_KEY: ${{ secrets.HACKAGE_UPLOAD_API_KEY }}

@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5da5537a373fb2ba8144b4fb53222b154a614ae43cfa953458e854dea7649725
+-- hash: 1bb4552c41ba30d42dfadd3d17f44654fdb97e022de8b12aa07da70821555081
 
 name:           bcp47-orphans
-version:        0.1.0.3
+version:        0.1.0.4
 synopsis:       BCP47 orphan instances
 description:    Orphan instances for the BCP47 type
 category:       Orphan Instances
@@ -44,11 +44,11 @@ library
     , bcp47
     , cassava
     , errors
-    , esqueleto <3.5
+    , esqueleto
     , hashable
     , http-api-data
     , path-pieces
-    , persistent <2.13
+    , persistent
     , text
   default-language: Haskell2010
 
@@ -64,12 +64,12 @@ test-suite spec
   hs-source-dirs:
       tests
   build-depends:
-      QuickCheck <2.15
+      QuickCheck
     , base >=4.7 && <5
     , bcp47
     , bcp47-orphans
     , cassava
     , hspec
     , path-pieces
-    , persistent <2.13
+    , persistent
   default-language: Haskell2010
