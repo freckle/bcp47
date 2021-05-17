@@ -1,8 +1,12 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.3...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.4...main)
 
 None
 
-## [v0.2.0.3](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.1...bcp47-v0.2.0.3)
+## [v0.2.0.4](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.3...bcp47-v0.2.0.4)
+
+- Release without dependencies upper bounds
+
+## [v0.2.0.3](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.2...bcp47-v0.2.0.3)
 
 - Fix packaging mistake
 
