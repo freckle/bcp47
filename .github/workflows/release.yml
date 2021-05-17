@@ -28,7 +28,7 @@ jobs:
       - if: steps.tag.outputs.tag
         uses: freckle/stack-upload-action@main
         with:
-          working-directory: ${{ matrix.package }}
+          package-yaml: ${{ matrix.package }}/package.yaml
           pvp-bounds: lower
         env:
           HACKAGE_API_KEY: ${{ secrets.HACKAGE_UPLOAD_API_KEY }}
