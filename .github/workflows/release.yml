@@ -20,15 +20,15 @@ jobs:
       - id: tag
         uses: freckle/haskell-tag-action@main
         with:
-          working-directory: ${{ matrix.package }}
-          prefix: ${{ matrix.package }}-v
+          package-yaml: ${{ matrix.package }}/package.yaml
+          tag-prefix: ${{ matrix.package }}-v
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - if: steps.tag.outputs.tag
         uses: freckle/stack-upload-action@main
         with:
-          package-yaml: ${{ matrix.package }}/package.yaml
+          working-directory: ${{ matrix.package }}
           pvp-bounds: lower
         env:
           HACKAGE_API_KEY: ${{ secrets.HACKAGE_UPLOAD_API_KEY }}
