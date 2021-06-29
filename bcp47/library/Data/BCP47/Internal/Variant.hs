@@ -12,12 +12,11 @@ module Data.BCP47.Internal.Variant
 import Control.Applicative ((<|>))
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose, numChar, oneof)
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetterDigit, asciiDigit)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, count', parse, try)
-import Text.Megaparsec.Char (alphaNumChar, digitChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | BCP-47 variant parser
@@ -32,11 +31,11 @@ variantP =
   complete
     $ Variant
     . pack
-    <$> (try (count' 5 8 alphaNumChar) <|> digitPrefixed)
+    <$> (try (count' 5 8 asciiLetterDigit) <|> digitPrefixed)
  where
   digitPrefixed = do
-    x <- digitChar
-    xs <- count 3 alphaNumChar
+    x <- asciiDigit
+    xs <- count 3 asciiLetterDigit
     pure $ x : xs
 
 -- | Variant subtags
