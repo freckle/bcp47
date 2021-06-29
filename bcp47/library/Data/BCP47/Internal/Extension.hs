@@ -12,12 +12,12 @@ where
 import Control.Monad (void, when)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaChar, alphaNumString, arbitrary, choose, suchThat)
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetterDigit)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count', parse)
-import Text.Megaparsec.Char (alphaNumChar, char)
+import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | Extension subtags
@@ -58,8 +58,8 @@ extensionFromText =
 --
 extensionP :: Parsec Void Text Extension
 extensionP = complete $ do
-  ext <- alphaNumChar
+  ext <- asciiLetterDigit
   when (ext `elem` ['x', 'X']) $ fail "private use suffix found"
   void $ char '-'
-  rest <- count' 2 8 alphaNumChar
+  rest <- count' 2 8 asciiLetterDigit
   pure . Extension . pack $ ext : '-' : rest

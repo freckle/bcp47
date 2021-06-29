@@ -9,17 +9,18 @@ module Data.BCP47.Internal.PrivateUse
   )
 where
 
+import Control.Applicative ((<|>))
 import Control.Monad (void)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose)
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetterDigit)
 import Data.Bifunctor (first)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count', parse, some)
-import Text.Megaparsec.Char (alphaNumChar, char)
+import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | Private Use subtags
@@ -49,6 +50,6 @@ privateUseFromText =
 --
 privateUseP :: Parsec Void Text (Set PrivateUse)
 privateUseP = complete $ do
-  void $ char 'x'
-  rest <- some (char '-' *> count' 1 8 alphaNumChar)
+  void $ char 'x' <|> char 'X'
+  rest <- some (char '-' *> count' 1 8 asciiLetterDigit)
   pure $ Set.fromList $ PrivateUse . pack <$> rest
