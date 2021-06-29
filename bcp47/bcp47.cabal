@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: fcea53b8269f29b3e84c12fa289ca8ac81d92c63d412a846f27c123c2aa965f9
+-- hash: ab86ef247975da044ef48c4605b4f789d493543d00fcb25dfa630b00abb959a2
 
 name:           bcp47
 version:        0.2.0.6
@@ -68,6 +68,7 @@ library
       QuickCheck
     , aeson
     , base >=4.7 && <5
+    , case-insensitive
     , containers
     , country
     , generic-arbitrary
