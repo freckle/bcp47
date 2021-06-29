@@ -10,12 +10,11 @@ module Data.BCP47.Internal.Script
 where
 
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetter)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, parse)
-import Text.Megaparsec.Char (letterChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | Script subtags
@@ -42,4 +41,4 @@ scriptFromText =
 -- @@
 --
 scriptP :: Parsec Void Text Script
-scriptP = complete $ Script . pack <$> count 4 letterChar
+scriptP = complete $ Script . pack <$> count 4 asciiLetter

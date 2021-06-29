@@ -11,13 +11,13 @@ where
 
 import Control.Monad (replicateM, void)
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetter)
 import Data.Bifunctor (first)
 import Data.List (intercalate)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, parse)
-import Text.Megaparsec.Char (char, letterChar)
+import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 -- | Extended language subtags
@@ -50,10 +50,10 @@ languageExtensionFromText = first (pack . errorBundlePretty)
 --
 languageExtensionP :: Parsec Void Text LanguageExtension
 languageExtensionP = complete $ do
-  iso639 <- count 3 letterChar
+  iso639 <- count 3 asciiLetter
   void $ char '-'
-  c1 <- count 3 letterChar
+  c1 <- count 3 asciiLetter
   void $ char '-'
-  c2 <- count 3 letterChar
+  c2 <- count 3 asciiLetter
   let ext = pack $ mconcat [iso639, "-", c1, "-", c2]
   pure $ LanguageExtension ext

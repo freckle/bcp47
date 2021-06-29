@@ -8,13 +8,12 @@ module Data.BCP47.Internal.Language
   )
 where
 
-import Data.BCP47.Internal.Parser (complete)
+import Data.BCP47.Internal.Parser (complete, asciiLetter)
 import Data.Bifunctor (first)
 import Data.LanguageCodes (ISO639_1, fromChars)
 import Data.Text (Text, pack, toLower)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, parse)
-import Text.Megaparsec.Char (lowerChar)
 import Text.Megaparsec.Error (errorBundlePretty)
 
 languageToText :: ISO639_1 -> Text
@@ -39,5 +38,5 @@ languageFromText =
 --
 languageP :: Parsec Void Text ISO639_1
 languageP = complete $ do
-  mCode <- fromChars <$> lowerChar <*> lowerChar
+  mCode <- fromChars <$> asciiLetter <*> asciiLetter
   maybe (fail "unknown ISO-639-1 code") pure mCode
