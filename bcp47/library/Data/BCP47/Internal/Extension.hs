@@ -14,6 +14,7 @@ import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaChar, alphaNumString, arbitrary, choose, suchThat)
 import Data.BCP47.Internal.Parser (complete, asciiLetterDigit)
 import Data.Bifunctor (first)
+import Data.CaseInsensitive (CI, mk)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count', parse)
@@ -27,7 +28,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- is commonly used in association with languages or language tags but
 -- that is not part of language identification.
 --
-newtype Extension = Extension { extensionToText :: Text }
+newtype Extension = Extension { extensionToText :: CI Text }
   deriving stock (Show, Eq, Ord)
 
 instance Arbitrary Extension where
@@ -35,7 +36,7 @@ instance Arbitrary Extension where
     prefix <- alphaChar `suchThat` (`notElem` ['x', 'X'])
     len <- choose (2, 8)
     chars <- alphaNumString len
-    pure . Extension . pack $ prefix : '-' : chars
+    pure . Extension . mk . pack $ prefix : '-' : chars
 
 -- | Parse an 'Extension' subtag from 'Text'
 extensionFromText :: Text -> Either Text Extension
@@ -62,4 +63,4 @@ extensionP = complete $ do
   when (ext `elem` ['x', 'X']) $ fail "private use suffix found"
   void $ char '-'
   rest <- count' 2 8 asciiLetterDigit
-  pure . Extension . pack $ ext : '-' : rest
+  pure . Extension . mk . pack $ ext : '-' : rest
