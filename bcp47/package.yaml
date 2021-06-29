@@ -38,13 +38,14 @@ dependencies:
 library:
   source-dirs: library
   dependencies:
-  - QuickCheck
   - aeson
+  - case-insensitive
   - containers
-  - generic-arbitrary
   - country
+  - generic-arbitrary
   - iso639
   - megaparsec
+  - QuickCheck
   - text
 
 tests:

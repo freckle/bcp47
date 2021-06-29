@@ -79,6 +79,8 @@ module Data.BCP47
   , enUS
   , enTJP
   , enGBTJP
+  , enTJPUpper
+  , enGBTJPUpper
   )
 where
 
@@ -98,6 +100,7 @@ import Data.BCP47.Internal.Script
 import Data.BCP47.Internal.Subtags
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
+import Data.CaseInsensitive (mk, original)
 import Data.Foldable (toList)
 import Data.LanguageCodes (ISO639_1(EN, ES, SW))
 import qualified Data.List as List
@@ -165,15 +168,15 @@ toText b = T.intercalate "-" $ mconcat
   [ [languageToText $ language b]
   , mapMaybe fromSubtags . Set.toList $ subtags b
   , if Set.null (privateUse b) then [] else ["x"]
-  , map privateUseToText . Set.toList $ privateUse b
+  , map (original . privateUseToText) . Set.toList $ privateUse b
   ]
  where
   fromSubtags = \case
-    SpecifyLanguageExtension x -> Just $ languageExtensionToText x
-    SpecifyScript x -> Just $ scriptToText x
+    SpecifyLanguageExtension x -> Just $ original $ languageExtensionToText x
+    SpecifyScript x -> Just $ original $ scriptToText x
     SpecifyRegion x -> Just $ regionToText x
-    SpecifyVariant x -> Just $ variantToText x
-    SpecifyExtension x -> Just $ extensionToText x
+    SpecifyVariant x -> Just $ original $ variantToText x
+    SpecifyExtension x -> Just $ original $ extensionToText x
     SpecifyPrivateUse _ -> Nothing
 
 -- | Look up all language extension subtags
@@ -338,13 +341,27 @@ enUS = mkLocalized EN unitedStatesOfAmerica
 -- | A nonsense tag @en-t-jp@
 enTJP :: BCP47
 enTJP = en
-  { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+  { subtags = Set.insert (SpecifyExtension (Extension (mk (pack "t-jp"))))
+    $ subtags en
+  }
+
+-- | A nonsense tag @en-T-jp@
+enTJPUpper :: BCP47
+enTJPUpper = en
+  { subtags = Set.insert (SpecifyExtension (Extension (mk (pack "T-jp"))))
     $ subtags en
   }
 
 -- | A nonsense tag @en-GB-t-jp@
 enGBTJP :: BCP47
 enGBTJP = enGB
-  { subtags = Set.insert (SpecifyExtension (Extension (pack "t-jp")))
+  { subtags = Set.insert (SpecifyExtension (Extension (mk (pack "t-jp"))))
+    $ subtags enGB
+  }
+
+-- | A nonsense tag @en-GB-t-jp@
+enGBTJPUpper :: BCP47
+enGBTJPUpper = enGB
+  { subtags = Set.insert (SpecifyExtension (Extension (mk (pack "T-jp"))))
     $ subtags enGB
   }
