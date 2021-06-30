@@ -1,9 +1,12 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
 
 module Data.BCP47Spec
   ( spec
   ) where
+
+import TestImport
 
 import Country.Identifier (china)
 import Data.Aeson (decode, encode)
@@ -15,16 +18,12 @@ import Data.BCP47.Internal.Script
 import Data.BCP47.Internal.Variant
 import Data.LanguageCodes (ISO639_1(ZH))
 import qualified Data.Set as Set
-import Data.Text (Text, unpack)
-import Test.Hspec
-import Test.QuickCheck (property)
-import Text.Read (readMaybe)
 
 spec :: Spec
 spec = do
   describe "fromText" $ do
     it "parses all components" $ do
-      lng <- parseThrows "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
+      lng <- fromTextThrows "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
       language lng `shouldBe` ZH
       extendedLanguageSubtags lng
         `shouldBe` Set.singleton (LanguageExtension "abc-def-zxy")
@@ -37,7 +36,7 @@ spec = do
 
     it "only parses complete subtags" $ do
       -- Specifically, the region CN should not be parsed out of the variant CNUVWXYX
-      lng <- either (ioError . userError . unpack) pure $ fromText "zh-CNUVWXYX"
+      lng <- fromTextThrows "zh-CNUVWXYX"
       language lng `shouldBe` ZH
       extendedLanguageSubtags lng `shouldBe` Set.empty
       script lng `shouldBe` Nothing
@@ -58,9 +57,6 @@ spec = do
 
   describe "Eq" $ do
     it "compares equal with different casing" $ do
-      lower <- parseThrows "zh-abc-def-zxy-hant-cn-1967-y-extensi-x-private1-private2"
-      upper <- parseThrows "ZH-ABC-DEF-ZXY-HANT-CN-1967-Y-EXTENSI-X-PRIVATE1-PRIVATE2"
+      lower <- fromTextThrows "zh-abc-def-zxy-hant-cn-1967-y-extensi-x-private1-private2"
+      upper <- fromTextThrows "ZH-ABC-DEF-ZXY-HANT-CN-1967-Y-EXTENSI-X-PRIVATE1-PRIVATE2"
       upper `shouldBe` lower
-
-parseThrows :: Text -> IO BCP47
-parseThrows = either (ioError . userError . unpack) pure . fromText
