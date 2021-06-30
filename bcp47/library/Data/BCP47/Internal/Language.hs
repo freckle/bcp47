@@ -8,7 +8,7 @@ module Data.BCP47.Internal.Language
   )
 where
 
-import Data.BCP47.Internal.Parser (complete, asciiLetter)
+import Data.BCP47.Internal.Parser (asciiLetter, complete)
 import Data.Bifunctor (first)
 import qualified Data.Char as C
 import Data.LanguageCodes (ISO639_1, fromChars)
@@ -42,5 +42,4 @@ languageP :: Parsec Void Text ISO639_1
 languageP = complete $ do
   mCode <- fromChars <$> letter <*> letter
   maybe (fail "unknown ISO-639-1 code") pure mCode
- where
-  letter = C.toLower <$> asciiLetter
+  where letter = C.toLower <$> asciiLetter

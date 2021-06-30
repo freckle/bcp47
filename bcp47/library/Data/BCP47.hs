@@ -77,10 +77,6 @@ module Data.BCP47
   , sw
   , enGB
   , enUS
-  , enTJP
-  , enGBTJP
-  , enTJPUpper
-  , enGBTJPUpper
   )
 where
 
@@ -120,8 +116,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- includes constructed and artificial languages but excludes languages not
 -- intended primarily for human communication, such as programming languages.
 --
-data BCP47
-  = BCP47
+data BCP47 = BCP47
   { language :: ISO639_1 -- ^ The language subtag
   , subtags :: Set Subtags
   }
@@ -231,8 +226,8 @@ toSubtags tag = toList $ subtags tag
 
 -- | Produce a list of @(<= priority)@ language tags
 --
--- >>> inits enGBTJP
--- [en,en-GB,en-GB-t-jp]
+-- >>> inits enGB
+-- [en,en-GB]
 --
 inits :: BCP47 -> [BCP47]
 inits tag =
@@ -336,31 +331,3 @@ enGB = mkLocalized EN unitedKingdomOfGreatBritainAndNorthernIreland
 -- | American English
 enUS :: BCP47
 enUS = mkLocalized EN unitedStatesOfAmerica
-
--- | A nonsense tag @en-t-jp@
-enTJP :: BCP47
-enTJP = en
-  { subtags = Set.insert (SpecifyExtension (Extension "t-jp"))
-    $ subtags en
-  }
-
--- | A nonsense tag @en-T-jp@
-enTJPUpper :: BCP47
-enTJPUpper = en
-  { subtags = Set.insert (SpecifyExtension (Extension "T-jp"))
-    $ subtags en
-  }
-
--- | A nonsense tag @en-GB-t-jp@
-enGBTJP :: BCP47
-enGBTJP = enGB
-  { subtags = Set.insert (SpecifyExtension (Extension "t-jp"))
-    $ subtags enGB
-  }
-
--- | A nonsense tag @en-GB-t-jp@
-enGBTJPUpper :: BCP47
-enGBTJPUpper = enGB
-  { subtags = Set.insert (SpecifyExtension (Extension "T-jp"))
-    $ subtags enGB
-  }

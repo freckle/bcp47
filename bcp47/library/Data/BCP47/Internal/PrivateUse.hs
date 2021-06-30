@@ -15,7 +15,7 @@ import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose)
 import Data.BCP47.Internal.CIText (CIText)
 import qualified Data.BCP47.Internal.CIText as CI
-import Data.BCP47.Internal.Parser (complete, asciiLetterDigit)
+import Data.BCP47.Internal.Parser (asciiLetterDigit, complete)
 import Data.Bifunctor (first)
 import Data.Set (Set)
 import qualified Data.Set as Set

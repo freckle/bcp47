@@ -8,7 +8,7 @@ where
 
 import Control.Applicative ((<|>))
 import Country (Country, alphaTwoUpper, decodeAlphaTwo, decodeNumeric)
-import Data.BCP47.Internal.Parser (complete, asciiLetter, asciiDigit)
+import Data.BCP47.Internal.Parser (asciiDigit, asciiLetter, complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack, toUpper)
 import Data.Void (Void)
@@ -53,8 +53,8 @@ regionFromText =
 regionP :: Parsec Void Text Country
 regionP =
   try (complete alpha2)
-  <|> try (complete num3)
-  <?> "2 or 3 character country code"
+    <|> try (complete num3)
+    <?> "2 or 3 character country code"
  where
   alpha2 = do
     code <- pack <$> count 2 asciiLetter
