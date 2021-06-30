@@ -28,15 +28,19 @@ newtype CIText = CIText
 -- | Convert 'Text' to 'CIText'
 fromText :: Text -> CIText
 fromText = CIText . CI.mk
+{-# INLINE fromText #-}
 
 -- | Convert 'String' to 'CIText'
 pack :: String -> CIText
 pack = fromText . T.pack
+{-# INLINE pack #-}
 
 -- | Extract case-folded 'Text'
 foldedCase :: CIText -> Text
 foldedCase = CI.foldedCase . unCIText
+{-# INLINE foldedCase #-}
 
 -- | Recover original 'Text'
 original :: CIText -> Text
 original = CI.original . unCIText
+{-# INLINE original #-}
