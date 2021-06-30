@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1e882730e15751e79bdd8bf11849b12900164dc35f245326fce37336340bab15
+-- hash: 91c95ed208d7d9d117e3a4b00d7ffc44b087252a2c1f260910286b3644a5b36e
 
 name:           bcp47
 version:        0.2.0.4
@@ -49,6 +49,7 @@ library
   exposed-modules:
       Data.BCP47
       Data.BCP47.Internal.Arbitrary
+      Data.BCP47.Internal.CIText
       Data.BCP47.Internal.Extension
       Data.BCP47.Internal.Language
       Data.BCP47.Internal.LanguageExtension
@@ -68,6 +69,7 @@ library
       QuickCheck
     , aeson
     , base >=4.7 && <5
+    , case-insensitive
     , containers
     , country
     , generic-arbitrary
@@ -94,6 +96,7 @@ test-suite spec
   other-modules:
       Data.BCP47.TrieSpec
       Data.BCP47Spec
+      TestImport
       Paths_bcp47
   hs-source-dirs:
       tests

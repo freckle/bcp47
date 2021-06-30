@@ -1,18 +1,17 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TypeApplications #-}
 
 module Data.BCP47.TrieSpec
   ( spec
   ) where
 
-import Prelude hiding (lookup)
+import TestImport hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
 import Data.Foldable
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
-import Test.Hspec
-import Test.QuickCheck
 
 catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
 catMaybes = mapMaybe id
@@ -94,6 +93,10 @@ spec = do
       let Just trie = fromList [(en, "color"), (enGB, "colour")]
       lookup enGBTJP trie `shouldBe` Just "colour"
 
+    it "lookups case-insensitively" $ do
+      let Just trie = fromList [(enTJPUpper, "color"), (enGBTJPUpper, "color")]
+      lookup enTJP trie `shouldBe` Just "color"
+
   describe "match" $ do
     it "should always match a path it inserts" $ property $ \tag ->
       match tag (singleton tag "string") `shouldBe` Just "string"
@@ -125,3 +128,7 @@ spec = do
     it "matches a deep relevant match" $ do
       let Just trie = fromList [(en, "color"), (enGB, "colour")]
       match enGBTJP trie `shouldBe` Nothing
+
+    it "matches case-insensitively" $ do
+      let Just trie = fromList [(enTJPUpper, "color"), (enGBTJPUpper, "color")]
+      match enTJP trie `shouldBe` Just "color"
