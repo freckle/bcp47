@@ -13,9 +13,10 @@ import Control.Applicative ((<|>))
 import Control.Monad (void)
 import Data.BCP47.Internal.Arbitrary
   (Arbitrary, alphaNumString, arbitrary, choose)
+import Data.BCP47.Internal.CIText (CIText)
+import qualified Data.BCP47.Internal.CIText as CI
 import Data.BCP47.Internal.Parser (complete, asciiLetterDigit)
 import Data.Bifunctor (first)
-import Data.CaseInsensitive (CI, mk)
 import Data.Set (Set)
 import qualified Data.Set as Set
 import Data.Text (Text, pack)
@@ -29,14 +30,17 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- Private use subtags are used to indicate distinctions in language
 -- that are important in a given context by private agreement.
 --
-newtype PrivateUse = PrivateUse { privateUseToText :: CI Text }
+newtype PrivateUse = PrivateUse { unPrivateUse :: CIText }
   deriving stock (Show, Eq, Ord)
+
+privateUseToText :: PrivateUse -> Text
+privateUseToText = CI.original . unPrivateUse
 
 instance Arbitrary PrivateUse where
   arbitrary = do
     len <- choose (1, 8)
     chars <- alphaNumString len
-    pure . PrivateUse . mk $ pack chars
+    pure . PrivateUse $ CI.pack chars
 
 -- | Parse a 'PrivateUse' subtag from 'Text'
 privateUseFromText :: Text -> Either Text (Set PrivateUse)
@@ -53,4 +57,4 @@ privateUseP :: Parsec Void Text (Set PrivateUse)
 privateUseP = complete $ do
   void $ char 'x' <|> char 'X'
   rest <- some (char '-' *> count' 1 8 asciiLetterDigit)
-  pure $ Set.fromList $ PrivateUse . mk . pack <$> rest
+  pure $ Set.fromList $ PrivateUse . CI.pack <$> rest

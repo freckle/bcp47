@@ -10,9 +10,10 @@ module Data.BCP47.Internal.Script
 where
 
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
+import Data.BCP47.Internal.CIText (CIText)
+import qualified Data.BCP47.Internal.CIText as CI
 import Data.BCP47.Internal.Parser (complete, asciiLetter)
 import Data.Bifunctor (first)
-import Data.CaseInsensitive (CI, mk)
 import Data.Text (Text, pack)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, count, parse)
@@ -24,11 +25,14 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- variations that distinguish the written forms of a language or its
 -- dialects.
 --
-newtype Script = Script { scriptToText :: CI Text }
+newtype Script = Script { unScript :: CIText }
   deriving stock (Show, Eq, Ord)
 
+scriptToText :: Script -> Text
+scriptToText = CI.original . unScript
+
 instance Arbitrary Script where
-  arbitrary = Script . mk . pack <$> alphaString 4
+  arbitrary = Script . CI.pack <$> alphaString 4
 
 -- | Parse a 'Script' subtag from 'Text'
 scriptFromText :: Text -> Either Text Script
@@ -42,4 +46,4 @@ scriptFromText =
 -- @@
 --
 scriptP :: Parsec Void Text Script
-scriptP = complete $ Script . mk . pack <$> count 4 asciiLetter
+scriptP = complete $ Script . CI.pack <$> count 4 asciiLetter
