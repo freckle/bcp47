@@ -66,5 +66,5 @@ regionP =
     region <- decodeNumeric <$> either fail pure (readEither code)
     unwrap "Invalid 3 character country code" region
 
-unwrap :: MonadFail m => String -> Maybe a -> m a
-unwrap message = maybe (fail message) pure
+  unwrap :: String -> Maybe a -> Parsec Void Text a
+  unwrap message = maybe (fail message) pure

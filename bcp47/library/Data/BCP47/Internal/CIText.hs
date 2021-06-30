@@ -6,7 +6,6 @@ module Data.BCP47.Internal.CIText
   , fromText
   , pack
   , original
-  , foldedCase
   ) where
 
 import Data.CaseInsensitive (CI)
@@ -34,11 +33,6 @@ fromText = CIText . CI.mk
 pack :: String -> CIText
 pack = fromText . T.pack
 {-# INLINE pack #-}
-
--- | Extract case-folded 'Text'
-foldedCase :: CIText -> Text
-foldedCase = CI.foldedCase . unCIText
-{-# INLINE foldedCase #-}
 
 -- | Recover original 'Text'
 original :: CIText -> Text
