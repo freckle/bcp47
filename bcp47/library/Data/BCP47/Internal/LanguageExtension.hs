@@ -11,9 +11,10 @@ where
 
 import Control.Monad (replicateM, void)
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
+import Data.BCP47.Internal.CIText (CIText)
+import qualified Data.BCP47.Internal.CIText as CI
 import Data.BCP47.Internal.Parser (complete, asciiLetter)
 import Data.Bifunctor (first)
-import Data.CaseInsensitive (CI, mk)
 import Data.List (intercalate)
 import Data.Text (Text, pack)
 import Data.Void (Void)
@@ -27,13 +28,16 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- various historical and compatibility reasons, are closely identified with or
 -- tagged using an existing primary language subtag.
 --
-newtype LanguageExtension = LanguageExtension { languageExtensionToText :: CI Text }
+newtype LanguageExtension = LanguageExtension { unLanguageExtension :: CIText }
   deriving stock (Show, Eq, Ord)
+
+languageExtensionToText :: LanguageExtension -> Text
+languageExtensionToText = CI.original . unLanguageExtension
 
 instance Arbitrary LanguageExtension where
   arbitrary = do
     components <- replicateM 3 $ alphaString 3
-    pure $ LanguageExtension $ mk $ pack $ intercalate "-" components
+    pure $ LanguageExtension $ CI.pack $ intercalate "-" components
 
 -- | Parse a 'LanguageExtension' subtag from 'Text'
 languageExtensionFromText :: Text -> Either Text LanguageExtension
@@ -56,5 +60,5 @@ languageExtensionP = complete $ do
   c1 <- count 3 asciiLetter
   void $ char '-'
   c2 <- count 3 asciiLetter
-  let ext = mk $ pack $ mconcat [iso639, "-", c1, "-", c2]
+  let ext = CI.pack $ mconcat [iso639, "-", c1, "-", c2]
   pure $ LanguageExtension ext
