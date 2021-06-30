@@ -1,5 +1,5 @@
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 {-# LANGUAGE DerivingStrategies #-}
+{-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.BCP47.Internal.CIText
   ( CIText(..)
@@ -9,11 +9,11 @@ module Data.BCP47.Internal.CIText
   , foldedCase
   ) where
 
+import Data.CaseInsensitive (CI)
+import qualified Data.CaseInsensitive as CI
+import Data.String (IsString)
 import Data.Text (Text)
 import qualified Data.Text as T
-import Data.CaseInsensitive (CI)
-import Data.String (IsString)
-import qualified Data.CaseInsensitive as CI
 
 -- | Internal newtype for 'CI Text'
 --

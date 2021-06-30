@@ -8,7 +8,7 @@ where
 
 import Control.Applicative ((<|>))
 import Country (Country, alphaTwoUpper, decodeAlphaTwo, decodeNumeric)
-import Data.BCP47.Internal.Parser (complete, asciiLetter, asciiDigit)
+import Data.BCP47.Internal.Parser (asciiDigit, asciiLetter, complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack, toUpper)
 import Data.Void (Void)

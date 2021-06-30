@@ -12,7 +12,7 @@ where
 import Data.BCP47.Internal.Arbitrary (Arbitrary, alphaString, arbitrary)
 import Data.BCP47.Internal.CIText (CIText)
 import qualified Data.BCP47.Internal.CIText as CI
-import Data.BCP47.Internal.Parser (complete, asciiLetter)
+import Data.BCP47.Internal.Parser (asciiLetter, complete)
 import Data.Bifunctor (first)
 import Data.Text (Text, pack)
 import Data.Void (Void)

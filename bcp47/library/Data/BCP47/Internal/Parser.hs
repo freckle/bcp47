@@ -7,8 +7,8 @@ module Data.BCP47.Internal.Parser
 
 import Control.Applicative ((<|>))
 import Control.Monad (void)
-import Data.Text (Text)
 import Data.Char (ord)
+import Data.Text (Text)
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, eof, lookAhead, noneOf, satisfy, (<?>))
 import Text.Megaparsec.Char (char)
