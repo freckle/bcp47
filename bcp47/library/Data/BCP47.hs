@@ -120,8 +120,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- includes constructed and artificial languages but excludes languages not
 -- intended primarily for human communication, such as programming languages.
 --
-data BCP47
-  = BCP47
+data BCP47 = BCP47
   { language :: ISO639_1 -- ^ The language subtag
   , subtags :: Set Subtags
   }
@@ -339,28 +338,22 @@ enUS = mkLocalized EN unitedStatesOfAmerica
 
 -- | A nonsense tag @en-t-jp@
 enTJP :: BCP47
-enTJP = en
-  { subtags = Set.insert (SpecifyExtension (Extension "t-jp"))
-    $ subtags en
-  }
+enTJP =
+  en { subtags = Set.insert (SpecifyExtension (Extension "t-jp")) $ subtags en }
 
 -- | A nonsense tag @en-T-jp@
 enTJPUpper :: BCP47
-enTJPUpper = en
-  { subtags = Set.insert (SpecifyExtension (Extension "T-jp"))
-    $ subtags en
-  }
+enTJPUpper =
+  en { subtags = Set.insert (SpecifyExtension (Extension "T-jp")) $ subtags en }
 
 -- | A nonsense tag @en-GB-t-jp@
 enGBTJP :: BCP47
 enGBTJP = enGB
-  { subtags = Set.insert (SpecifyExtension (Extension "t-jp"))
-    $ subtags enGB
+  { subtags = Set.insert (SpecifyExtension (Extension "t-jp")) $ subtags enGB
   }
 
 -- | A nonsense tag @en-GB-t-jp@
 enGBTJPUpper :: BCP47
 enGBTJPUpper = enGB
-  { subtags = Set.insert (SpecifyExtension (Extension "T-jp"))
-    $ subtags enGB
+  { subtags = Set.insert (SpecifyExtension (Extension "T-jp")) $ subtags enGB
   }

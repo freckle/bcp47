@@ -42,5 +42,4 @@ languageP :: Parsec Void Text ISO639_1
 languageP = complete $ do
   mCode <- fromChars <$> letter <*> letter
   maybe (fail "unknown ISO-639-1 code") pure mCode
- where
-  letter = C.toLower <$> asciiLetter
+  where letter = C.toLower <$> asciiLetter

@@ -53,8 +53,8 @@ regionFromText =
 regionP :: Parsec Void Text Country
 regionP =
   try (complete alpha2)
-  <|> try (complete num3)
-  <?> "2 or 3 character country code"
+    <|> try (complete num3)
+    <?> "2 or 3 character country code"
  where
   alpha2 = do
     code <- pack <$> count 2 asciiLetter
