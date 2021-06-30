@@ -1,3 +1,4 @@
+{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE TypeApplications #-}
 {-# OPTIONS_GHC -Wno-incomplete-uni-patterns #-}
 
@@ -5,15 +6,13 @@ module Data.BCP47.TrieSpec
   ( spec
   ) where
 
-import Prelude hiding (lookup)
+import TestImport hiding (lookup)
 
 import Data.BCP47
 import Data.BCP47.Trie
 import Data.Foldable
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
-import Test.Hspec
-import Test.QuickCheck
 
 catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
 catMaybes = mapMaybe id

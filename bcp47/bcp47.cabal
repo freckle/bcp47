@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: c383153b48e25802f77f220209eafb4f62369caa07a65b48932eb181dc243d8f
+-- hash: 91c95ed208d7d9d117e3a4b00d7ffc44b087252a2c1f260910286b3644a5b36e
 
 name:           bcp47
 version:        0.2.0.6
@@ -96,6 +96,7 @@ test-suite spec
   other-modules:
       Data.BCP47.TrieSpec
       Data.BCP47Spec
+      TestImport
       Paths_bcp47
   hs-source-dirs:
       tests
