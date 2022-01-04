@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.4...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.5...main)
 
 None
+
+## [v0.2.0.5](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.4...bcp47-v0.2.0.5)
+
+- Fix `Semigroup` instance of `Trie` ([PR #29](https://github.com/freckle/bcp47/pull/29))
 
 ## [v0.2.0.4](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.3...bcp47-v0.2.0.4)
 
