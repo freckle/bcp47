@@ -28,6 +28,15 @@ spec = do
       < singleton es "color"
       `shouldBe` True
 
+    describe "Semigroup instance" $ do
+      it "unions top-level conflicts" $ property $ \l r ->
+        lookup en (singleton en [l] <> singleton en [r])
+          `shouldBe` Just ([l, r] :: [Int])
+
+      it "unions leaf-level conflicts" $ property $ \v1 v2 -> do
+        lookup enGB (singleton enGB [v1] <> singleton enGB [v2])
+          `shouldBe` Just ([v1, v2] :: [Int])
+
     describe "mapMaybe" $ do
       it "Justs are constant" $ property $ \xs ->
         let
