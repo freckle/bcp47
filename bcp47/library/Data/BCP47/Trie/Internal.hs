@@ -122,4 +122,4 @@ union2 = union2Using (<|>)
 
 union2Using :: (Maybe a -> Maybe a -> Maybe a) -> Trie2 a -> Trie2 a -> Trie2 a
 union2Using f (Trie2 x xs) (Trie2 y ys) =
-  Trie2 (f x y) (Map.unionWith union2 xs ys)
+  Trie2 (f x y) (Map.unionWith (union2Using f) xs ys)
