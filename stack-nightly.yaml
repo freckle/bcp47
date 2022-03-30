@@ -7,18 +7,18 @@ packages:
 extra-deps:
   - country-0.2.2
   - esqueleto-3.5.3.2
-  - generic-arbitrary-0.2.0
 
   # for country (what is with this library?)
-  - bytebuild-0.3.10.0
   - bytehash-0.1.0.0
   - byteslice-0.2.7.0
   - contiguous-0.6.1.1
   - run-st-0.1.1.0
   - zigzag-0.0.1.0
 
-# BROKEN on upstream
-# bytebuild-0.3.10.10     -> needs to support 9.2
-# bytehash-0.1.0.0        -> needs to relax upper on bytestring
-# generic-arbitrary-0.2.0 -> needs to support 9.2
-allow-newer: true
+  # https://github.com/byteverse/bytebuild/pull/26
+  - github: byteverse/bytebuild
+    commit: e0aeb060eb921238f33e97f91f6b5c5492e6dbf8
+
+  # https://github.com/typeable/generic-arbitrary/issues/12
+  - github: typeable/generic-arbitrary
+    commit: e559ca7591b00ffca49b172b77e9c4150f6c1399
