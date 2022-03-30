@@ -1,13 +1,13 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.33.0.
+-- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 1e882730e15751e79bdd8bf11849b12900164dc35f245326fce37336340bab15
+-- hash: 1be630751115aab85bb24c8ea50cdca785582e44fdfed957d3119d90a8f98a37
 
 name:           bcp47
-version:        0.2.0.4
+version:        0.2.0.5
 synopsis:       Language tags as specified by BCP 47
 description:    /Language tags for use in cases where it is desirable to indicate the/
                 /language used in an information object./

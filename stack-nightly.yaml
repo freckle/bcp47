@@ -1,8 +1,24 @@
 # Indicates last update, must be overridden by --resolver
-resolver: nightly-2020-02-08
+resolver: nightly-2022-03-30
 packages:
-- bcp47
-- bcp47-orphans
+  - bcp47
+  - bcp47-orphans
+
 extra-deps:
-- country-0.2.1@sha256:6988516f98054efce913e7027fb2659e9b2f67e033a10ea8b5b14ac6a3c2749b,2413
-- esqueleto-3.4.0.1@sha256:85077c6b11e06e0ac4a5cb07fb6b71448dcd2dc1e9831ea8115cb9090c342500,5869
+  - country-0.2.2
+  - esqueleto-3.5.3.2
+  - generic-arbitrary-0.2.0
+
+  # for country (what is with this library?)
+  - bytebuild-0.3.10.0
+  - bytehash-0.1.0.0
+  - byteslice-0.2.7.0
+  - contiguous-0.6.1.1
+  - run-st-0.1.1.0
+  - zigzag-0.0.1.0
+
+# BROKEN on upstream
+# bytebuild-0.3.10.10     -> needs to support 9.2
+# bytehash-0.1.0.0        -> needs to relax upper on bytestring
+# generic-arbitrary-0.2.0 -> needs to support 9.2
+allow-newer: true

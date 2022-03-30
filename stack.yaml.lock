@@ -3,10 +3,59 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages: []
+packages:
+- completed:
+    hackage: country-0.2.2@sha256:681aabb9e0a8d2f94051d0ae566128458be3de4d0e0b6a9cf5875ce12ed403f5,3393
+    pantry-tree:
+      size: 1396
+      sha256: e2222a7733da6f09432d1ddc688d7b30e95e77692527be6e15840d985aef0706
+  original:
+    hackage: country-0.2.2
+- completed:
+    hackage: bytebuild-0.3.10.0@sha256:c0f3bdbb92cfb48193756366c50193cde23aa7f8292994a9e3a744f5307c6fc1,3213
+    pantry-tree:
+      size: 1135
+      sha256: 00da63e842faa2758fa08e1554f30f7cf69b4b1fc4ce84ebedff64542f1fd00f
+  original:
+    hackage: bytebuild-0.3.10.0
+- completed:
+    hackage: bytehash-0.1.0.0@sha256:31d9018c896eff6170329774ec1c1b247712448871f2400a541e92e64286c610,2017
+    pantry-tree:
+      size: 587
+      sha256: 48315bcf32ca2188401b7c1c2a27a6ad07158f836fe01ab2cd7f70ae8d49bf62
+  original:
+    hackage: bytehash-0.1.0.0
+- completed:
+    hackage: byteslice-0.2.7.0@sha256:b5aa80e6efa143b532d20603fb643767386771ec059adedd87cf72cceaf96420,2403
+    pantry-tree:
+      size: 1546
+      sha256: d2b3fe36bbabea0225bbce11f9c61a5c81fea7bfb9f742086284e4d0667d1797
+  original:
+    hackage: byteslice-0.2.7.0
+- completed:
+    hackage: contiguous-0.6.1.1@sha256:10922abbdf6c61cb4a9e493609871c4fd0c47dcde17dba3a6b6c420ef76fc212,1871
+    pantry-tree:
+      size: 600
+      sha256: e17834983b11be7cf05fca6a139987bf970634bf8bcf31621cf09d92aaecdd85
+  original:
+    hackage: contiguous-0.6.1.1
+- completed:
+    hackage: run-st-0.1.1.0@sha256:a43245bb23984089016772481bf52bfe63eaff0c5040303f69c9b15e80872fdc,883
+    pantry-tree:
+      size: 269
+      sha256: 06d5d7ecf185a26c15e48cda6c30e8865dae715c528a31466701272fae36d822
+  original:
+    hackage: run-st-0.1.1.0
+- completed:
+    hackage: zigzag-0.0.1.0@sha256:a995158dad3dfe0347cfc8f8a9327cc3f51832600553169ba5b1e08c45b45405,1078
+    pantry-tree:
+      size: 321
+      sha256: e5e5aadb11d695f9f1792a6d8f8faa4131afc23713335ff93dab6b0806bea510
+  original:
+    hackage: zigzag-0.0.1.0
 snapshots:
 - completed:
-    size: 563098
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/17/1.yaml
-    sha256: 395775c03e66a4286f134d50346b0b6f1432131cf542886252984b4cfa5fef69
-  original: lts-17.1
+    size: 617355
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/19/1.yaml
+    sha256: cbd5e8593869445794924668479b5bd9f1738d075898623dceacc13b2576b6e3
+  original: lts-19.1

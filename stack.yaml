@@ -1,6 +1,17 @@
-resolver: lts-17.1
+resolver: lts-19.1
 packages:
   - bcp47
   - bcp47-orphans
+extra-deps:
+  - country-0.2.2
+
+  # for country (what is with this library?)
+  - bytebuild-0.3.10.0
+  - bytehash-0.1.0.0
+  - byteslice-0.2.7.0
+  - contiguous-0.6.1.1
+  - run-st-0.1.1.0
+  - zigzag-0.0.1.0
+
 ghc-options:
   "$locals": -fwrite-ide-info
