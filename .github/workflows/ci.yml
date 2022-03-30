@@ -33,7 +33,7 @@ jobs:
           stack-yaml: ${{ matrix.stack-yaml }}
           stack-arguments: ${{ matrix.target }} --skip doctest
 
-      - if: ${ matrix.stack-yaml == 'stack.yaml' }
+      - if: ${{ matrix.stack-yaml == 'stack.yaml' }}
         run: |
           stack build bcp47:doctest --fast --pedantic --test
 
