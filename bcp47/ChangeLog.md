@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.5...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.6...main)
 
 None
+
+## [v0.2.0.6](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.5...bcp47-v0.2.0.6)
+
+- Support GHCs 9.0 and 9.2
 
 ## [v0.2.0.5](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.4...bcp47-v0.2.0.5)
 

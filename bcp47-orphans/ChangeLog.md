@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.4...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.5...main)
 
 None
+
+## [v0.1.0.5](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.4...bcp47-orphans-v0.1.0.5)
+
+- Support GHCs 9.0 and 9.2
 
 ## [v0.1.0.4](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.3...bcp47-orphans-v0.1.0.4)
 
