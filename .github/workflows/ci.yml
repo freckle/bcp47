@@ -37,19 +37,18 @@ jobs:
         run: |
           stack build bcp47:doctest --fast --pedantic --test
 
-  # Broken on upstream, see stack-nightly.yaml
-  # nightly:
-  #   runs-on: ubuntu-latest
+  nightly:
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #     - uses: actions/checkout@v2
-  #     - uses: freckle/stack-cache-action@v2
-  #       with:
-  #         stack-yaml: stack-nightly.yaml
-  #     - uses: freckle/stack-action@v3
-  #       with:
-  #         stack-yaml: stack-nightly.yaml
-  #         stack-arguments: --resolver nightly --skip doctest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: freckle/stack-cache-action@v2
+        with:
+          stack-yaml: stack-nightly.yaml
+      - uses: freckle/stack-action@v3
+        with:
+          stack-yaml: stack-nightly.yaml
+          stack-arguments: --resolver nightly --skip doctest
 
   lint:
     runs-on: ubuntu-latest

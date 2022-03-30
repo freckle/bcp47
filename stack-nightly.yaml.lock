@@ -19,20 +19,6 @@ packages:
   original:
     hackage: esqueleto-3.5.3.2
 - completed:
-    hackage: generic-arbitrary-0.2.0@sha256:77b9d6b9f1edd9917f0d2e1bd2fd3d510715bc25029c66fc6a1e7806590ae8f4,1205
-    pantry-tree:
-      size: 294
-      sha256: ac660c470a1ca15a5fc4193f6e1ba1ef8aa02792c2003b4731dcfe61f24fb1c9
-  original:
-    hackage: generic-arbitrary-0.2.0
-- completed:
-    hackage: bytebuild-0.3.10.0@sha256:c0f3bdbb92cfb48193756366c50193cde23aa7f8292994a9e3a744f5307c6fc1,3213
-    pantry-tree:
-      size: 1135
-      sha256: 00da63e842faa2758fa08e1554f30f7cf69b4b1fc4ce84ebedff64542f1fd00f
-  original:
-    hackage: bytebuild-0.3.10.0
-- completed:
     hackage: bytehash-0.1.0.0@sha256:31d9018c896eff6170329774ec1c1b247712448871f2400a541e92e64286c610,2017
     pantry-tree:
       size: 587
@@ -67,6 +53,28 @@ packages:
       sha256: e5e5aadb11d695f9f1792a6d8f8faa4131afc23713335ff93dab6b0806bea510
   original:
     hackage: zigzag-0.0.1.0
+- completed:
+    size: 35614
+    url: https://github.com/byteverse/bytebuild/archive/e0aeb060eb921238f33e97f91f6b5c5492e6dbf8.tar.gz
+    name: bytebuild
+    version: 0.3.10.0
+    sha256: c98d36faf3543ce5b08dded7b370f745384f038b24bba2a6300b4f2ef2425a2a
+    pantry-tree:
+      size: 1351
+      sha256: 6dcb55af7b7c99052d8086aae3a4e35a95c8a6d197d1c7c243c81775649ec947
+  original:
+    url: https://github.com/byteverse/bytebuild/archive/e0aeb060eb921238f33e97f91f6b5c5492e6dbf8.tar.gz
+- completed:
+    size: 4911
+    url: https://github.com/typeable/generic-arbitrary/archive/e559ca7591b00ffca49b172b77e9c4150f6c1399.tar.gz
+    name: generic-arbitrary
+    version: 0.2.0
+    sha256: 0da48e4fb19f9b60699a7d3273fae791c1213c07aeba540977cbf2f9efbea571
+    pantry-tree:
+      size: 492
+      sha256: 935937b10d6569ae701a14146b857d45f32a7109f5d8b62e05bae8aa9bb6c4fb
+  original:
+    url: https://github.com/typeable/generic-arbitrary/archive/e559ca7591b00ffca49b172b77e9c4150f6c1399.tar.gz
 snapshots:
 - completed:
     size: 539378
