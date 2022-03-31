@@ -15,7 +15,6 @@ module Data.BCP47.Trie.Internal
   , singleton2
   , lookup2
   , match2
-  , union2
   , union2Using
   , fromSubtags
   , mapMaybe2
@@ -116,9 +115,6 @@ match2 tag = go (toSubtags tag)
   go :: [Subtags] -> Trie2 a -> Maybe a
   go [] (Trie2 mVal _) = mVal
   go (p : ps) (Trie2 _ children) = go ps =<< Map.lookup p children
-
-union2 :: Trie2 a -> Trie2 a -> Trie2 a
-union2 = union2Using (<|>)
 
 union2Using :: (Maybe a -> Maybe a -> Maybe a) -> Trie2 a -> Trie2 a -> Trie2 a
 union2Using f (Trie2 x xs) (Trie2 y ys) =
