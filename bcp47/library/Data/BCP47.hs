@@ -226,8 +226,8 @@ toSubtags tag = toList $ subtags tag
 
 -- | Produce a list of @(<= priority)@ language tags
 --
--- >>> inits enGB
--- [en,en-GB]
+-- >>> inits <$> fromText (pack "en-GB-t-jp")
+-- Right [en,en-GB,en-GB-t-jp]
 --
 inits :: BCP47 -> [BCP47]
 inits tag =
