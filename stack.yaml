@@ -13,5 +13,8 @@ extra-deps:
   - run-st-0.1.1.0
   - zigzag-0.0.1.0
 
+  # for weeder
+  - algebraic-graphs-0.5@sha256:6eeec5ed1687ff7aa916e7bf9f02f51aaabde6f314dc0b7b1a84156974d7da73,8071
+
 ghc-options:
   "$locals": -fwrite-ide-info
