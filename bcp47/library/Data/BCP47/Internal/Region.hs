@@ -52,11 +52,11 @@ regionFromText =
 --
 regionP :: Parsec Void Text Country
 regionP =
-  try (complete alpha2)
+  try (complete asciiLetter2)
     <|> try (complete num3)
     <?> "2 or 3 character country code"
  where
-  alpha2 = do
+  asciiLetter2 = do
     code <- pack <$> count 2 asciiLetter
     let region = decodeAlphaTwo $ toUpper code
     unwrap "Invalid 2 character country code" region
