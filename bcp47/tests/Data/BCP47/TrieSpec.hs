@@ -13,6 +13,7 @@ import Data.BCP47.Trie
 import Data.Foldable
 import qualified Data.List as List
 import qualified Data.Maybe as Maybe
+import qualified Data.Text as T
 
 catMaybes :: Trie (Maybe a) -> Maybe (Trie a)
 catMaybes = mapMaybe id
@@ -103,9 +104,12 @@ spec = do
       let Just trie = fromList [(en, "color"), (enGB, "colour")]
       lookup enGBTJP trie `shouldBe` Just "colour"
 
-    it "lookups case-insensitively" $ do
-      let Just trie = fromList [(enTJPUpper, "color"), (enGBTJPUpper, "color")]
-      lookup enTJP trie `shouldBe` Just "color"
+    it "lookups case-insensitively" $ property $ \tag -> do
+      let tagText = toText tag
+      let Right upper = fromText $ T.toUpper tagText
+      let Right lower = fromText $ T.toLower tagText
+      let trie = singleton upper "color"
+      lookup lower trie `shouldBe` Just "color"
 
   describe "match" $ do
     it "should always match a path it inserts" $ property $ \tag ->
