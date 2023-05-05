@@ -8,6 +8,7 @@ module Data.BCP47Spec
 
 import TestImport
 
+import qualified Codec.Serialise as S
 import Country.Identifier (china)
 import Data.Aeson (decode, encode)
 import Data.BCP47
@@ -56,6 +57,9 @@ spec = do
 
   describe "ToJSON/FromJSON" . it "roundtrips" . property $ \x ->
     decode (encode @BCP47 x) `shouldBe` Just x
+
+  describe "Serialise" . it "roundtrips" . property $ \x ->
+    S.deserialise @BCP47 (S.serialise @BCP47 x) `shouldBe` x
 
   describe "Eq" $ do
     it "compares equal with different casing" $ do

@@ -1,6 +1,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 {-# LANGUAGE LambdaCase #-}
 {-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric #-}
 
 -- | /Human beings on our planet have, past and present, used a number of/
 -- /languages. There are many reasons why one would want to identify the/
@@ -80,8 +81,11 @@ module Data.BCP47
   )
 where
 
+import qualified Codec.Serialise as Serialise
+import qualified Codec.Serialise.Decoding as Serialise
+import qualified Codec.Serialise.Encoding as Serialise
 import Control.Applicative ((<|>))
-import Control.Monad (MonadPlus)
+import Control.Monad (MonadPlus, void)
 import Country.Identifier
   (unitedKingdomOfGreatBritainAndNorthernIreland, unitedStatesOfAmerica)
 import Data.Aeson
@@ -105,6 +109,7 @@ import qualified Data.Set as Set
 import Data.Text (Text, pack, unpack)
 import qualified Data.Text as T
 import Data.Void (Void)
+import GHC.Generics
 import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
 import Text.Megaparsec.Char (char)
 import Text.Megaparsec.Error (errorBundlePretty)
@@ -120,7 +125,7 @@ data BCP47 = BCP47
   { language :: ISO639_1 -- ^ The language subtag
   , subtags :: Set Subtags
   }
-  deriving stock (Eq, Ord)
+  deriving stock (Eq, Ord, Generic)
 
 instance Arbitrary BCP47 where
   arbitrary = BCP47 <$> elements [EN, ES] <*> specs
@@ -151,6 +156,19 @@ instance ToJSON BCP47 where
 
 instance FromJSON BCP47 where
   parseJSON = withText "BCP47" $ either (fail . unpack) pure . fromText
+
+instance Serialise.Serialise BCP47 where
+  -- bypass children not having their own Serialise instances by using toText/fromText
+  encode bcp = Serialise.encodeListLen 2 <> Serialise.encodeTag 0 <> Serialise.encodeString (toText bcp)
+  decode = do
+    -- these two must be read to consume them 
+    -- ignore them as they're here as part of the standard format but we don't need them
+    void Serialise.decodeListLen
+    void Serialise.decodeTag
+    textual <- Serialise.decodeString
+    case fromText textual of
+      Left err -> fail . T.unpack $ err
+      Right val -> pure val
 
 -- | Serialize @'BCP47'@ to @'Text'@
 --

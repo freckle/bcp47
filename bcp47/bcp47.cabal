@@ -7,7 +7,7 @@ cabal-version: 1.12
 -- hash: 91c95ed208d7d9d117e3a4b00d7ffc44b087252a2c1f260910286b3644a5b36e
 
 name:           bcp47
-version:        0.2.0.6
+version:        0.2.0.7
 synopsis:       Language tags as specified by BCP 47
 description:    /Language tags for use in cases where it is desirable to indicate the/
                 /language used in an information object./
@@ -75,6 +75,7 @@ library
     , generic-arbitrary
     , iso639
     , megaparsec
+    , serialise
     , text
   default-language: Haskell2010
 
@@ -109,5 +110,6 @@ test-suite spec
     , country
     , hspec
     , iso639
+    , serialise
     , text
   default-language: Haskell2010

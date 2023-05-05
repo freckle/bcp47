@@ -1,5 +1,5 @@
 name: bcp47
-version: 0.2.0.6
+version: 0.2.0.7
 github:  "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -46,6 +46,7 @@ library:
   - iso639
   - megaparsec
   - QuickCheck
+  - serialise
   - text
 
 tests:
@@ -65,4 +66,5 @@ tests:
     - hspec
     - country
     - iso639
+    - serialise
     - text
