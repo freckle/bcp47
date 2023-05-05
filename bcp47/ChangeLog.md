@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.6...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.7...main)
 
 None
+
+## [v0.2.0.7](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.6...bcp47-v0.2.0.7)
+
+- Support Serialise
 
 ## [v0.2.0.6](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.5...bcp47-v0.2.0.6)
 
