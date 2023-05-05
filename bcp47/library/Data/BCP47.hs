@@ -159,7 +159,9 @@ instance FromJSON BCP47 where
 
 instance Serialise.Serialise BCP47 where
   -- bypass children not having their own Serialise instances by using toText/fromText
-  encode bcp = Serialise.encodeListLen 2 <> Serialise.encodeTag 0 <> Serialise.encodeString (toText bcp)
+  encode bcp =
+    Serialise.encodeListLen 2 <> Serialise.encodeTag 0 <> Serialise.encodeString
+      (toText bcp)
   decode = do
     -- these two must be read to consume them 
     -- ignore them as they're here as part of the standard format but we don't need them
