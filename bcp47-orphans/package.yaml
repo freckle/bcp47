@@ -27,6 +27,7 @@ library:
   - http-api-data
   - path-pieces
   - persistent
+  - serialise
   - text
 
 tests:
@@ -41,3 +42,4 @@ tests:
     - hspec
     - path-pieces
     - persistent
+    - serialise
