@@ -11,6 +11,5 @@ import Test.Hspec
 import Test.QuickCheck (property)
 
 spec :: Spec
-spec =
-    describe "Serialise" . it "roundtrips" . property $ \x ->
-        deserialise @BCP47 (serialise @BCP47 x) `shouldBe` x
+spec = describe "Serialise" . it "roundtrips" . property $ \x ->
+  deserialise @BCP47 (serialise @BCP47 x) `shouldBe` x
