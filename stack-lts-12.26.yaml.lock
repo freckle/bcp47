@@ -7,27 +7,34 @@ packages:
 - completed:
     hackage: esqueleto-3.4.0.1@sha256:85077c6b11e06e0ac4a5cb07fb6b71448dcd2dc1e9831ea8115cb9090c342500,5869
     pantry-tree:
-      size: 1542
       sha256: 2cd6bd749fa1c1f9aa9730010a9bd516f4f4edaf9e9c1b3d39b1ad4e163b7ca7
+      size: 1542
   original:
     hackage: esqueleto-3.4.0.1@sha256:85077c6b11e06e0ac4a5cb07fb6b71448dcd2dc1e9831ea8115cb9090c342500,5869
 - completed:
     hackage: megaparsec-7.0.4@sha256:a7397151601cbe6b8f831f8bdad1a10118dcd6d9a7ee50d6bbdcfbd1181b4ba2,6202
     pantry-tree:
-      size: 2647
       sha256: ab1608bf3230f6f3242fd49f4aa60025698c831f2cfb3496ccbdadf7840848e9
+      size: 2647
   original:
     hackage: megaparsec-7.0.4@sha256:a7397151601cbe6b8f831f8bdad1a10118dcd6d9a7ee50d6bbdcfbd1181b4ba2
 - completed:
     hackage: persistent-2.11.0.1@sha256:c33f00adfed435bbf406d70aa6e5471974a4afcc1a8da3a5ef4e1af0ba5f9884,4702
     pantry-tree:
-      size: 2099
       sha256: bbeb07522ccf835793ff86e0a8e66ccb1138d0c5055b6f1e706426edcd5dbefd
+      size: 2099
   original:
     hackage: persistent-2.11.0.1@sha256:c33f00adfed435bbf406d70aa6e5471974a4afcc1a8da3a5ef4e1af0ba5f9884,4702
+- completed:
+    hackage: serialise-0.2.6.0@sha256:eba4aae0ae552e58c4e1f27186764551b98591e3bd92e852c40655e3b35924c9,8776
+    pantry-tree:
+      sha256: cf5033e7264b1f74b8234efc355c973029f424b2853a5893611aa78eda204e71
+      size: 4056
+  original:
+    hackage: serialise-0.2.6.0
 snapshots:
 - completed:
+    sha256: 95f014df58d0679b1c4a2b7bf2b652b61da8d30de5f571abb0d59015ef678646
     size: 509471
     url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/lts/12/26.yaml
-    sha256: 95f014df58d0679b1c4a2b7bf2b652b61da8d30de5f571abb0d59015ef678646
   original: lts-12.26
