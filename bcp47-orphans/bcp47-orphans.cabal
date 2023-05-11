@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.34.4.
+-- This file has been generated from package.yaml by hpack version 0.35.1.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 04e9383a06dc5542f096955b8bf4d199e31d8d7f8746c1ea1b7b2fd5658c9d8b
+-- hash: 2dedfcae4c90f39ee13d091479847c6ed130b4ad0c28c769c4e77a300d09ba18
 
 name:           bcp47-orphans
 version:        0.1.0.5
@@ -35,6 +35,7 @@ library
       Data.BCP47.HttpApiData
       Data.BCP47.PathPieces
       Data.BCP47.Persist
+      Data.BCP47.Serialise
   other-modules:
       Paths_bcp47_orphans
   hs-source-dirs:
@@ -49,6 +50,7 @@ library
     , http-api-data
     , path-pieces
     , persistent
+    , serialise
     , text
   default-language: Haskell2010
 
@@ -60,6 +62,7 @@ test-suite spec
       Data.BCP47.PathPiecesSpec
       Data.BCP47.PersistSpec
       Data.BCP47.Roundtrip
+      Data.BCP47.SerialiseSpec
       Paths_bcp47_orphans
   hs-source-dirs:
       tests
@@ -72,4 +75,5 @@ test-suite spec
     , hspec
     , path-pieces
     , persistent
+    , serialise
   default-language: Haskell2010
