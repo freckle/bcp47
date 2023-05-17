@@ -57,10 +57,8 @@ jobs:
   hlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: rwe/actions-hlint-setup@v1
-      - run: |
-          curl -o .hlint.yaml https://raw.githubusercontent.com/freckle/megarepo/main/.hlint.yaml?token=GHSAT0AAAAAABQZ7HIIF2X5JATOFNSSGILYYSPIWIQ
-      - uses: rwe/actions-hlint-run@v2
+      - uses: actions/checkout@v3
+      - uses: haskell/actions/hlint-setup@v2
+      - uses: haskell/actions/hlint-run@v2
         with:
           fail-on: warning
