@@ -21,16 +21,13 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v2
-      - uses: freckle/stack-cache-action@v2
-        with:
-          stack-yaml: ${{ matrix.stack-yaml }}
+      - uses: actions/checkout@v3
 
       # See https://github.com/commercialhaskell/stack/issues/5159. To avoid
       # this bug, we'll skip doctests generally and run them ourselves, only in
       # the default job.
       - id: stack
-        uses: freckle/stack-action@v3
+        uses: freckle/stack-action@v4
         with:
           stack-yaml: ${{ matrix.stack-yaml }}
           stack-arguments: --coverage --skip doctest
@@ -45,6 +42,7 @@ jobs:
           tix='${{ steps.stack.outputs.local-hpc-root }}/combined/all/all.tix'
           stack --resolver lts-18.28 --no-terminal install --copy-compiler-tool hpc-lcov
           stack --resolver lts-18.28 --no-terminal exec -- hpc-lcov --file "$tix"
+
       - if: ${{ matrix.stack-yaml == 'stack.yaml' }}
         name: Upload coverage
         uses: codecov/codecov-action@v2
@@ -52,7 +50,9 @@ jobs:
           files: ./lcov.info
 
       - if: ${{ matrix.stack-yaml == 'stack.yaml' }}
-        uses: freckle/weeder-action@v1
+        uses: freckle/weeder-action@v2
+        with:
+          ghc-version: ${{ steps.stack.outputs.compiler-version }}
 
   hlint:
     runs-on: ubuntu-latest
