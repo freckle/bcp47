@@ -1,27 +1,5 @@
 # Indicates last update, must be overridden by --resolver
-resolver: nightly-2022-03-30
+resolver: nightly-2023-05-17
 packages:
   - bcp47
   - bcp47-orphans
-
-extra-deps:
-  - country-0.2.2
-  - esqueleto-3.5.3.2
-
-  # for country (what is with this library?)
-  - bytehash-0.1.0.0
-  - byteslice-0.2.7.0
-  - contiguous-0.6.1.1
-  - run-st-0.1.1.0
-  - zigzag-0.0.1.0
-
-  # https://github.com/byteverse/bytebuild/pull/26
-  - github: byteverse/bytebuild
-    commit: e0aeb060eb921238f33e97f91f6b5c5492e6dbf8
-
-  # https://github.com/typeable/generic-arbitrary/issues/12
-  - github: typeable/generic-arbitrary
-    commit: e559ca7591b00ffca49b172b77e9c4150f6c1399
-
-# bytebuild and bytehash need relaxing for 9.2
-allow-newer: true
