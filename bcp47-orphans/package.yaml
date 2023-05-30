@@ -1,5 +1,5 @@
 name: bcp47-orphans
-version: 0.1.0.5
+version: 0.1.0.6
 github: "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -27,6 +27,7 @@ library:
   - http-api-data
   - path-pieces
   - persistent
+  - serialise
   - text
 
 tests:
@@ -41,3 +42,4 @@ tests:
     - hspec
     - path-pieces
     - persistent
+    - serialise

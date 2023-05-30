@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.5...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.6...main)
 
 None
+
+## [v0.1.0.5](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.5...bcp47-orphans-v0.1.0.6)
+
+- Add support for Serialise and the CBOR format
 
 ## [v0.1.0.5](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.4...bcp47-orphans-v0.1.0.5)
 
