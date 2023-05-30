@@ -3,8 +3,6 @@
 module Data.BCP47.Serialise () where
 
 import Codec.Serialise
-import Codec.Serialise.Decoding
-import Codec.Serialise.Encoding
 import Data.BCP47 (BCP47, fromText, toText)
 import Data.Text (unpack)
 
