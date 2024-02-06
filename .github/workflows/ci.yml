@@ -30,10 +30,10 @@ jobs:
       # this bug, we'll skip doctests generally and run them ourselves, only in
       # the default job.
       - id: stack
-        uses: freckle/stack-action@v4
+        uses: freckle/stack-action@v5
         with:
           stack-yaml: ${{ matrix.stack-yaml }}
-          stack-arguments: --coverage --skip doctest
+          stack-build-arguments: --coverage --skip doctest
 
       - if: ${{ matrix.stack-yaml == 'stack.yaml' }}
         run: |
