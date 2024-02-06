@@ -1,3 +1,4 @@
+{-# LANGUAGE CPP #-}
 {-# LANGUAGE DeriveTraversable #-}
 {-# LANGUAGE DerivingStrategies #-}
 
@@ -21,7 +22,11 @@ module Data.BCP47.Trie.Internal
   )
   where
 
+#if MIN_VERSION_base(4,18,0)
+import Control.Applicative ((<|>))
+#else
 import Control.Applicative (liftA2, (<|>))
+#endif
 import Data.BCP47
 import Data.BCP47.Internal.Subtags
 import Data.List.NonEmpty (NonEmpty)
