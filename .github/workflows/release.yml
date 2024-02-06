@@ -22,8 +22,6 @@ jobs:
         with:
           package-yaml: ${{ matrix.package }}/package.yaml
           tag-prefix: ${{ matrix.package }}-v
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - if: steps.tag.outputs.tag
         uses: freckle/stack-upload-action@v2
