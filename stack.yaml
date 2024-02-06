@@ -1,20 +1,6 @@
-resolver: lts-19.1
+resolver: lts-22.9
 packages:
   - bcp47
   - bcp47-orphans
-extra-deps:
-  - country-0.2.2
-
-  # for country (what is with this library?)
-  - bytebuild-0.3.10.0
-  - bytehash-0.1.0.0
-  - byteslice-0.2.7.0
-  - contiguous-0.6.1.1
-  - run-st-0.1.1.0
-  - zigzag-0.0.1.0
-
-  # for weeder
-  - algebraic-graphs-0.5@sha256:6eeec5ed1687ff7aa916e7bf9f02f51aaabde6f314dc0b7b1a84156974d7da73,8071
-
 ghc-options:
   "$locals": -fwrite-ide-info

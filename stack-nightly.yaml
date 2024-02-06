@@ -1,5 +1,22 @@
 # Indicates last update, must be overridden by --resolver
-resolver: nightly-2023-05-17
+resolver: nightly-2024-02-06
 packages:
   - bcp47
   - bcp47-orphans
+extra-deps:
+  - country-0.2.4.1
+  - esqueleto-3.5.11.1
+
+  # For country
+  - bytehash-0.1.1.1
+
+  # For bytehash
+  - primitive-0.9.0.0
+
+allow-newer: true
+allow-newer-deps:
+  # bytestring, deepseq
+  - country
+
+  # bytestring
+  - bytehash
