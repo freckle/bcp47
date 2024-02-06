@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Extension
-  ( Extension(Extension)
+  ( Extension (Extension)
   , extensionFromText
   , extensionToText
   , extensionP
@@ -11,7 +11,13 @@ where
 
 import Control.Monad (void, when)
 import Data.BCP47.Internal.Arbitrary
-  (Arbitrary, alphaChar, alphaNumString, arbitrary, choose, suchThat)
+  ( Arbitrary
+  , alphaChar
+  , alphaNumString
+  , arbitrary
+  , choose
+  , suchThat
+  )
 import Data.BCP47.Internal.CIText (CIText)
 import qualified Data.BCP47.Internal.CIText as CI
 import Data.BCP47.Internal.Parser (asciiLetterDigit, complete)
@@ -28,8 +34,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- various applications.  They are intended to identify information that
 -- is commonly used in association with languages or language tags but
 -- that is not part of language identification.
---
-newtype Extension = Extension { unExtension :: CIText }
+newtype Extension = Extension {unExtension :: CIText}
   deriving stock (Show, Eq, Ord)
 
 extensionToText :: Extension -> Text
@@ -60,7 +65,6 @@ extensionFromText =
 --               / %x61-77             ; a - w
 --               / %x79-7A             ; y - z
 -- @@
---
 extensionP :: Parsec Void Text Extension
 extensionP = complete $ do
   ext <- asciiLetterDigit

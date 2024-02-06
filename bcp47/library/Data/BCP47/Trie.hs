@@ -2,7 +2,6 @@
 --
 -- This structure supports collection and lookup of language tagged values. Its
 -- semantics are based on those defined in the BCP 47 specification.
---
 module Data.BCP47.Trie
   ( Trie
   , fromList
@@ -32,7 +31,6 @@ import Data.Maybe (isJust)
 -- or 'de-CH' but never content with the tag 'de-CH-1996'."
 --
 -- https://tools.ietf.org/html/bcp47#page-2-12
---
 lookup :: BCP47 -> Trie a -> Maybe a
 lookup tag trie = lookup2 tag =<< Map.lookup (language tag) (unLanguage trie)
 

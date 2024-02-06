@@ -3,7 +3,7 @@
 module Data.BCP47.Csv () where
 
 import Data.BCP47 (BCP47, fromText, toText)
-import Data.Csv (FromField(..), ToField(..))
+import Data.Csv (FromField (..), ToField (..))
 import Data.Text (unpack)
 
 instance ToField BCP47 where

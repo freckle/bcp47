@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.LanguageExtension
-  ( LanguageExtension(LanguageExtension)
+  ( LanguageExtension (LanguageExtension)
   , languageExtensionFromText
   , languageExtensionToText
   , languageExtensionP
@@ -27,8 +27,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- These are used to identify certain specially selected languages that, for
 -- various historical and compatibility reasons, are closely identified with or
 -- tagged using an existing primary language subtag.
---
-newtype LanguageExtension = LanguageExtension { unLanguageExtension :: CIText }
+newtype LanguageExtension = LanguageExtension {unLanguageExtension :: CIText}
   deriving stock (Show, Eq, Ord)
 
 languageExtensionToText :: LanguageExtension -> Text
@@ -41,8 +40,9 @@ instance Arbitrary LanguageExtension where
 
 -- | Parse a 'LanguageExtension' subtag from 'Text'
 languageExtensionFromText :: Text -> Either Text LanguageExtension
-languageExtensionFromText = first (pack . errorBundlePretty)
-  . parse languageExtensionP "languageExtensionFromText"
+languageExtensionFromText =
+  first (pack . errorBundlePretty)
+    . parse languageExtensionP "languageExtensionFromText"
 
 -- | BCP-47 language extension parser
 --
@@ -52,7 +52,6 @@ languageExtensionFromText = first (pack . errorBundlePretty)
 --  extlang       = 3ALPHA              ; selected ISO 639 codes
 --                 *2("-" 3ALPHA)      ; permanently reserved
 -- @@
---
 languageExtensionP :: Parsec Void Text LanguageExtension
 languageExtensionP = complete $ do
   iso639 <- count 3 asciiLetter

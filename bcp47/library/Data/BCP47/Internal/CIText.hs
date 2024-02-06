@@ -2,7 +2,7 @@
 {-# LANGUAGE GeneralizedNewtypeDeriving #-}
 
 module Data.BCP47.Internal.CIText
-  ( CIText(..)
+  ( CIText (..)
   , fromText
   , pack
   , original
@@ -18,7 +18,6 @@ import qualified Data.Text as T
 --
 -- Constructor is exposed since this is an internal module, but ths
 -- interface may change. Module is meant to be imported qualified.
---
 newtype CIText = CIText
   { unCIText :: CI Text
   }

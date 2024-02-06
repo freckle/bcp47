@@ -1,14 +1,14 @@
-{-# OPTIONS_GHC -fno-warn-orphans #-}
 {-# LANGUAGE TypeApplications #-}
+{-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Data.BCP47.Persist () where
 
 import Control.Monad ((<=<))
 import Data.BCP47 (BCP47, fromText, toText)
-import Data.Proxy (Proxy(..))
+import Data.Proxy (Proxy (..))
 import Data.Text (Text)
-import Database.Persist.Class (PersistField(..))
-import Database.Persist.Sql (PersistFieldSql(..))
+import Database.Persist.Class (PersistField (..))
+import Database.Persist.Sql (PersistFieldSql (..))
 
 instance PersistField BCP47 where
   toPersistValue = toPersistValue . toText

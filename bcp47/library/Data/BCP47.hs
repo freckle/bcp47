@@ -18,60 +18,71 @@
 -- /renderings./
 --
 -- / - /<https://tools.ietf.org/html/bcp47>
---
 module Data.BCP47
   ( BCP47
   , inits
-  -- * Construction
+
+    -- * Construction
   , mkLanguage
   , mkLocalized
   , fromText
   , parser
-  -- * Serialization
+
+    -- * Serialization
   , toText
-  -- * Subtags
-  -- | A language tag is composed from a sequence of one or more "subtags",
-  -- each of which refines or narrows the range of language identified by
-  -- the overall tag. Subtags, in turn, are a sequence of alphanumeric characters
-  -- (letters and digits), distinguished and separated from other subtags in a tag
-  -- by a hyphen ("-", [Unicode] U+002D).
+
+    -- * Subtags
+
+    -- | A language tag is composed from a sequence of one or more "subtags",
+    -- each of which refines or narrows the range of language identified by
+    -- the overall tag. Subtags, in turn, are a sequence of alphanumeric characters
+    -- (letters and digits), distinguished and separated from other subtags in a tag
+    -- by a hyphen ("-", [Unicode] U+002D).
   , toSubtags
-  -- ** Language
+
+    -- ** Language
   , ISO639_1
   , language
   , languageToText
   , languageFromText
-  -- ** Language Extension
+
+    -- ** Language Extension
   , LanguageExtension
   , extendedLanguageSubtags
   , languageExtensionToText
   , languageExtensionFromText
-  -- ** Language Script
+
+    -- ** Language Script
   , Script
   , script
   , scriptToText
   , scriptFromText
-  -- ** Region
+
+    -- ** Region
   , Country
   , region
   , regionToText
   , regionFromText
-  -- ** Variant
+
+    -- ** Variant
   , Variant
   , variants
   , variantToText
   , variantFromText
-  -- ** Extension
+
+    -- ** Extension
   , Extension
   , extensions
   , extensionToText
   , extensionFromText
-  -- ** Private Use
+
+    -- ** Private Use
   , PrivateUse
   , privateUse
   , privateUseToText
   , privateUseFromText
-  -- * For testing
+
+    -- * For testing
   , en
   , es
   , sw
@@ -83,10 +94,18 @@ where
 import Control.Applicative ((<|>))
 import Control.Monad (MonadPlus)
 import Country.Identifier
-  (unitedKingdomOfGreatBritainAndNorthernIreland, unitedStatesOfAmerica)
+  ( unitedKingdomOfGreatBritainAndNorthernIreland
+  , unitedStatesOfAmerica
+  )
 import Data.Aeson
 import Data.BCP47.Internal.Arbitrary
-  (Arbitrary, arbitrary, choose, elements, listOf, vectorOf)
+  ( Arbitrary
+  , arbitrary
+  , choose
+  , elements
+  , listOf
+  , vectorOf
+  )
 import Data.BCP47.Internal.Extension
 import Data.BCP47.Internal.Language
 import Data.BCP47.Internal.LanguageExtension
@@ -97,7 +116,7 @@ import Data.BCP47.Internal.Subtags
 import Data.BCP47.Internal.Variant
 import Data.Bifunctor (first)
 import Data.Foldable (toList)
-import Data.LanguageCodes (ISO639_1(EN, ES, SW))
+import Data.LanguageCodes (ISO639_1 (EN, ES, SW))
 import qualified Data.List as List
 import Data.Maybe (mapMaybe)
 import Data.Set (Set)
@@ -115,9 +134,9 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- signed, or otherwise signaled, for the purpose of communication. This
 -- includes constructed and artificial languages but excludes languages not
 -- intended primarily for human communication, such as programming languages.
---
 data BCP47 = BCP47
-  { language :: ISO639_1 -- ^ The language subtag
+  { language :: ISO639_1
+  -- ^ The language subtag
   , subtags :: Set Subtags
   }
   deriving stock (Eq, Ord)
@@ -128,14 +147,16 @@ instance Arbitrary BCP47 where
     oneOrNone f = choose (0, 1) >>= (`vectorOf` (f <$> arbitrary))
     manyOf f = listOf (f <$> arbitrary)
     regions = [minBound .. maxBound]
-    specs = Set.fromList . mconcat <$> sequenceA
-      [ manyOf SpecifyLanguageExtension
-      , oneOrNone SpecifyScript
-      , choose (0, 1) >>= (`vectorOf` (elements $ SpecifyRegion <$> regions))
-      , manyOf SpecifyVariant
-      , manyOf SpecifyExtension
-      , oneOrNone SpecifyPrivateUse
-      ]
+    specs =
+      Set.fromList . mconcat
+        <$> sequenceA
+          [ manyOf SpecifyLanguageExtension
+          , oneOrNone SpecifyScript
+          , choose (0, 1) >>= (`vectorOf` (elements $ SpecifyRegion <$> regions))
+          , manyOf SpecifyVariant
+          , manyOf SpecifyExtension
+          , oneOrNone SpecifyPrivateUse
+          ]
 
 instance Show BCP47 where
   show = T.unpack . toText
@@ -156,14 +177,15 @@ instance FromJSON BCP47 where
 --
 -- Subtags are serialized in the order described in the BCP 47 specification.
 -- Private-use subtags only appear at the end prefixed with an x.
---
 toText :: BCP47 -> Text
-toText b = T.intercalate "-" $ mconcat
-  [ [languageToText $ language b]
-  , mapMaybe fromSubtags . Set.toList $ subtags b
-  , if Set.null (privateUse b) then [] else ["x"]
-  , map privateUseToText . Set.toList $ privateUse b
-  ]
+toText b =
+  T.intercalate "-" $
+    mconcat
+      [ [languageToText $ language b]
+      , mapMaybe fromSubtags . Set.toList $ subtags b
+      , if Set.null (privateUse b) then [] else ["x"]
+      , map privateUseToText . Set.toList $ privateUse b
+      ]
  where
   fromSubtags = \case
     SpecifyLanguageExtension x -> Just $ languageExtensionToText x
@@ -228,7 +250,6 @@ toSubtags tag = toList $ subtags tag
 --
 -- >>> inits <$> fromText (pack "en-GB-t-jp")
 -- Right [en,en-GB,en-GB-t-jp]
---
 inits :: BCP47 -> [BCP47]
 inits tag =
   map (BCP47 (language tag) . Set.fromList) . List.inits $ toSubtags tag
@@ -281,7 +302,6 @@ mkLocalized lang locale = BCP47 lang . Set.singleton $ SpecifyRegion locale
 --
 -- >>> fromText $ pack "zh"
 -- Right zh
---
 fromText :: Text -> Either Text BCP47
 fromText =
   first (pack . errorBundlePretty) . parse (parser <* hidden eof) "fromText"
@@ -290,24 +310,26 @@ fromText =
 --
 -- >>> _example $ pack "en;"
 -- Right (en,';')
---
 _example :: Text -> Either Text (BCP47, Char)
 _example = first (pack . errorBundlePretty) . parse p "example"
-  where p = (,) <$> parser <*> char ';'
+ where
+  p = (,) <$> parser <*> char ';'
 
 parser :: Parsec Void Text BCP47
 parser = BCP47 <$> languageP <*> subtagsP
  where
-  subtagsP = mconcat <$> sequenceA
-    [ manyAsSet SpecifyLanguageExtension (try (char '-' *> languageExtensionP))
-    , maybe mempty (Set.singleton . SpecifyScript)
-      <$> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
-    , maybe mempty (Set.singleton . SpecifyRegion)
-      <$> (try (optional $ char '-' *> regionP) <|> pure Nothing)
-    , manyAsSet SpecifyVariant (try (char '-' *> variantP))
-    , manyAsSet SpecifyExtension (try (char '-' *> extensionP))
-    , Set.map SpecifyPrivateUse <$> (try (char '-' *> privateUseP) <|> mempty)
-    ]
+  subtagsP =
+    mconcat
+      <$> sequenceA
+        [ manyAsSet SpecifyLanguageExtension (try (char '-' *> languageExtensionP))
+        , maybe mempty (Set.singleton . SpecifyScript)
+            <$> (try (optional $ char '-' *> scriptP) <|> pure Nothing)
+        , maybe mempty (Set.singleton . SpecifyRegion)
+            <$> (try (optional $ char '-' *> regionP) <|> pure Nothing)
+        , manyAsSet SpecifyVariant (try (char '-' *> variantP))
+        , manyAsSet SpecifyExtension (try (char '-' *> extensionP))
+        , Set.map SpecifyPrivateUse <$> (try (char '-' *> privateUseP) <|> mempty)
+        ]
 
 manyAsSet :: (Ord b, MonadPlus m) => (a -> b) -> m a -> m (Set b)
 manyAsSet f p = Set.fromList . map f <$> many p
