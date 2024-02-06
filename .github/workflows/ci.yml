@@ -24,7 +24,7 @@ jobs:
       fail-fast: false
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       # See https://github.com/commercialhaskell/stack/issues/5159. To avoid
       # this bug, we'll skip doctests generally and run them ourselves, only in
@@ -60,7 +60,7 @@ jobs:
   hlint:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
       - uses: haskell/actions/hlint-setup@v2
       - uses: haskell/actions/hlint-run@v2
         with:
