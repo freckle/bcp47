@@ -38,7 +38,6 @@ regionToText = alphaTwoUpper
 --
 -- >>> regionFromText $ pack "asdf"
 -- Left "regionFromText:1:3:\n  |\n1 | asdf\n  |   ^\nunexpected 'd'\nexpecting 2 or 3 character country code\n"
---
 regionFromText :: Text -> Either Text Country
 regionFromText =
   first (pack . errorBundlePretty) . parse regionP "regionFromText"
@@ -49,7 +48,6 @@ regionFromText =
 -- region        = 2ALPHA              ; ISO 3166-1 code
 --               / 3DIGIT              ; UN M.49 code
 -- @@
---
 regionP :: Parsec Void Text Country
 regionP =
   try (complete asciiLetter2)

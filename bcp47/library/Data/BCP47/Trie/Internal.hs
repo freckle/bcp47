@@ -3,7 +3,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 
 module Data.BCP47.Trie.Internal
-  ( Trie(..)
+  ( Trie (..)
   , fromList
   , fromNonEmpty
   , singleton
@@ -11,8 +11,8 @@ module Data.BCP47.Trie.Internal
   , unionWith
   , unionUsing
   , mapMaybe
-  , Trie2(..)
-  , Subtags(..)
+  , Trie2 (..)
+  , Subtags (..)
   , singleton2
   , lookup2
   , match2
@@ -20,7 +20,7 @@ module Data.BCP47.Trie.Internal
   , fromSubtags
   , mapMaybe2
   )
-  where
+where
 
 #if MIN_VERSION_base(4,18,0)
 import Control.Applicative ((<|>))
@@ -33,13 +33,12 @@ import Data.List.NonEmpty (NonEmpty)
 import qualified Data.List.NonEmpty as NE
 import Data.Map (Map)
 import qualified Data.Map as Map
-import Data.Monoid (Last(Last, getLast))
+import Data.Monoid (Last (Last, getLast))
 import Test.QuickCheck.Arbitrary
-import Test.QuickCheck.Modifiers (NonEmptyList(getNonEmpty))
+import Test.QuickCheck.Modifiers (NonEmptyList (getNonEmpty))
 
 -- | A trie mapping 'BCP47' tags to values
-newtype Trie a
-  = Trie { unLanguage :: Map ISO639_1 (Trie2 a)}
+newtype Trie a = Trie {unLanguage :: Map ISO639_1 (Trie2 a)}
   deriving stock (Show, Eq, Ord, Functor, Foldable, Traversable)
 
 instance Semigroup a => Semigroup (Trie a) where

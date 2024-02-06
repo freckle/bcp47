@@ -2,7 +2,7 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Script
-  ( Script(Script)
+  ( Script (Script)
   , scriptFromText
   , scriptToText
   , scriptP
@@ -24,8 +24,7 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- Script subtags are used to indicate the script or writing system
 -- variations that distinguish the written forms of a language or its
 -- dialects.
---
-newtype Script = Script { unScript :: CIText }
+newtype Script = Script {unScript :: CIText}
   deriving stock (Show, Eq, Ord)
 
 scriptToText :: Script -> Text
@@ -44,6 +43,5 @@ scriptFromText =
 -- @@
 --  script        = 4ALPHA              ; ISO 15924 code
 -- @@
---
 scriptP :: Parsec Void Text Script
 scriptP = complete $ Script . CI.pack <$> count 4 asciiLetter

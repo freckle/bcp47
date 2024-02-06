@@ -2,16 +2,22 @@
 {-# LANGUAGE OverloadedStrings #-}
 
 module Data.BCP47.Internal.Variant
-  ( Variant(Variant)
+  ( Variant (Variant)
   , variantFromText
   , variantToText
   , variantP
   )
-  where
+where
 
 import Control.Applicative ((<|>))
 import Data.BCP47.Internal.Arbitrary
-  (Arbitrary, alphaNumString, arbitrary, choose, numChar, oneof)
+  ( Arbitrary
+  , alphaNumString
+  , arbitrary
+  , choose
+  , numChar
+  , oneof
+  )
 import Data.BCP47.Internal.CIText (CIText)
 import qualified Data.BCP47.Internal.CIText as CI
 import Data.BCP47.Internal.Parser (asciiDigit, asciiLetterDigit, complete)
@@ -27,13 +33,12 @@ import Text.Megaparsec.Error (errorBundlePretty)
 -- variant       = 5*8alphanum         ; registered variants
 --               / (DIGIT 3alphanum)
 -- @@
---
 variantP :: Parsec Void Text Variant
 variantP =
-  complete
-    $ Variant
-    . CI.pack
-    <$> (try (count' 5 8 asciiLetterDigit) <|> digitPrefixed)
+  complete $
+    Variant
+      . CI.pack
+      <$> (try (count' 5 8 asciiLetterDigit) <|> digitPrefixed)
  where
   digitPrefixed = do
     x <- asciiDigit
@@ -45,8 +50,7 @@ variantP =
 -- Variant subtags are used to indicate additional, well-recognized
 -- variations that define a language or its dialects that are not
 -- covered by other available subtags.
---
-newtype Variant = Variant { unVariant :: CIText }
+newtype Variant = Variant {unVariant :: CIText}
   deriving stock (Show, Eq, Ord)
 
 variantToText :: Variant -> Text

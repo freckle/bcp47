@@ -2,7 +2,7 @@
 {-# LANGUAGE DerivingStrategies #-}
 
 module Data.BCP47.Internal.Subtags
-  ( Subtags(..)
+  ( Subtags (..)
   ) where
 
 import Data.BCP47.Internal.Extension
@@ -26,13 +26,12 @@ data Subtags
   deriving stock (Show, Eq, Ord, Generic)
 
 instance Arbitrary Subtags where
-  arbitrary = oneof
-    [ SpecifyLanguageExtension <$> arbitrary
-    , SpecifyScript <$> arbitrary
-    , SpecifyRegion <$> genericArbitrary
-    , SpecifyVariant <$> arbitrary
-    , SpecifyExtension <$> arbitrary
-    , SpecifyPrivateUse <$> arbitrary
-    ]
-
-
+  arbitrary =
+    oneof
+      [ SpecifyLanguageExtension <$> arbitrary
+      , SpecifyScript <$> arbitrary
+      , SpecifyRegion <$> genericArbitrary
+      , SpecifyVariant <$> arbitrary
+      , SpecifyExtension <$> arbitrary
+      , SpecifyPrivateUse <$> arbitrary
+      ]
