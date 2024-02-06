@@ -5,79 +5,36 @@
 
 packages:
 - completed:
-    hackage: country-0.2.2@sha256:681aabb9e0a8d2f94051d0ae566128458be3de4d0e0b6a9cf5875ce12ed403f5,3393
+    hackage: country-0.2.4.1@sha256:db91ee099549626aab89fb3c082c272a0488d05a3b4e8a6ea335f15908537a35,3388
     pantry-tree:
+      sha256: 59fa6ff92aec88b3eba964e34a14d8d3493141503441138434383474f628853f
       size: 1396
-      sha256: e2222a7733da6f09432d1ddc688d7b30e95e77692527be6e15840d985aef0706
   original:
-    hackage: country-0.2.2
+    hackage: country-0.2.4.1
 - completed:
-    hackage: esqueleto-3.5.3.2@sha256:1e0757dca42f9e2e01d5c1e1aac08dc6a277ee219e297d3611abf6c37edb8f6d,4858
+    hackage: esqueleto-3.5.11.1@sha256:0721b72053946d06d49a63e768117cf7da8efaf28849eff466212386d9b6e480,4966
     pantry-tree:
-      size: 2356
-      sha256: e77073e9f9012faf405f0a8afba58958e8d3cb02e1cbde351c585c282c82414a
+      sha256: f4f9870ae95c7b5b8db342078bad170aca2a66451a1381eb18e041ea191ac380
+      size: 2492
   original:
-    hackage: esqueleto-3.5.3.2
+    hackage: esqueleto-3.5.11.1
 - completed:
-    hackage: bytehash-0.1.0.0@sha256:31d9018c896eff6170329774ec1c1b247712448871f2400a541e92e64286c610,2017
+    hackage: bytehash-0.1.1.1@sha256:995c95eebe86224e444dfe99e12446871a6ca58b960380e6dd4b4e12c9c7a141,2118
     pantry-tree:
+      sha256: 92ab802956b39e456517ef5f02df582831f1b31ec7d330d7db549ec3c5e88e00
       size: 587
-      sha256: 48315bcf32ca2188401b7c1c2a27a6ad07158f836fe01ab2cd7f70ae8d49bf62
   original:
-    hackage: bytehash-0.1.0.0
+    hackage: bytehash-0.1.1.1
 - completed:
-    hackage: byteslice-0.2.7.0@sha256:b5aa80e6efa143b532d20603fb643767386771ec059adedd87cf72cceaf96420,2403
+    hackage: primitive-0.9.0.0@sha256:1ceb39f67c0e614180f2992a6d30f26603ab2cd23c4f8e25b30213f98807f6f1,3141
     pantry-tree:
-      size: 1546
-      sha256: d2b3fe36bbabea0225bbce11f9c61a5c81fea7bfb9f742086284e4d0667d1797
+      sha256: ebf0e03c7ca2f607d30cceeda49dc1f82a652177131f8922ac37846603421246
+      size: 1793
   original:
-    hackage: byteslice-0.2.7.0
-- completed:
-    hackage: contiguous-0.6.1.1@sha256:10922abbdf6c61cb4a9e493609871c4fd0c47dcde17dba3a6b6c420ef76fc212,1871
-    pantry-tree:
-      size: 600
-      sha256: e17834983b11be7cf05fca6a139987bf970634bf8bcf31621cf09d92aaecdd85
-  original:
-    hackage: contiguous-0.6.1.1
-- completed:
-    hackage: run-st-0.1.1.0@sha256:a43245bb23984089016772481bf52bfe63eaff0c5040303f69c9b15e80872fdc,883
-    pantry-tree:
-      size: 269
-      sha256: 06d5d7ecf185a26c15e48cda6c30e8865dae715c528a31466701272fae36d822
-  original:
-    hackage: run-st-0.1.1.0
-- completed:
-    hackage: zigzag-0.0.1.0@sha256:a995158dad3dfe0347cfc8f8a9327cc3f51832600553169ba5b1e08c45b45405,1078
-    pantry-tree:
-      size: 321
-      sha256: e5e5aadb11d695f9f1792a6d8f8faa4131afc23713335ff93dab6b0806bea510
-  original:
-    hackage: zigzag-0.0.1.0
-- completed:
-    size: 35614
-    url: https://github.com/byteverse/bytebuild/archive/e0aeb060eb921238f33e97f91f6b5c5492e6dbf8.tar.gz
-    name: bytebuild
-    version: 0.3.10.0
-    sha256: c98d36faf3543ce5b08dded7b370f745384f038b24bba2a6300b4f2ef2425a2a
-    pantry-tree:
-      size: 1351
-      sha256: 6dcb55af7b7c99052d8086aae3a4e35a95c8a6d197d1c7c243c81775649ec947
-  original:
-    url: https://github.com/byteverse/bytebuild/archive/e0aeb060eb921238f33e97f91f6b5c5492e6dbf8.tar.gz
-- completed:
-    size: 4911
-    url: https://github.com/typeable/generic-arbitrary/archive/e559ca7591b00ffca49b172b77e9c4150f6c1399.tar.gz
-    name: generic-arbitrary
-    version: 0.2.0
-    sha256: 0da48e4fb19f9b60699a7d3273fae791c1213c07aeba540977cbf2f9efbea571
-    pantry-tree:
-      size: 492
-      sha256: 935937b10d6569ae701a14146b857d45f32a7109f5d8b62e05bae8aa9bb6c4fb
-  original:
-    url: https://github.com/typeable/generic-arbitrary/archive/e559ca7591b00ffca49b172b77e9c4150f6c1399.tar.gz
+    hackage: primitive-0.9.0.0
 snapshots:
 - completed:
-    size: 539378
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2022/3/30.yaml
-    sha256: 745431a4c5b78cc93d81e99b2253a1e0eacd4f94e00cf17dab7cc14e665332e3
-  original: nightly-2022-03-30
+    sha256: dcbdef675b6bcce95be27d1cd7688f72b39769ad8c6a1ae10c14fadecdabf14d
+    size: 597670
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/2/6.yaml
+  original: nightly-2024-02-06

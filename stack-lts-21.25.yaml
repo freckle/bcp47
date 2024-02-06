@@ -1,0 +1,4 @@
+resolver: lts-21.25
+packages:
+  - bcp47
+  - bcp47-orphans
