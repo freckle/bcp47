@@ -1,26 +1,4 @@
-# Indicates last update, must be overridden by --resolver
-resolver: nightly-2024-02-06
+resolver: nightly-2025-01-20
 packages:
   - bcp47
   - bcp47-orphans
-extra-deps:
-  - country-0.2.4.1
-
-  # https://github.com/bitemyapp/esqueleto/issues/386
-  # - esqueleto-3.5.11.1
-  - github: arguri/esqueleto
-    commit: 28816847095a74abdba6c1c0fcb73e2ab80749ce
-
-  # For country
-  - bytehash-0.1.1.1
-
-  # For bytehash
-  - primitive-0.9.0.0
-
-allow-newer: true
-allow-newer-deps:
-  # bytestring, deepseq
-  - country
-
-  # bytestring
-  - bytehash
