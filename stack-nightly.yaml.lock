@@ -3,38 +3,10 @@
 # For more information, please see the documentation at:
 #   https://docs.haskellstack.org/en/stable/lock_files
 
-packages:
-- completed:
-    hackage: country-0.2.4.1@sha256:db91ee099549626aab89fb3c082c272a0488d05a3b4e8a6ea335f15908537a35,3388
-    pantry-tree:
-      sha256: 59fa6ff92aec88b3eba964e34a14d8d3493141503441138434383474f628853f
-      size: 1396
-  original:
-    hackage: country-0.2.4.1
-- completed:
-    hackage: esqueleto-3.5.11.1@sha256:0721b72053946d06d49a63e768117cf7da8efaf28849eff466212386d9b6e480,4966
-    pantry-tree:
-      sha256: f4f9870ae95c7b5b8db342078bad170aca2a66451a1381eb18e041ea191ac380
-      size: 2492
-  original:
-    hackage: esqueleto-3.5.11.1
-- completed:
-    hackage: bytehash-0.1.1.1@sha256:995c95eebe86224e444dfe99e12446871a6ca58b960380e6dd4b4e12c9c7a141,2118
-    pantry-tree:
-      sha256: 92ab802956b39e456517ef5f02df582831f1b31ec7d330d7db549ec3c5e88e00
-      size: 587
-  original:
-    hackage: bytehash-0.1.1.1
-- completed:
-    hackage: primitive-0.9.0.0@sha256:1ceb39f67c0e614180f2992a6d30f26603ab2cd23c4f8e25b30213f98807f6f1,3141
-    pantry-tree:
-      sha256: ebf0e03c7ca2f607d30cceeda49dc1f82a652177131f8922ac37846603421246
-      size: 1793
-  original:
-    hackage: primitive-0.9.0.0
+packages: []
 snapshots:
 - completed:
-    sha256: dcbdef675b6bcce95be27d1cd7688f72b39769ad8c6a1ae10c14fadecdabf14d
-    size: 597670
-    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2024/2/6.yaml
-  original: nightly-2024-02-06
+    sha256: 3ce900e74d0890ae59692705e21c0dc1312acae79850f64a3b9e339e14612854
+    size: 631308
+    url: https://raw.githubusercontent.com/commercialhaskell/stackage-snapshots/master/nightly/2025/1/20.yaml
+  original: nightly-2025-01-20
