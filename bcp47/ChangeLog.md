@@ -2,6 +2,10 @@
 
 None
 
+## [v0.3.0.0](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.6...bcp47-v0.3.0.0)
+
+- Remove `FromJSON` and `ToJSON` instances (added to `bcp47-orphans-0.1.1.0`)
+
 ## [v0.2.0.6](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.5...bcp47-v0.2.0.6)
 
 - Support GHCs 9.0 and 9.2

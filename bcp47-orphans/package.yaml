@@ -1,5 +1,5 @@
 name: bcp47-orphans
-version: 0.1.0.6
+version: 0.1.1.0
 github: "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -20,7 +20,7 @@ library:
   source-dirs: library
   dependencies:
   - aeson
-  - bcp47
+  - bcp47 >= 0.3.0.0
   - cassava
   - errors
   - esqueleto
