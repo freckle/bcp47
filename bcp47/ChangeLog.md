@@ -1,4 +1,4 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.2.0.6...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-v0.3.0.0...main)
 
 None
 
