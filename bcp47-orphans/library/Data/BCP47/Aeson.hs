@@ -1,14 +1,13 @@
+{-# LANGUAGE DerivingVia #-}
+{-# LANGUAGE StandaloneDeriving #-}
 {-# OPTIONS_GHC -fno-warn-orphans #-}
 
 module Data.BCP47.Aeson () where
 
+import Autodocodec (Autodocodec (..))
 import Data.Aeson
 import Data.BCP47
-import Data.Text (unpack)
+import Data.BCP47.Autodocodec ()
 
-instance ToJSON BCP47 where
-  toEncoding = toEncoding . toText
-  toJSON = toJSON . toText
-
-instance FromJSON BCP47 where
-  parseJSON = withText "BCP47" $ either (fail . unpack) pure . fromText
+deriving via (Autodocodec BCP47) instance FromJSON BCP47
+deriving via (Autodocodec BCP47) instance ToJSON BCP47

@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: d42854720beede548338498a5cc2b5897fd9882a83a12c3796199b4add4b3cf3
+-- hash: 6b4d50cb35904e035887ccd2ce008d0dc39eae8c588552b596890d099e3d3344
 
 name:           bcp47-orphans
 version:        0.1.1.0
@@ -30,6 +30,7 @@ source-repository head
 library
   exposed-modules:
       Data.BCP47.Aeson
+      Data.BCP47.Autodocodec
       Data.BCP47.Csv
       Data.BCP47.Esqueleto
       Data.BCP47.Hashable
@@ -43,6 +44,7 @@ library
       library
   build-depends:
       aeson
+    , autodocodec
     , base >=4.7 && <5
     , bcp47 >=0.3.0.0
     , cassava
