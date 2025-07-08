@@ -3,5 +3,5 @@ packages:
   - bcp47
   - bcp47-orphans
 extra-deps:
-  - autodocodec-0.4.2.2
+  - autodocodec-0.4.1.0
   - country-0.2.1@sha256:6988516f98054efce913e7027fb2659e9b2f67e033a10ea8b5b14ac6a3c2749b,2413

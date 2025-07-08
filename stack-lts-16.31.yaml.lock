@@ -5,12 +5,12 @@
 
 packages:
 - completed:
-    hackage: autodocodec-0.4.2.2@sha256:93b72477d84181a62c81b54bcffec31afbe15af987214e66bc408c37b9555b4f,1595
+    hackage: autodocodec-0.4.1.0@sha256:e0e8d067b01490652b5db934f2760f0366d69c948c7a99fe9d1be629233e577e,1583
     pantry-tree:
-      sha256: bfb550c0eeee66eea27efc870c0a1c9a427749b37b613fb50a669328ad0d84f7
+      sha256: e157cb7ca4b8c63e3afeb37fd3d774bef52d5ae04e9e406f18840ff2f84fbf5f
       size: 762
   original:
-    hackage: autodocodec-0.4.2.2
+    hackage: autodocodec-0.4.1.0
 - completed:
     hackage: country-0.2.1@sha256:6988516f98054efce913e7027fb2659e9b2f67e033a10ea8b5b14ac6a3c2749b,2413
     pantry-tree:
