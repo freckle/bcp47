@@ -1,10 +1,10 @@
 cabal-version: 1.12
 
--- This file has been generated from package.yaml by hpack version 0.35.1.
+-- This file has been generated from package.yaml by hpack version 0.38.0.
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e88408b4a95a2e691e0160fdbb5b1de8943a9953070afa597e9970e6c40a9af8
+-- hash: 5c79d9e87de963f1d0a979ce5f7ccea1e62d1ea4857eba1515a06d4cf95d776c
 
 name:           bcp47-orphans
 version:        0.1.0.6
@@ -29,6 +29,7 @@ source-repository head
 
 library
   exposed-modules:
+      Data.BCP47.Aeson
       Data.BCP47.Csv
       Data.BCP47.Esqueleto
       Data.BCP47.Hashable
@@ -41,7 +42,8 @@ library
   hs-source-dirs:
       library
   build-depends:
-      base >=4.7 && <5
+      aeson
+    , base >=4.7 && <5
     , bcp47
     , cassava
     , errors
@@ -58,6 +60,7 @@ test-suite spec
   type: exitcode-stdio-1.0
   main-is: Main.hs
   other-modules:
+      Data.BCP47.AesonSpec
       Data.BCP47.CsvSpec
       Data.BCP47.PathPiecesSpec
       Data.BCP47.PersistSpec
@@ -68,6 +71,7 @@ test-suite spec
       tests
   build-depends:
       QuickCheck
+    , aeson
     , base >=4.7 && <5
     , bcp47
     , bcp47-orphans

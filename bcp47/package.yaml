@@ -38,7 +38,6 @@ dependencies:
 library:
   source-dirs: library
   dependencies:
-  - aeson
   - case-insensitive
   - containers
   - country
@@ -59,7 +58,6 @@ tests:
     source-dirs: tests
     dependencies:
     - QuickCheck
-    - aeson
     - bcp47
     - containers
     - hspec
