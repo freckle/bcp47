@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 5c79d9e87de963f1d0a979ce5f7ccea1e62d1ea4857eba1515a06d4cf95d776c
+-- hash: d42854720beede548338498a5cc2b5897fd9882a83a12c3796199b4add4b3cf3
 
 name:           bcp47-orphans
-version:        0.1.0.6
+version:        0.1.1.0
 synopsis:       BCP47 orphan instances
 description:    Orphan instances for the BCP47 type
 category:       Orphan Instances
@@ -44,7 +44,7 @@ library
   build-depends:
       aeson
     , base >=4.7 && <5
-    , bcp47
+    , bcp47 >=0.3.0.0
     , cassava
     , errors
     , esqueleto

@@ -2,7 +2,11 @@
 
 None
 
-## [v0.1.0.5](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.5...bcp47-orphans-v0.1.0.6)
+## [v0.1.1.0](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.6...bcp47-orphans-v0.1.1.0)
+
+- Add `FromJSON` and `ToJSON` instances (removed from `bcp47-0.3.0.0`)
+
+## [v0.1.0.6](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.0.5...bcp47-orphans-v0.1.0.6)
 
 - Add support for Serialise and the CBOR format
 
