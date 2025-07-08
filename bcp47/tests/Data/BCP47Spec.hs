@@ -1,6 +1,6 @@
-{-# LANGUAGE NoImplicitPrelude #-}
 {-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE TypeApplications #-}
+{-# LANGUAGE NoImplicitPrelude #-}
 
 module Data.BCP47Spec
   ( spec
@@ -9,7 +9,6 @@ module Data.BCP47Spec
 import TestImport
 
 import Country.Identifier (china)
-import Data.Aeson (decode, encode)
 import Data.BCP47
 import Data.BCP47.Internal.Extension
 import Data.BCP47.Internal.LanguageExtension
@@ -17,15 +16,16 @@ import Data.BCP47.Internal.PrivateUse
 import Data.BCP47.Internal.Script
 import Data.BCP47.Internal.Variant
 import Data.Either (isRight)
-import Data.LanguageCodes (ISO639_1(ZH))
+import Data.LanguageCodes (ISO639_1 (ZH))
 import qualified Data.Set as Set
 
 spec :: Spec
 spec = do
   describe "fromText" $ do
     it "parses all components" $ do
-      lng <- fromTextThrows
-        "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
+      lng <-
+        fromTextThrows
+          "zh-abc-def-zxy-Hant-CN-1967-y-extensi-x-private1-private2"
       language lng `shouldBe` ZH
       extendedLanguageSubtags lng
         `shouldBe` Set.singleton (LanguageExtension "abc-def-zxy")
@@ -54,15 +54,14 @@ spec = do
   describe "Read/Show" . it "can roundtrip" . property $ \tag ->
     readMaybe (show @BCP47 tag) `shouldBe` Just tag
 
-  describe "ToJSON/FromJSON" . it "roundtrips" . property $ \x ->
-    decode (encode @BCP47 x) `shouldBe` Just x
-
   describe "Eq" $ do
     it "compares equal with different casing" $ do
-      lower <- fromTextThrows
-        "zh-abc-def-zxy-hant-cn-1967-y-extensi-x-private1-private2"
-      upper <- fromTextThrows
-        "ZH-ABC-DEF-ZXY-HANT-CN-1967-Y-EXTENSI-X-PRIVATE1-PRIVATE2"
+      lower <-
+        fromTextThrows
+          "zh-abc-def-zxy-hant-cn-1967-y-extensi-x-private1-private2"
+      upper <-
+        fromTextThrows
+          "ZH-ABC-DEF-ZXY-HANT-CN-1967-Y-EXTENSI-X-PRIVATE1-PRIVATE2"
       upper `shouldBe` lower
 
   describe "Regression tests" $ do

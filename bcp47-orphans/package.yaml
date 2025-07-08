@@ -19,6 +19,7 @@ dependencies:
 library:
   source-dirs: library
   dependencies:
+  - aeson
   - bcp47
   - cassava
   - errors
@@ -36,6 +37,7 @@ tests:
     source-dirs: tests
     dependencies:
     - QuickCheck
+    - aeson
     - bcp47
     - bcp47-orphans
     - cassava

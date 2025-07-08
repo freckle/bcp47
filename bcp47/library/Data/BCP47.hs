@@ -97,7 +97,6 @@ import Country.Identifier
   ( unitedKingdomOfGreatBritainAndNorthernIreland
   , unitedStatesOfAmerica
   )
-import Data.Aeson
 import Data.BCP47.Internal.Arbitrary
   ( Arbitrary
   , arbitrary
@@ -121,7 +120,7 @@ import qualified Data.List as List
 import Data.Maybe (mapMaybe)
 import Data.Set (Set)
 import qualified Data.Set as Set
-import Data.Text (Text, pack, unpack)
+import Data.Text (Text, pack)
 import qualified Data.Text as T
 import Data.Void (Void)
 import Text.Megaparsec (Parsec, eof, hidden, many, optional, parse, try)
@@ -165,13 +164,6 @@ instance Read BCP47 where
   readsPrec _ s = case fromText $ T.pack s of
     Left _ -> []
     Right b -> [(b, "")]
-
-instance ToJSON BCP47 where
-  toEncoding = toEncoding . toText
-  toJSON = toJSON . toText
-
-instance FromJSON BCP47 where
-  parseJSON = withText "BCP47" $ either (fail . unpack) pure . fromText
 
 -- | Serialize @'BCP47'@ to @'Text'@
 --
