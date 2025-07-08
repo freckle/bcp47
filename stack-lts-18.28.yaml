@@ -2,3 +2,5 @@ resolver: lts-18.28
 packages:
   - bcp47
   - bcp47-orphans
+extra-deps:
+  - autodocodec-0.4.2.2

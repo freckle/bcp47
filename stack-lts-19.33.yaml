@@ -3,6 +3,7 @@ packages:
   - bcp47
   - bcp47-orphans
 extra-deps:
+  - autodocodec-0.4.2.2
   - country-0.2.2
 
   # For country
