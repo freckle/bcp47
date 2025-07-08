@@ -20,6 +20,7 @@ library:
   source-dirs: library
   dependencies:
   - aeson
+  - autodocodec
   - bcp47 >= 0.3.0.0
   - cassava
   - errors
