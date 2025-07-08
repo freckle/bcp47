@@ -3,7 +3,7 @@ packages:
   - bcp47
   - bcp47-orphans
 extra-deps:
-  - autodocodec-0.4.2.2
+  - autodocodec-0.2.3.0
   - esqueleto-3.4.0.1@sha256:85077c6b11e06e0ac4a5cb07fb6b71448dcd2dc1e9831ea8115cb9090c342500,5869
   - megaparsec-7.0.4@sha256:a7397151601cbe6b8f831f8bdad1a10118dcd6d9a7ee50d6bbdcfbd1181b4ba2
   - persistent-2.11.0.1@sha256:c33f00adfed435bbf406d70aa6e5471974a4afcc1a8da3a5ef4e1af0ba5f9884,4702
