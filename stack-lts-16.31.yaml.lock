@@ -18,6 +18,13 @@ packages:
       size: 801
   original:
     hackage: country-0.2.1@sha256:6988516f98054efce913e7027fb2659e9b2f67e033a10ea8b5b14ac6a3c2749b,2413
+- completed:
+    hackage: openapi3-3.2.4@sha256:7309864a9a59b4654b21ef477444fb26bf8d393eba795dd8de089b368ea74c2a,4982
+    pantry-tree:
+      sha256: 1ac8db74ee9753398df1b87f2556c83cce42994c3a2c80faa13169ddba250ab0
+      size: 2263
+  original:
+    hackage: openapi3-3.2.4
 snapshots:
 - completed:
     sha256: 637fb77049b25560622a224845b7acfe81a09fdb6a96a3c75997a10b651667f6
