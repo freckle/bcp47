@@ -5,6 +5,7 @@ None
 ## [v0.1.3.0](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.2.0...bcp47-orphans-v0.1.3.0)
 
 - Add `ToSchema` and `ToParamSchema` instances for `BCP47`
+- Drop support for GHC 8.6
 
 ## [v0.1.2.0](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.1.0...bcp47-orphans-v0.1.2.0)
 

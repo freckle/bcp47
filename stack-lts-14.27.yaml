@@ -1,7 +1,0 @@
-resolver: lts-14.27
-packages:
-  - bcp47
-  - bcp47-orphans
-extra-deps:
-  - autodocodec-0.2.3.0
-  - esqueleto-3.0.0@sha256:efd84fd11ceaf0ae4e1b0c6236122b1f213c2c6f2f4f58e30f03eddc2ec3f423
