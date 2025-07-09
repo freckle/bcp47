@@ -27,4 +27,4 @@ instance ToSchema BCP47 where
         & schema . format ?~ "bcp47"
 
 instance ToParamSchema BCP47 where
-  toParamSchema _ = toSchema $ Proxy @Text
+  toParamSchema _ = toSchema $ Proxy @BCP47
