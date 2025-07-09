@@ -1,5 +1,5 @@
 name: bcp47-orphans
-version: 0.1.2.0
+version: 0.1.3.0
 github: "freckle/bcp47"
 license: MIT
 author: "Evan Rutledge Borden"
@@ -21,6 +21,7 @@ library:
   dependencies:
   - aeson
   - autodocodec
+  - autodocodec-openapi3
   - bcp47 >= 0.3.0.0
   - cassava
   - errors
@@ -29,6 +30,7 @@ library:
   - http-api-data
   - path-pieces
   - persistent
+  - openapi3
   - serialise
   - text
 
