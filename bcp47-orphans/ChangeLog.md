@@ -1,6 +1,10 @@
-## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.2.0...main)
+## [*Unreleased*](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.3.0...main)
 
 None
+
+## [v0.1.3.0](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.2.0...bcp47-orphans-v0.1.3.0)
+
+- Add `ToSchema` and `ToParamSchema` instances for `BCP47`
 
 ## [v0.1.2.0](https://github.com/freckle/bcp47/compare/bcp47-orphans-v0.1.1.0...bcp47-orphans-v0.1.2.0)
 

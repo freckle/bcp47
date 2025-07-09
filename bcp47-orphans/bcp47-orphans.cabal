@@ -4,10 +4,10 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: e5e1c2d57815b843820a911ee75900b2f42fc104ea4499f49c3be1c58c1f61e5
+-- hash: 8c267d3f98b22fd3f7ff449fe77644d3a010a3c64724c5b0c1b267cdb0911e39
 
 name:           bcp47-orphans
-version:        0.1.2.0
+version:        0.1.3.0
 synopsis:       BCP47 orphan instances
 description:    Orphan instances for the BCP47 type
 category:       Orphan Instances
@@ -35,6 +35,7 @@ library
       Data.BCP47.Esqueleto
       Data.BCP47.Hashable
       Data.BCP47.HttpApiData
+      Data.BCP47.OpenApi
       Data.BCP47.PathPieces
       Data.BCP47.Persist
       Data.BCP47.Serialise
@@ -45,6 +46,7 @@ library
   build-depends:
       aeson
     , autodocodec
+    , autodocodec-openapi3
     , base >=4.7 && <5
     , bcp47 >=0.3.0.0
     , cassava
@@ -52,6 +54,7 @@ library
     , esqueleto
     , hashable
     , http-api-data
+    , openapi3
     , path-pieces
     , persistent
     , serialise
