@@ -9,22 +9,28 @@ import Control.Lens ((&), (?~))
 import Data.Aeson (Value (..))
 import Data.BCP47
 import Data.BCP47.Autodocodec ()
-import Data.OpenApi (description, example, format, schema)
-import Data.OpenApi.ParamSchema (ToParamSchema (..))
-import Data.OpenApi.Schema (ToSchema (..), toSchema)
+import Data.OpenApi
+  ( NamedSchema (..)
+  , OpenApiType (..)
+  , ToParamSchema (..)
+  , ToSchema (..)
+  , description
+  , example
+  , format
+  , toSchema
+  , type_
+  )
 import Data.Proxy (Proxy (..))
-import Data.Text (Text)
 
 instance ToSchema BCP47 where
-  declareNamedSchema _ = do
-    -- Use the schema for Text, but add more details
-    textSchema <- declareNamedSchema $ Proxy @Text
-
+  declareNamedSchema _ =
     pure
-      $ textSchema
-        & schema . description ?~ "BCP47 language tag"
-        & schema . example ?~ String "en"
-        & schema . format ?~ "bcp47"
+      $ NamedSchema (Just "BCP47")
+      $ mempty
+        & type_ ?~ OpenApiString
+        & description ?~ "BCP47 language tag"
+        & example ?~ String "en"
+        & format ?~ "bcp47"
 
 instance ToParamSchema BCP47 where
   toParamSchema _ = toSchema $ Proxy @BCP47
